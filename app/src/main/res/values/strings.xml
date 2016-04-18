@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CampusChat</string>
+    <string name="profilesettings_nickname_label">Spitzname:</string>
 </resources>

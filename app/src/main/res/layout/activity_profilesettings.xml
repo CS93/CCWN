@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/profilesettings_nickname_label"
+        android:id="@+id/profilesettings_nickname_label"
+        android:textColor="@color/black"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/profilesettings_nickname_edittext"
+        android:layout_below="@+id/profilesettings_nickname_label"
+        android:layout_alignLeft="@+id/profilesettings_nickname_label"
+        android:layout_alignStart="@+id/profilesettings_nickname_label" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilesettings_status_edittext"
+        android:text="“Hey! I'm using What's Near...“"
+        android:layout_below="@+id/profilesettings_nickname_edittext"
+        android:layout_alignLeft="@+id/profilesettings_nickname_edittext"
+        android:layout_alignStart="@+id/profilesettings_nickname_edittext"
+        android:layout_marginTop="100dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilesettings_ppicture_imageview"
+        android:layout_below="@+id/profilesettings_status_edittext"
+        android:marginTop="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>
