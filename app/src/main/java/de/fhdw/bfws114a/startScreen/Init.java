@@ -29,7 +29,9 @@ public class Init extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // if the activity gets closed the current text and position in the chat are saved
-        mData.saveDataInBundle(outState, mGui.getCurrentText(), mGui.getCurrentScrollPosition());
+        //actualizes the currentText and currentScrollPosition in Data
+        mApplicationLogic.actualizeScreenData();
+        mData.saveDataInBundle(outState);
     }
 
     //Whether this activity (login) is restarted e.g. after finishing profile management, the method onRestart() in ApplicationLogic is called

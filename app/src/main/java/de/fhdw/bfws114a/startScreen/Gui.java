@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 
+import de.fhdw.bfws114a.R;
+import de.fhdw.bfws114a.data.MessageList;
+
 public class Gui {
 	
 	//components of the GUI
@@ -23,22 +26,9 @@ public class Gui {
 	//	map the intialized components with gui
 	}
 
-	public String getCurrentText(){
-		// returns the text which the user typed in so far (may just return the field because the GUI shouldnt "know" the text)
-		return "test";
-	}
+	//getter and setter for components
 
-	public void setCurrentText(String text){
-		// fills the textpane on the GUI with the given text
-
-	}
-
-	public int getCurrentScrollPosition(){
-		// returns the position of the scrollbar (may just return the field because the GUI shouldnt "know" the pos)
-		return 0;
-	}
-
-	public void setCurrentScrollPosition(int pos){
-		// puts / focusses the scrollbar to the given position
+	public void setMessages(MessageList liste){
+		//put the MessageList to Scrollpane (with messages)
 	}
 }
