@@ -1,4 +1,4 @@
-package de.fhdw.bfws114a.campuschat;
+package de.fhdw.bfws114a.startScreen;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
