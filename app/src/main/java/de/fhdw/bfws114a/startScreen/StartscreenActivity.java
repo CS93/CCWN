@@ -8,6 +8,6 @@ public class StartscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_startscreen);
+        setContentView(R.layout.activity_profilesettings);
     }
 }
