@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		createTableMessages(db);
-        createTableSystemdata();
+        createTableSystemdata(db);
 	}
 	
 	private void createTableMessages(SQLiteDatabase db) {
