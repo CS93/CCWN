@@ -40,10 +40,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profilesettings_ppicture_imageview"
-        android:layout_below="@+id/profilesettings_status_edittext"
         android:marginTop="50dp"
+        android:src="@drawable/dscn8598"
+        android:layout_alignTop="@+id/profilesettings_nickname_label"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="62dp"
+        android:layout_marginEnd="62dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilesettings_ppicture_upload_button"
+        android:id="@+id/profilesettings_ppicture_upload_button"
+        android:layout_alignBottom="@+id/profilesettings_status_edittext"
+        android:layout_alignRight="@+id/profilesettings_ppicture_imageview"
+        android:layout_alignEnd="@+id/profilesettings_ppicture_imageview" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilesettings_settings_save_button"
+        android:id="@+id/profilesettings_settings_save_button"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
