@@ -3,68 +3,73 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/profilesettings_nickname_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/profilesettings_nickname_label"
-        android:id="@+id/profilesettings_nickname_label"
         android:textColor="@color/black"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="50dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:id="@+id/profilesettings_nickname_edittext"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/profilesettings_nickname_edittext"
+        android:layout_marginRight="20dp"
         android:layout_below="@+id/profilesettings_nickname_label"
         android:layout_alignLeft="@+id/profilesettings_nickname_label"
         android:layout_alignStart="@+id/profilesettings_nickname_label" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/profilesettings_status_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="“Hey! I'm using What's Near...“"
         android:layout_below="@+id/profilesettings_nickname_edittext"
         android:layout_alignLeft="@+id/profilesettings_nickname_edittext"
         android:layout_alignStart="@+id/profilesettings_nickname_edittext"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="75dp"
+        android:layout_marginRight="20dp"/>
 
     <ImageView
+        android:id="@+id/profilesettings_ppicture_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/profilesettings_ppicture_imageview"
-        android:marginTop="50dp"
+        android:layout_marginTop="50dp"
         android:src="@drawable/dscn8598"
-        android:layout_alignTop="@+id/profilesettings_nickname_label"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="62dp"
-        android:layout_marginEnd="62dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/profilesettings_status_edittext"
+        android:minHeight="100dp"
+        android:minWidth="100dp"
+        android:maxHeight="150dp"
+        android:maxWidth="150dp" />
 
     <Button
+        android:id="@+id/profilesettings_ppicture_upload_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profilesettings_ppicture_upload_button"
-        android:id="@+id/profilesettings_ppicture_upload_button"
-        android:layout_alignBottom="@+id/profilesettings_status_edittext"
-        android:layout_alignRight="@+id/profilesettings_ppicture_imageview"
-        android:layout_alignEnd="@+id/profilesettings_ppicture_imageview" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/profilesettings_ppicture_imageview"
+        android:layout_marginTop="10dp"
+         />
 
     <Button
+        android:id="@+id/profilesettings_settings_save_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profilesettings_settings_save_button"
-        android:id="@+id/profilesettings_settings_save_button"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true" />
 
 
