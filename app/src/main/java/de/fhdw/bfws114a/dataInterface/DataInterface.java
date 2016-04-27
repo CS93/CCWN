@@ -16,23 +16,19 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Environment;
 public class DataInterface {
-	
+
 	private final static String FILEPATH = "/android/data/de.fhdw.LernKartei/";
 	private final static String FILENAME = "karteien.xml";
 
 	private DatabaseHandler db;
-	private XMLPullParserHandler xmlHandler;
 	private int[] timeToClasses;
 	private Activity activity;
 
 	public DataInterface(Activity activity) {
 		db = new DatabaseHandler(activity);
-		xmlHandler = new XMLPullParserHandler();
 		this.activity = activity;
 		copyDefaultXMLintoExternalFolder();
 	}
-
-
 
 
 	// load the default Time in minutes of Classes
@@ -50,37 +46,40 @@ public class DataInterface {
 	}
 
 
-	
 	// If there is no XML-File in the external Storage, the default file from the Project-Directory will be copied.
-	public void copyDefaultXMLintoExternalFolder(){
+	public void copyDefaultXMLintoExternalFolder() {
 		String uri = Environment.getExternalStorageDirectory().toString() + FILEPATH;
-        java.io.File xmlFile = new java.io.File(uri, FILENAME);
-        
-        if(!xmlFile.getParentFile().exists()){
-        	try {
-        		xmlFile.getParentFile().mkdirs();
-        	} catch (Exception e) {
-        		e.printStackTrace();
-        	}
-        }
-        
-        if(!xmlFile.exists()){
-        	try {
-				if(xmlFile.createNewFile()){
+		java.io.File xmlFile = new java.io.File(uri, FILENAME);
+
+		if (!xmlFile.getParentFile().exists()) {
+			try {
+				xmlFile.getParentFile().mkdirs();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (!xmlFile.exists()) {
+			try {
+				if (xmlFile.createNewFile()) {
 					InputStream is = activity.getAssets().open("karteien.xml");
 					OutputStream out = new FileOutputStream(xmlFile);
 					byte[] buf = new byte[1024];
 					int len;
-					while((len=is.read(buf))>0){			
-						out.write(buf,0,len);
-					}		
+					while ((len = is.read(buf)) > 0) {
+						out.write(buf, 0, len);
+					}
 					out.close();
 					is.close();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-        }
+		}
 	}
 
+
+	public void sendMessage(String text) {
+
+	}
 }
