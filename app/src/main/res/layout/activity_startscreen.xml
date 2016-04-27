@@ -1,44 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#efefef"
-    android:orientation="vertical">
-
-    <ListView
-        android:id="@+id/startscreen_chat_overview_listview"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@null"
-        android:divider="@null"
-        android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll"></ListView>
-
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="4">
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:orientation="vertical">
 
-
-        <EditText
-            android:id="@+id/startscreen_send_message_edittext"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="3"
-            android:hint="Nachricht"/>
+        <Switch
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:text="Offline"
+            android:id="@+id/startscreen_availability_switch"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"/>
 
         <Button
-            android:id="@+id/startscreen_send_message_button"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="Senden" />
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:id="@+id/startscreen_goto_settings"
+            android:text="Einstellungen"
+            android:layout_marginLeft="50dp"/>
 
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:id="@+id/startscreen_goto_deviceoverview"
+            android:text="Geräteübersicht"
+            android:layout_marginRight="50dp"/>
+
+        <ListView
+            android:id="@+id/startscreen_chat_overview_listview"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:divider="@null"
+            android:stackFromBottom="true"
+            android:transcriptMode="alwaysScroll"></ListView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+
+            <EditText
+                android:id="@+id/startscreen_send_message_edittext"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"
+                android:hint="Nachricht"
+                android:textColorHint="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/startscreen_send_message_button"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="Senden"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
