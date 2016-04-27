@@ -10,6 +10,7 @@ import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import de.fhdw.bfws114a.R;
@@ -19,8 +20,9 @@ public class Gui {
 	//components of the GUI
 	private ListView mListView;
 	private EditText mEditText;
-	private Button mButtonSend;
+	private Button mButtonSend, mButtonSettings, mButtonDevices;
 	private TextView mTextView; //Chat bubble
+	private Switch mSwitch; //chagne from Online To Offline
 
 
 	//To initialize some Objects the context is necessary
@@ -34,6 +36,9 @@ public class Gui {
 		mListView = (ListView) act.findViewById(R.id.startscreen_chat_overview_listview);
 		mEditText = (EditText) act.findViewById(R.id.startscreen_send_message_edittext);
 		mButtonSend = (Button) act.findViewById(R.id.startscreen_send_message_button);
+		mButtonSettings = (Button) act.findViewById(R.id.startscreen_goto_settings_button);
+		mButtonDevices = (Button) act.findViewById(R.id.startscreen_goto_deviceoverview_button);
+		mSwitch = (Switch) act.findViewById(R.id.startscreen_availability_switch);
 		mTextView = (TextView) act.findViewById(R.id.startscreen_chat_bubble);
 	}
 
@@ -60,6 +65,18 @@ public class Gui {
 		return mContext;
 	}
 
+	public Switch getSwitch() {
+		return mSwitch;
+	}
+
+	public Button getButtonDevices() {
+		return mButtonDevices;
+	}
+
+	public Button getButtonSettings() {
+		return mButtonSettings;
+	}
+
 	public void setListView(ListView mListView) {
 		this.mListView = mListView;
 	}
@@ -78,6 +95,18 @@ public class Gui {
 
 	public void setContext(Context mContext) {
 		this.mContext = mContext;
+	}
+
+	public void setButtonSettings(Button mButtonSettings) {
+		this.mButtonSettings = mButtonSettings;
+	}
+
+	public void setButtonDevices(Button mButtonDevices) {
+		this.mButtonDevices = mButtonDevices;
+	}
+
+	public void setSwitch(Switch mSwitch) {
+		this.mSwitch = mSwitch;
 	}
 
 	public void setMessages(MessageList list){

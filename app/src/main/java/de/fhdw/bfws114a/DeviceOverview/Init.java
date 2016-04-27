@@ -20,7 +20,7 @@ public class Init extends AppCompatActivity {
         //initEventToListenerMapping();
 
         //Testen der Übergabe
-        setContentView(R.layout.activity_profilesettings);
+        setContentView(R.layout.activity_deviceoverview);
     }
 
 }
