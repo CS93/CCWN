@@ -5,16 +5,22 @@ package de.fhdw.bfws114a.startScreen;
  */
 
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.MessageList;
 
 public class Gui {
 	//components of the GUI
+	private ListView mListView;
+	private EditText mEditText;
+	private Button mButtonSend;
+	private TextView mTextView; //Chat bubble
 
 
 	//To initialize some Objects the context is necessary
@@ -24,20 +30,62 @@ public class Gui {
 		act.setContentView(R.layout.activity_startscreen);
 		mContext = act;
 	//	map the intialized components with gui
+		mContext = act;
+		mListView = (ListView) act.findViewById(R.id.startscreen_chat_overview_listview);
+		mEditText = (EditText) act.findViewById(R.id.startscreen_send_message_edittext);
+		mButtonSend = (Button) act.findViewById(R.id.startscreen_send_message_button);
+		mTextView = (TextView) act.findViewById(R.id.startscreen_chat_bubble);
 	}
 
 	//getter and setter for components
+
+
+	public ListView getListView() {
+		return mListView;
+	}
+
+	public EditText getEditText() {
+		return mEditText;
+	}
+
+	public Button getButtonSend() {
+		return mButtonSend;
+	}
+
+	public TextView getTextView() {
+		return mTextView;
+	}
+
+	public Context getContext() {
+		return mContext;
+	}
+
+	public void setListView(ListView mListView) {
+		this.mListView = mListView;
+	}
+
+	public void setEditText(EditText mEditText) {
+		this.mEditText = mEditText;
+	}
+
+	public void setButtonSend(Button mButton) {
+		this.mButtonSend = mButton;
+	}
+
+	public void setTextView(TextView mTextView) {
+		this.mTextView = mTextView;
+	}
+
+	public void setContext(Context mContext) {
+		this.mContext = mContext;
+	}
 
 	public void setMessages(MessageList list){
 		//put the MessageList to listview
 	}
 
-
 	public void setScrollPanePosition(int pos){
-		//set the scrollpanePosition
-	}
-
-	public String getText() {
-		return "";
+		//set the position of the scrollpane (in the listview)
+		mListView.setScrollY(pos);
 	}
 }

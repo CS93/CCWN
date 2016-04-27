@@ -26,7 +26,7 @@ public class ApplicationLogic {
 
 	public void onSendButtonClicked(){
 		//send Data
-		mCO.sendMessage(mGui.getText());
+		mCO.sendMessage(String.valueOf(mGui.getEditText().getText()));
 	}
 		
 	
@@ -46,13 +46,14 @@ public class ApplicationLogic {
 
 	// The acitivty should present the screen like he left it (started messages/position of the scrollpane
 	public void onRestart() {
-		//mGui.Text.setText(mData.getCurrentText());
-		//mGui.Scrollbar.setPosition(mData.getCurrentScrollPosition());
+		//apply the restored data to GUI
+		mGui.getEditText().setText(mData.getCurrentText());
+		mGui.setScrollPanePosition(mData.getCurrentScrollPosition());
 	}
 
-	public void actualizeScreenData(){
-		//mData.setCurrentText = mGui.Text1.getText();
-		//mData.setCurrentScrollPosition = mGui.Scrollpane.getPosition();
+	public void SaveDataFromScreen(){
+		mData.setCurrentText(String.valueOf(mGui.getEditText().getText()));
+		mData.setCurrentScrollPosition(mGui.getListView().getScrollY());
 	}
 }
 

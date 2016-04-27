@@ -15,7 +15,7 @@ public class EventToListenerMapping implements OnClickListener {
 
 	public EventToListenerMapping(Gui gui, ApplicationLogic applicationLogic){
 		mApplicationLogic = applicationLogic;
-		//gui.getLoginButton().setOnClickListener(this);
+		gui.getButtonSend().setOnClickListener(this);
 		}
 
 	@Override
@@ -23,6 +23,7 @@ public class EventToListenerMapping implements OnClickListener {
 		switch ( v.getId()){
 		case R.id.startscreen_send_message_button:
 			//sendMessage
+			mApplicationLogic.onSendButtonClicked();
 			break;
 		}
 		

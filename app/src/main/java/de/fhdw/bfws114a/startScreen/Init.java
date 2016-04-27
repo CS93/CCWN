@@ -30,7 +30,7 @@ public class Init extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         // if the activity gets closed the current text and position in the chat are saved
         //actualizes the currentText and currentScrollPosition in Data
-        mApplicationLogic.actualizeScreenData();
+        mApplicationLogic.SaveDataFromScreen();
         mData.saveDataInBundle(outState);
     }
 

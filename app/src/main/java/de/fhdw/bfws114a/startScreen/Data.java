@@ -30,7 +30,8 @@ public class Data {
 			restoreDataFromBundle(b);
 		}
 	}
-	
+
+	//getter and setter
 	public Activity getActivity() {
 		return mActivity;
 	}
@@ -41,6 +42,22 @@ public class Data {
 
 	private void setMessageList(MessageList messageList){
 		mMessageList = messageList;
+	}
+
+	public String getCurrentText(){
+		return mCurrentText;
+	}
+
+	public int getCurrentScrollPosition(){
+		return mCurrentScrollPosition;
+	}
+
+	public void setCurrentText(String text){
+		mCurrentText = text;
+	}
+
+	public void setCurrentScrollPosition(int pos){
+		mCurrentScrollPosition = pos;
 	}
 
 	private void loadMessages(){
