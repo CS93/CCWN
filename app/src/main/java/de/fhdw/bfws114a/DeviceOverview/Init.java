@@ -19,6 +19,7 @@ public class Init extends AppCompatActivity {
         //initApplicationLogic();
         //initEventToListenerMapping();
 
+
         //Testen der Übergabe
         setContentView(R.layout.activity_deviceoverview);
     }
