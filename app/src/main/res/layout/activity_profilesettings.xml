@@ -57,10 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/profilesettings_ppicture_upload_button"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/profilesettings_ppicture_imageview"
-        android:layout_marginTop="10dp"
-         />
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/profilesettings_nickname_label"
+        android:layout_toEndOf="@+id/profilesettings_nickname_label" />
 
     <Button
         android:id="@+id/profilesettings_settings_save_button"
@@ -71,6 +70,18 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/profilesettings_ppicture_delete_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilesettings_ppicture_delete_button"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/profilesettings_status_edittext"
+        android:layout_alignEnd="@+id/profilesettings_status_edittext"
+        android:layout_marginRight="104dp"
+        android:layout_marginEnd="104dp" />
 
 
 </RelativeLayout>

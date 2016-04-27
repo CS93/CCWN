@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#efefef"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/startscreen_chat_overview_listview"
@@ -16,6 +17,7 @@
         android:divider="@null"
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll"></ListView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
