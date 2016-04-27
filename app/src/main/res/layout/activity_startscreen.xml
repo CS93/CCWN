@@ -19,14 +19,14 @@
         <Button
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:id="@+id/startscreen_goto_settings"
+            android:id="@+id/startscreen_goto_settings_button"
             android:text="Einstellungen"
             android:layout_marginLeft="50dp"/>
 
         <Button
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:id="@+id/startscreen_goto_deviceoverview"
+            android:id="@+id/startscreen_goto_deviceoverview_button"
             android:text="Geräteübersicht"
             android:layout_marginRight="50dp"/>
 
