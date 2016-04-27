@@ -24,4 +24,10 @@ public class Init extends AppCompatActivity {
         setContentView(R.layout.activity_deviceoverview);
     }
 
+    @Override
+    public void onBackPressed() {
+        //close the app
+        finish();
+    }
+
 }

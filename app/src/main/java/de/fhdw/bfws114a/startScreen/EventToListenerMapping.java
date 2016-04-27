@@ -18,6 +18,7 @@ public class EventToListenerMapping implements OnClickListener {
 		gui.getButtonSend().setOnClickListener(this);
 		gui.getButtonDevices().setOnClickListener(this);
 		gui.getButtonSettings().setOnClickListener(this);
+		gui.getSwitch().setOnClickListener(this);
 	}
 
 	@Override
@@ -35,6 +36,11 @@ public class EventToListenerMapping implements OnClickListener {
 		case R.id.startscreen_goto_settings_button:
 			//go to Settings
 			mApplicationLogic.onSettingsButtonClicked();
+			break;
+
+		case R.id.startscreen_availability_switch:
+			//online-offline changed
+			mApplicationLogic.onOnlineStatusChanged();
 			break;
 	}
 

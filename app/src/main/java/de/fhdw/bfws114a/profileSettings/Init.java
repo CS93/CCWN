@@ -22,4 +22,10 @@ public class Init extends AppCompatActivity {
         //Testen der Übergabe
         setContentView(R.layout.activity_profilesettings);
     }
+
+    @Override
+    public void onBackPressed() {
+        //close the app
+        finish();
+    }
 }

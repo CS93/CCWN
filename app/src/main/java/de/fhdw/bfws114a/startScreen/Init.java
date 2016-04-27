@@ -41,6 +41,13 @@ public class Init extends AppCompatActivity {
         mApplicationLogic.onRestart();
     }
 
+    @Override
+    public void onBackPressed() {
+        //close the app
+        finish();
+    }
+
+
 
     private void initData(Bundle savedInstanceState) {
         mData = new Data(savedInstanceState, this);
