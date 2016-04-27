@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".profileSettings.Init">
         </activity>
-        <activity android:name=".memberOverview.Init">
+        <activity android:name=".DeviceOverview.Init">
         </activity>
 
     </application>

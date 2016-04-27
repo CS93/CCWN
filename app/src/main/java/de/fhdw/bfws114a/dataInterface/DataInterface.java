@@ -15,6 +15,10 @@ import java.util.List;
 
 import android.app.Activity;
 import android.os.Environment;
+
+import de.fhdw.bfws114a.data.DeviceList;
+import de.fhdw.bfws114a.data.MessageList;
+
 public class DataInterface {
 
 	private final static String FILEPATH = "/android/data/de.fhdw.LernKartei/";
@@ -78,8 +82,13 @@ public class DataInterface {
 		}
 	}
 
+	public MessageList getMessagelist() {
+		//Get List of all Messages
+		return null;
+	}
 
-	public void sendMessage(String text) {
-
+	public DeviceList loadDeviceList() {
+		//get List of currentDevices
+		return null;
 	}
 }

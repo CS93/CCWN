@@ -14,8 +14,8 @@ import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.MessageList;
 
 public class Gui {
-	
 	//components of the GUI
+
 
 	//To initialize some Objects the context is necessary
 	private Context mContext;
@@ -28,7 +28,16 @@ public class Gui {
 
 	//getter and setter for components
 
-	public void setMessages(MessageList liste){
-		//put the MessageList to Scrollpane (with messages)
+	public void setMessages(MessageList list){
+		//put the MessageList to listview
+	}
+
+
+	public void setScrollPanePosition(int pos){
+		//set the scrollpanePosition
+	}
+
+	public String getText() {
+		return "";
 	}
 }

@@ -7,6 +7,7 @@ package de.fhdw.bfws114a.startScreen;
 import android.app.Activity;
 import android.os.Bundle;
 import de.fhdw.bfws114a.data.Constants;
+import de.fhdw.bfws114a.data.DeviceList;
 import de.fhdw.bfws114a.data.MessageList;
 import de.fhdw.bfws114a.dataInterface.DataInterface;
 
@@ -17,12 +18,11 @@ public class Data {
 	private MessageList mMessageList;
 	private String mCurrentText;
 	private int mCurrentScrollPosition;
+	private DeviceList mDevicelist;
 	
 	public Data(Bundle b, Activity activity){	
 		mActivity = activity;	
 		mDataInterface = new DataInterface(activity);
-		
-		//mDataInterface.importXMLtoDB();
 
 		loadMessages();
 		if(b != null){
@@ -39,8 +39,23 @@ public class Data {
 		return mMessageList;
 	}
 
+	private void setMessageList(MessageList messageList){
+		mMessageList = messageList;
+	}
+
 	private void loadMessages(){
 		//load messages from Database
+		setMessageList(mDataInterface.getMessagelist());
+	}
+
+
+	public void setDeviceList(DeviceList devicelist){
+		mDevicelist = devicelist;
+	}
+
+	public DeviceList getDeviceList(){
+		//load DeviceList from DB
+		return mDataInterface.loadDeviceList();
 	}
 
 	private void restoreDataFromBundle(Bundle b) {

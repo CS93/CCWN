@@ -8,7 +8,7 @@ import android.content.Intent;
  */
 public class Navigation {
     public static final Class<?> ACTIVITY_StartScreen_CLASS = de.fhdw.bfws114a.startScreen.Init.class,
-            ACTIVITY_MemberOverview_CLASS = de.fhdw.bfws114a.memberOverview.Init.class,
+            ACTIVITY_DeviceOverview_CLASS = de.fhdw.bfws114a.DeviceOverview.Init.class,
             ACTIVITY_ProfileSettings_CLASS = de.fhdw.bfws114a.profileSettings.Init.class;
 
     public static void startActivity(Activity callingActivity,
