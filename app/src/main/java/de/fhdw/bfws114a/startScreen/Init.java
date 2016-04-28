@@ -28,7 +28,7 @@ public class Init extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // if the activity gets closed the current text and position in the chat are saved
+        // if the activity gets closed the current drawable_startscreen_chat_edittext and position in the chat are saved
         //actualizes the currentText and currentScrollPosition in Data
         mApplicationLogic.SaveDataFromScreen();
         mData.saveDataInBundle(outState);

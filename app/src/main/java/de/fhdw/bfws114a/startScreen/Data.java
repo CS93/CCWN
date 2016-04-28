@@ -83,7 +83,7 @@ public class Data {
 
 
 	public void saveDataInBundle(Bundle b){
-		//put the Current String text in Bundle
+		//put the Current String drawable_startscreen_chat_edittext in Bundle
 		b.putString(Constants.KEY_CURRENT_TEXT, mCurrentText);
 		b.putInt(Constants.KEY_CURRENT_SCROLL_POSITION, mCurrentScrollPosition);
 	}

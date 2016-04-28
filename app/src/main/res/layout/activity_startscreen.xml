@@ -1,34 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    android:orientation="vertical">
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:weightSum="6"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="horizontal">
+            <Switch
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:textOn="Online"
+                android:textOff="Offline"
+                android:id="@+id/startscreen_availability_switch"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:showText="true"
+                android:textStyle="bold"/>
 
-        <Switch
-            android:layout_width="100dp"
-            android:layout_height="20dp"
-            android:text="Offline"
-            android:id="@+id/startscreen_availability_switch"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:text="WhatsNear"
+                android:gravity="center"
+                android:textSize="20sp"/>
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:id="@+id/startscreen_goto_settings_button"
-            android:text="Einstellungen"
-            android:layout_marginLeft="50dp"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/startscreen_goto_settings_button"
+                android:src="@drawable/settings25" />
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:id="@+id/startscreen_goto_deviceoverview_button"
-            android:text="Geräteübersicht"
-            android:layout_marginRight="50dp"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:id="@+id/startscreen_goto_deviceoverview_button"
+                android:src="@drawable/seawaves24"/>
+        </LinearLayout>
 
         <ListView
             android:id="@+id/startscreen_chat_overview_listview"
@@ -54,7 +72,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="3"
                 android:hint="Nachricht"
-                android:textColorHint="@color/colorPrimary"/>
+                android:textColorHint="@color/colorPrimary"
+                android:background="@drawable/drawable_startscreen_chat_edittext"/>
 
             <Button
                 android:id="@+id/startscreen_send_message_button"
