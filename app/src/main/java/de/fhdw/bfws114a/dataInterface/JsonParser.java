@@ -1,4 +1,6 @@
 package de.fhdw.bfws114a.dataInterface;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +13,8 @@ import org.json.JSONObject;
 public class JsonParser {
     String in;
     public JsonParser(){
-        in="\"Employee\":[{\"id\":\"01\",\"name\":\"Gopal Varma\",\"salary\":\"500000\"}]}";
+        in="{ \"developers\": [{ \"firstName\":\"Linus\" , \"lastName\":\"Torvalds\" }, " +
+                "{ \"firstName\":\"John\" , \"lastName\":\"von Neumann\" } ]}";
 
 
 
@@ -23,19 +26,18 @@ public class JsonParser {
             JSONObject  jsonRootObject = new JSONObject(in);
 
             //Get the instance of JSONArray that contains JSONObjects
-            JSONArray jsonArray = jsonRootObject.optJSONArray("Employee");
+            JSONArray jsonArray = jsonRootObject.optJSONArray("developers");
 
             //Iterate the jsonArray and print the info of JSONObjects
             for(int i=0; i < jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                int id = Integer.parseInt(jsonObject.optString("id").toString());
-                String name = jsonObject.optString("name").toString();
-                float salary = Float.parseFloat(jsonObject.optString("salary").toString());
+                String firstName = jsonObject.optString("firstName").toString();
+                String lastName = jsonObject.optString("lastName").toString();
 
-                data += "Node"+i+" : \n id= "+ id +" \n Name= "+ name +" \n Salary= "+ salary +" \n ";
+                data += "Node"+i+" : \n firstName= "+ firstName  +" \n lastName= "+ lastName +" \n ";
             }
-            System.out.println(data);
+            Log.d("LOG", data);
         } catch (JSONException e) {e.printStackTrace();}
     }
 

@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Blob;
+
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -48,7 +50,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_MESSAGES + "("
                         + KEY_MESSAGES_TIMESTAMP + " TEXT PRIMARY KEY,"
                         + KEY_MESSAGES_DATA + " TEXT,"
-                        + KEY_MESSAGES_RECIPIENTLIST + " TEXT,"
+                        + KEY_MESSAGES_RECIPIENTLIST + " BLOB,"
                         + KEY_MESSAGES_SENDER + " TEXT"
                         + ")";
         db.execSQL(create_users_table);
