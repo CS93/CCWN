@@ -16,6 +16,7 @@ import java.util.List;
 import android.app.Activity;
 import android.os.Environment;
 
+import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.DeviceList;
 import de.fhdw.bfws114a.data.MessageList;
 import de.fhdw.bfws114a.data.Profile;
@@ -95,7 +96,7 @@ public class DataInterface {
 
 	public Profile getOwnProfile() {
 		//get own Profile from DB (name, status, picture)
-		return null;
+		return new Profile(null, "Otto", "Im Kino");
 	}
 
 	public void saveOwnProfile(Profile newProfile) {

@@ -12,10 +12,9 @@ import de.fhdw.bfws114a.R;
 public class Init extends AppCompatActivity {
 
     private Data mData;
-/*
     private Gui mGui;
     private ApplicationLogic mApplicationLogic;
-*/
+
 
 
 
@@ -23,12 +22,10 @@ public class Init extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData(savedInstanceState);
-        //initGui();
-        //initApplicationLogic();
+        initGui();
+        initApplicationLogic();
         //initEventToListenerMapping();
 
-        //Testen der Übergabe
-        setContentView(R.layout.activity_profilesettings);
     }
 
     @Override
@@ -41,7 +38,7 @@ public class Init extends AppCompatActivity {
         mData = new Data(savedInstanceState, this);
     }
 
-/*
+
     private void initGui() {
         mGui = new Gui(this);
 
@@ -54,5 +51,5 @@ public class Init extends AppCompatActivity {
     private void initEventToListenerMapping() {
         new EventToListenerMapping(mGui, mApplicationLogic);
 
-    }*/
+    }
 }

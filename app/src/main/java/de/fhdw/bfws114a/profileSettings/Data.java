@@ -50,7 +50,7 @@ public class Data {
 		setOwnProfile(mDataInterface.getOwnProfile());
 	}
 
-	private void saveProfile(Profile newProfile){
+	public void saveProfile(Profile newProfile){
 		//save the new Profile in DB
 		mDataInterface.saveOwnProfile(newProfile);
 	}
