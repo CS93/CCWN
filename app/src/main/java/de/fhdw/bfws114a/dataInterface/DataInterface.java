@@ -18,6 +18,7 @@ import android.os.Environment;
 
 import de.fhdw.bfws114a.data.DeviceList;
 import de.fhdw.bfws114a.data.MessageList;
+import de.fhdw.bfws114a.data.Profile;
 
 public class DataInterface {
 
@@ -90,5 +91,14 @@ public class DataInterface {
 	public DeviceList loadDeviceList() {
 		//get List of currentDevices
 		return null;
+	}
+
+	public Profile getOwnProfile() {
+		//get own Profile from DB (name, status, picture)
+		return null;
+	}
+
+	public void saveOwnProfile(Profile newProfile) {
+		//save the own Profile in DB
 	}
 }

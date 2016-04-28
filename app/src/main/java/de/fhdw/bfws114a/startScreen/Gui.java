@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -20,7 +21,8 @@ public class Gui {
 	//components of the GUI
 	private ListView mListView;
 	private EditText mEditText;
-	private Button mButtonSend, mButtonSettings, mButtonDevices;
+	private Button mButtonSend;
+	private ImageButton mButtonSettings, mButtonDevices;
 	private TextView mTextView; //Chat bubble
 	private Switch mSwitch; //chagne from Online To Offline
 
@@ -36,8 +38,8 @@ public class Gui {
 		mListView = (ListView) act.findViewById(R.id.startscreen_chat_overview_listview);
 		mEditText = (EditText) act.findViewById(R.id.startscreen_send_message_edittext);
 		mButtonSend = (Button) act.findViewById(R.id.startscreen_send_message_button);
-		mButtonSettings = (Button) act.findViewById(R.id.startscreen_goto_settings_button);
-		mButtonDevices = (Button) act.findViewById(R.id.startscreen_goto_deviceoverview_button);
+		mButtonSettings = (ImageButton) act.findViewById(R.id.startscreen_goto_settings_button);
+		mButtonDevices = (ImageButton) act.findViewById(R.id.startscreen_goto_deviceoverview_button);
 		mSwitch = (Switch) act.findViewById(R.id.startscreen_availability_switch);
 		mTextView = (TextView) act.findViewById(R.id.startscreen_chat_bubble);
 	}
@@ -69,11 +71,11 @@ public class Gui {
 		return mSwitch;
 	}
 
-	public Button getButtonDevices() {
+	public ImageButton getButtonDevices() {
 		return mButtonDevices;
 	}
 
-	public Button getButtonSettings() {
+	public ImageButton getButtonSettings() {
 		return mButtonSettings;
 	}
 
@@ -97,11 +99,11 @@ public class Gui {
 		this.mContext = mContext;
 	}
 
-	public void setButtonSettings(Button mButtonSettings) {
+	public void setButtonSettings(ImageButton mButtonSettings) {
 		this.mButtonSettings = mButtonSettings;
 	}
 
-	public void setButtonDevices(Button mButtonDevices) {
+	public void setButtonDevices(ImageButton mButtonDevices) {
 		this.mButtonDevices = mButtonDevices;
 	}
 
