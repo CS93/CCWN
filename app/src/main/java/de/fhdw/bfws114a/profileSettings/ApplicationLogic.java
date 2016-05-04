@@ -35,7 +35,8 @@ public class ApplicationLogic {
 		
 	
 	public void onUploadButtonClicked(){
-		//go to galery and be able to upload a picture
+		//go to galery and be able to upload a picture, a thread is necessary for that
+
 
 		// map chosen picture to gui
 		// mGui.getImage().setDrawable(<picture>);

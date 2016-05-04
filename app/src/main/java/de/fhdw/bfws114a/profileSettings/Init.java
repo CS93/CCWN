@@ -24,8 +24,25 @@ public class Init extends AppCompatActivity {
         initData(savedInstanceState);
         initGui();
         initApplicationLogic();
-        //initEventToListenerMapping();
+        initEventToListenerMapping();
 
+    }
+
+    //Save the Instance State is called when this activity is destroyed or resumed
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // if the activity gets closed the current drawable_startscreen_chat_edittext and position in the chat are saved
+        //actualizes the currentText and currentScrollPosition in Data
+        mApplicationLogic.SaveDataFromScreen();
+        mData.saveDataInBundle(outState);
+    }
+
+    //Whether this activity (login) is restarted e.g. after finishing profile management, the method onRestart() in ApplicationLogic is called
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mApplicationLogic.onRestart();
     }
 
     @Override
