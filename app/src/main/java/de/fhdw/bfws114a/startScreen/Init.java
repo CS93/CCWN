@@ -5,8 +5,16 @@ package de.fhdw.bfws114a.startScreen;
  * Created by Carsten on 16.04.2016.
  */
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.util.Log;
+
+import de.fhdw.bfws114a.Communication.StartedService;
 
 public class Init extends AppCompatActivity {
     private Data mData;
@@ -22,7 +30,27 @@ public class Init extends AppCompatActivity {
         initGui();
         initApplicationLogic();
         initEventToListenerMapping();
-    }
+
+        Intent service = new Intent(this, StartedService.class);
+        PendingIntent servicePendingIntent =
+                PendingIntent.getService(this, 0, service, 0);
+
+        //Wie gross soll der Intervall sein?
+        long interval = DateUtils.MINUTE_IN_MILLIS * 2; // Alle 2 Minuten
+
+        //Wann soll der Service das erste Mal gestartet werden?
+        long firstStart = System.currentTimeMillis() + interval;
+
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        //am.set(AlarmManager.RTC, firstStart, servicePendingIntent);
+        //am.setRepeating(AlarmManager.RTC_WAKEUP, firstStart, interval,
+        //											servicePendingIntent);
+        am.setInexactRepeating(AlarmManager.RTC, firstStart, interval,
+                servicePendingIntent);
+
+        Log.v("Backgroundservice", "AlarmManager gesetzt");
+
+            }
 
     //Save the Instance State is called when this activity is destroyed or resumed
     @Override

@@ -15,9 +15,9 @@ public class EventToListenerMapping implements OnClickListener {
 
 	public EventToListenerMapping(Gui gui, ApplicationLogic applicationLogic){
 		mApplicationLogic = applicationLogic;
-		gui.getButtonSave().setOnClickListener(this);
-		gui.getButtonUpload().setOnClickListener(this);
-		gui.getButtonDelete().setOnClickListener(this);
+//		gui.getButtonSave().setOnClickListener(this);
+//		gui.getButtonUpload().setOnClickListener(this);
+//		gui.getButtonDelete().setOnClickListener(this);
 	}
 
 	@Override
@@ -25,16 +25,7 @@ public class EventToListenerMapping implements OnClickListener {
 		switch ( v.getId()){
 		case R.id.profilesettings_settings_save_button:
 			//sendMessage
-			mApplicationLogic.onSaveButtonClicked();
-			break;
-		case R.id.profilesettings_ppicture_upload_button:
-			//go to DeviceOverview
-			mApplicationLogic.onUploadButtonClicked();
-			break;
-
-		case R.id.profilesettings_ppicture_delete_button:
-			//go to Settings
-			mApplicationLogic.onDeleteButtonClicked();
+			mApplicationLogic.onDeviceSelected("test");
 			break;
 	}
 
