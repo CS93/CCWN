@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray">
+
+    <ListView
+        android:id="@+id/deviceoverview_device_overview_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:divider="@drawable/list_divide"
+        android:stackFromBottom="false"
+        android:transcriptMode="alwaysScroll"></ListView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"></View>
+
+        <TextView
+            android:id="@+id/deviceoverview_profile_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="test"
+            android:textColor="@color/black"
+            android:textSize="50sp"/>
+
+        <ImageView
+            android:id="@+id/deviceoverview_profile_picture_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="150dp"
+            android:maxWidth="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/dscn8598" />
+
+        <TextView
+            android:id="@+id/deviceoverview_profile_status_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="testest"
+            android:textColor="@color/black"
+            android:layout_below="@id/deviceoverview_profile_name_textview"
+            />
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>

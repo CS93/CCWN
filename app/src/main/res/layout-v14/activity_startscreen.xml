@@ -22,8 +22,7 @@
                 android:id="@+id/startscreen_availability_switch"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:showText="true"
-                tools:targetApi="ice_cream_sandwich" />
+                android:showText="true" />
 
             <TextView
                 android:layout_width="0dp"
