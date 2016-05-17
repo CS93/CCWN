@@ -31,6 +31,7 @@ public class Init extends AppCompatActivity {
         initApplicationLogic();
         initEventToListenerMapping();
 
+/*
         Intent service = new Intent(this, StartedService.class);
         PendingIntent servicePendingIntent =
                 PendingIntent.getService(this, 0, service, 0);
@@ -49,6 +50,7 @@ public class Init extends AppCompatActivity {
                 servicePendingIntent);
 
         Log.v("Backgroundservice", "AlarmManager gesetzt");
+*/
 
             }
 
