@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -17,13 +18,15 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
     private Context mContext;
     private Gui mGui;
     private String mServerIp;
+    private String mMessage;
 
     private static final int SOCKET_TIMEOUT = 5000;
 
-    public ClientAsyncTask(Context context, Gui gui, String serverIp) {
+    public ClientAsyncTask(Context context, Gui gui, String serverIp, String message) {
         mContext = context;
         mGui = gui;
         mServerIp = serverIp;
+        this.mMessage = message;
     }
 
     @Override
@@ -34,12 +37,19 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
             socket.bind(null);  // local address
             publishProgress("Client: connecting to " + mServerIp);
             socket.connect((new InetSocketAddress(mServerIp, port)), SOCKET_TIMEOUT);
+
+            OutputStream oStream = socket.getOutputStream();
+            //String s = new SimpleDateFormat("HHmmss").format(new Date()).toString();
+            oStream.write(mMessage.getBytes("UTF-8"));
+
             InputStream stream = socket.getInputStream();
 
             byte data[] = new byte[100];
             publishProgress("Client: reading data");
             stream.read(data);
             publishProgress("Client: data read: " + new String(data));
+
+            Log.d("Communication", "Received from Server: " +  new String(data));
 
             socket.close();
         } catch (IOException e) {

@@ -7,12 +7,15 @@ package de.fhdw.bfws114a.startScreen;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.MessageList;
@@ -119,4 +122,14 @@ public class Gui {
 		//set the position of the scrollpane (in the listview)
 		mListView.setScrollY(pos);
 	}
+
+	public void showToast (Activity act, String text){
+		Toast toast = Toast.makeText(act, text, Toast.LENGTH_LONG);
+		LinearLayout toastLayout = (LinearLayout) toast.getView();
+		TextView toastTV = (TextView) toastLayout.getChildAt(0);
+		toastTV.setTextSize(30);
+		toastTV.setTextColor(Color.RED);
+		toast.show();
+	}
+
 }

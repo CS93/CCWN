@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,10 +19,13 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
 
     private Context mContext;
     private Gui mGui;
+    private String mMessage;
+    private int mReceived;
 
-    public ServerAsyncTask(Context context, Gui gui){
+    public ServerAsyncTask(Context context, Gui gui, String message){
         this.mContext = context;
         this.mGui = gui;
+        this.mMessage = message;
     }
 
     @Override
@@ -33,16 +37,21 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
             Socket client = serverSocket.accept();
             publishProgress("Server: connection accepted");
 
-            OutputStream stream = client.getOutputStream();
-            String s = new SimpleDateFormat("HHmmss").format(new Date()).toString();
-            stream.write(s.getBytes("UTF-8"));
+            OutputStream oStream = client.getOutputStream();
+            //String s = new SimpleDateFormat("HHmmss").format(new Date()).toString();
+            oStream.write(mMessage.getBytes("UTF-8"));
+
+            byte data[] = new byte[100];
+            InputStream iStream = client.getInputStream();
+            iStream.read(data);
+            Log.d("Communication", "Received from Client: " +  new String(data));
 
             serverSocket.close();
         } catch (IOException e) {
             Log.e("LOGTAG", e.getMessage());
             return null;
         }
-        return "Server: connection done";
+        return "Server: connection done ";
     }
 
     @Override

@@ -72,14 +72,13 @@ public class ApplicationLogic {
 		if(mData.getDeviceList() != null) {
 			Log.d("Communication", "Number of Device: " + mData.getDeviceList().size());
 			if (mData.getDeviceList().size() > 0) {
-				MacAddressList macAdressList = new MacAddressList();
-				for (MacAddress m : mData.getDeviceList()) {
+				for (MacAddress currentDevice : mData.getDeviceList()) {
 					//Connect -------------------------------
 					//String address;
 					//address = getAddressList(mWifiP2pDeviceList).get(0);
-					Log.d("Communication", "try to connect() to " + m.getMacAddress());
+					Log.d("Communication", "try to connect() to " + currentDevice.getMacAddress());
 					WifiP2pConfig wifiP2pConfig = new WifiP2pConfig();
-					wifiP2pConfig.deviceAddress = m.getMacAddress();
+					wifiP2pConfig.deviceAddress = currentDevice.getMacAddress();
 					wifiP2pConfig.wps.setup = WpsInfo.PBC;
 					mData.getManager().connect(mData.getChannel(), wifiP2pConfig, mListener.getConnectActionListener());
 					//--------------------------------------------
@@ -89,11 +88,11 @@ public class ApplicationLogic {
 					//SimpleDataExchange.send(a, mGui.getEditText().getText())
 					if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
 						// the group owner acts as server
-						new ServerAsyncTask(mData.getActivity(), mGui).execute();
+						new ServerAsyncTask(mData.getActivity(), mGui, mGui.getEditText().getText().toString()).execute();
 					} else {
 						if (mWifiP2pInfo.groupFormed) {
 							// the other device acts as the client
-							new ClientAsyncTask(mData.getActivity(), mGui, mWifiP2pInfo.groupOwnerAddress.getHostAddress()).execute();
+							new ClientAsyncTask(mData.getActivity(), mGui, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
 						}
 					}
 				}
