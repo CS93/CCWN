@@ -29,7 +29,8 @@ public class Init extends AppCompatActivity {
         initData(savedInstanceState);
         initGui();
         initApplicationLogic();
-        initEventToListenerMapping();
+        // nicht mehr nötig wg des Listeners/Listener-Klasse
+        // initEventToListenerMapping();
 
 /*
         Intent service = new Intent(this, StartedService.class);
@@ -53,6 +54,19 @@ public class Init extends AppCompatActivity {
 */
 
             }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mApplicationLogic.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mApplicationLogic.onPause();
+    }
+
 
     //Save the Instance State is called when this activity is destroyed or resumed
     @Override

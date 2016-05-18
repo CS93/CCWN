@@ -5,7 +5,11 @@ package de.fhdw.bfws114a.startScreen;
  */
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+
+import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.data.Constants;
 import de.fhdw.bfws114a.data.DeviceList;
 import de.fhdw.bfws114a.data.MessageList;
@@ -18,11 +22,17 @@ public class Data {
 	private MessageList mMessageList;
 	private String mCurrentText;
 	private int mCurrentScrollPosition;
-	private DeviceList mDevicelist;
+	private MacAddressList mDevicelist;
+	private WifiP2pManager.Channel mChannel;
+	private WifiP2pManager mManager;
 	
 	public Data(Bundle b, Activity activity){	
 		mActivity = activity;	
 		mDataInterface = new DataInterface(activity);
+
+		mManager = (WifiP2pManager) mActivity.getSystemService(Context.WIFI_P2P_SERVICE);
+		mChannel = mManager.initialize(mActivity, mActivity.getMainLooper(), null);
+
 
 		loadMessages();
 		if(b != null){
@@ -65,14 +75,28 @@ public class Data {
 		setMessageList(mDataInterface.getMessagelist());
 	}
 
+	public WifiP2pManager.Channel getChannel() {
+		return mChannel;
+	}
 
-	public void setDeviceList(DeviceList devicelist){
+	public void setChannel(WifiP2pManager.Channel mChannel) {
+		this.mChannel = mChannel;
+	}
+
+	public WifiP2pManager getManager() {
+		return mManager;
+	}
+
+	public void setManager(WifiP2pManager mManager) {
+		this.mManager = mManager;
+	}
+
+	public void setDeviceList(MacAddressList devicelist){
 		mDevicelist = devicelist;
 	}
 
-	public DeviceList getDeviceList(){
-		//load DeviceList from DB
-		return mDataInterface.loadDeviceList();
+	public MacAddressList getDeviceList(){
+		return mDevicelist;
 	}
 
 	private void restoreDataFromBundle(Bundle b) {

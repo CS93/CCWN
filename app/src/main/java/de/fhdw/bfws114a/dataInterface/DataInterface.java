@@ -89,11 +89,6 @@ public class DataInterface {
 		return null;
 	}
 
-	public DeviceList loadDeviceList() {
-		//get List of currentDevices
-		return null;
-	}
-
 	public Profile getOwnProfile() {
 		//get own Profile from DB (name, status, picture)
 		return new Profile(null, "Otto", "Im Kino");

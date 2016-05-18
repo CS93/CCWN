@@ -13,14 +13,18 @@ public class SimpleDataExchange {
     // call onResume() in activity.onResume to do any work necessary when activity resumes
 
     public void onResume() {
-        // TO DO
+        // TO DO - Register Receiver
+//        receiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
+//        registerReceiver(receiver, intentFilter);
+
     }
 
 
     // call onPause() in activity.onPause to any work necessary when activity pauses
 
     public void onPause() {
-        // TO DO
+        // TO DO - unregister Receiver
+        //unregisterReceiver(receiver);
     }
 
 
@@ -28,6 +32,8 @@ public class SimpleDataExchange {
 
     public void send(MacAddress macAddress, byte[] data) {
         // TO DO
+        // Sockets aufbauen (niedrigere Mac-Adresse = Client)
+        //Daten übertragen über outputstream
     }
 
 
