@@ -1,5 +1,6 @@
 package de.fhdw.bfws114a.Communication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -10,6 +11,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.startScreen.Gui;
 
 //                                     doInBackGround, onProgressUpdate, onPostExecute
@@ -31,6 +33,7 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
 
     @Override
     protected String doInBackground(Void... params) {
+        String result;
         try {
             Socket socket = new Socket();
             int port = 8988;
@@ -47,7 +50,8 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
             byte data[] = new byte[100];
             publishProgress("Client: reading data");
             stream.read(data);
-            publishProgress("Client: data read: " + new String(data));
+            result = new String(data);
+            publishProgress("Client: data read: " + result);
 
             Log.d("Communication", "Received from Server: " +  new String(data));
 
@@ -76,6 +80,11 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
     protected void onPostExecute(String message) {
         if (message != null) {
             Log.d("Communication", "Client: onPostExecute(): " + message);
+            //for test reasons
+            mGui.showToast((Activity) mContext, message);
+            // add received message to gui
+            mGui.getChatArrayAdapter().add(new ChatMessage(false, mGui.getEditText().getText().toString()));
+            mGui.getEditText().setText("");
         }
     }
 

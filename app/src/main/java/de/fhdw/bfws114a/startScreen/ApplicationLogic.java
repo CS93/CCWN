@@ -15,6 +15,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import de.fhdw.bfws114a.Communication.MacAddress;
 import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.Communication.ServerAsyncTask;
 import de.fhdw.bfws114a.Navigation.Navigation;
+import de.fhdw.bfws114a.data.ChatMessage;
 
 public class ApplicationLogic {
 	private Data mData;
@@ -100,6 +102,9 @@ public class ApplicationLogic {
 		}else {
 			Log.d("Communication", "Devicelist is null");
 		}
+		//add message to gui (false because the standard would be the left side and the messages of the own user used to be on right side)
+		mGui.getChatArrayAdapter().add(new ChatMessage(true, mGui.getEditText().getText().toString()));
+		mGui.getEditText().setText("");
 	}
 
 

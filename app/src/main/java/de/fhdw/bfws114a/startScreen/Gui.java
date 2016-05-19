@@ -18,12 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.fhdw.bfws114a.R;
+import de.fhdw.bfws114a.data.ChatArrayAdapter;
 import de.fhdw.bfws114a.data.MessageList;
 
 public class Gui {
 	//components of the GUI
 	private ListView mListView;
 	private EditText mEditText;
+	private ChatArrayAdapter mChatArrayAdapter;
 	private Button mButtonSend;
 	private ImageButton mButtonSettings, mButtonDevices;
 	private TextView mTextView; //Chat bubble
@@ -39,6 +41,9 @@ public class Gui {
 	//	map the intialized components with gui
 		mContext = act;
 		mListView = (ListView) act.findViewById(R.id.startscreen_chat_overview_listview);
+		//Add bubbles to Listview
+		mChatArrayAdapter = new ChatArrayAdapter(mContext, R.layout.right);
+		mListView.setAdapter(mChatArrayAdapter);
 		mEditText = (EditText) act.findViewById(R.id.startscreen_send_message_edittext);
 		mButtonSend = (Button) act.findViewById(R.id.startscreen_send_message_button);
 		mButtonSettings = (ImageButton) act.findViewById(R.id.startscreen_goto_settings_button);
@@ -80,6 +85,14 @@ public class Gui {
 
 	public ImageButton getButtonSettings() {
 		return mButtonSettings;
+	}
+
+	public ChatArrayAdapter getChatArrayAdapter() {
+		return mChatArrayAdapter;
+	}
+
+	public void setChatArrayAdapter(ChatArrayAdapter mChatArrayAdapter) {
+		this.mChatArrayAdapter = mChatArrayAdapter;
 	}
 
 	public void setListView(ListView mListView) {

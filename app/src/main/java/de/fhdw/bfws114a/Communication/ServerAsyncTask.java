@@ -1,5 +1,6 @@
 package de.fhdw.bfws114a.Communication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.startScreen.Gui;
 
 //                                     doInBackGround, onProgressUpdate, onPostExecute
@@ -30,6 +32,7 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
 
     @Override
     protected String doInBackground(Void... params){
+        String result;
         try {
             publishProgress("Server: opening socket 8988");
             ServerSocket serverSocket = new ServerSocket(8988);
@@ -44,14 +47,16 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
             byte data[] = new byte[100];
             InputStream iStream = client.getInputStream();
             iStream.read(data);
-            Log.d("Communication", "Received from Client: " +  new String(data));
+            result = new String(data);
+            Log.d("Communication", "Received from Client: " +  result);
 
             serverSocket.close();
         } catch (IOException e) {
             Log.e("LOGTAG", e.getMessage());
             return null;
         }
-        return "Server: connection done ";
+        //return "Server: connection done ";
+        return result;
     }
 
     @Override
@@ -71,6 +76,11 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
     protected void onPostExecute(String message){
         if (message != null) {
             Log.d("Communication", "    Server: onPostExecute(): " + message);
+            //for test reasons
+            mGui.showToast((Activity) mContext, message);
+            // add received message to gui
+            mGui.getChatArrayAdapter().add(new ChatMessage(false, mGui.getEditText().getText().toString()));
+            mGui.getEditText().setText("");
         }
 
     }
