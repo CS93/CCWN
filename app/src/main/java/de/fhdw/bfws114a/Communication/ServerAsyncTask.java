@@ -75,12 +75,18 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
     @Override
     protected void onPostExecute(String message){
         if (message != null) {
-            Log.d("Communication", "    Server: onPostExecute(): " + message);
-            //for test reasons
-            mGui.showToast((Activity) mContext, message);
-            // add received message to gui
-            mGui.getChatArrayAdapter().add(new ChatMessage(false, mGui.getEditText().getText().toString()));
-            mGui.getEditText().setText("");
+            if(!message.equals("Client: connection failed")){
+                Log.d("Communication", "    Server: onPostExecute(): " + message);
+                //2do: Nachricht in db schreiben
+                //for test reasons
+                mGui.showToast((Activity) mContext, message);
+                // add received message to gui (false because received messages should stay on left side)
+                mGui.getChatArrayAdapter().add(new ChatMessage(false, message));
+                mGui.getEditText().setText("");
+            } else {
+                Log.d("Communication", message);
+            }
+
         }
 
     }

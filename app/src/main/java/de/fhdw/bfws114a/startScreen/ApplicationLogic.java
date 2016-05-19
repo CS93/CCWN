@@ -102,7 +102,8 @@ public class ApplicationLogic {
 		}else {
 			Log.d("Communication", "Devicelist is null");
 		}
-		//add message to gui (false because the standard would be the left side and the messages of the own user used to be on right side)
+		//2do: Nachricht in db schreiben
+		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
 		mGui.getChatArrayAdapter().add(new ChatMessage(true, mGui.getEditText().getText().toString()));
 		mGui.getEditText().setText("");
 	}

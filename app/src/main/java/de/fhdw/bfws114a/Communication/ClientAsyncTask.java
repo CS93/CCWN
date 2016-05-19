@@ -60,7 +60,7 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
             Log.e("LOGTAG", e.getMessage());
             return "Client: connection failed";
         }
-        return "Client: connection done";
+        return result;
     }
 
     @Override
@@ -79,12 +79,18 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
     @Override
     protected void onPostExecute(String message) {
         if (message != null) {
-            Log.d("Communication", "Client: onPostExecute(): " + message);
-            //for test reasons
-            mGui.showToast((Activity) mContext, message);
-            // add received message to gui
-            mGui.getChatArrayAdapter().add(new ChatMessage(false, mGui.getEditText().getText().toString()));
-            mGui.getEditText().setText("");
+            if(!message.equals("Client: connection failed")){
+                Log.d("Communication", "Client: onPostExecute(): " + message);
+                //for test reasons
+                mGui.showToast((Activity) mContext, message);
+                //2do: Nachricht in db schreiben
+                // add received message to gui (false because received messages should stay on left side)
+                mGui.getChatArrayAdapter().add(new ChatMessage(false, message));
+                mGui.getEditText().setText("");
+            } else {
+                Log.d("Communication", message);
+            }
+
         }
     }
 
