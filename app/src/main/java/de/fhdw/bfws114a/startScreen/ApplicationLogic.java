@@ -135,6 +135,7 @@ public class ApplicationLogic {
 			//SimpleDataExchange.onPause()
 			mData.getActivity().unregisterReceiver(mReceiver);
 			mReceiver = null;
+			mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 					Log.d("Communication", "Offline --> call stopPeerDiscovery()");
 					mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
@@ -152,6 +153,9 @@ public class ApplicationLogic {
 			mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
 			Log.d("Communication", "Online --> call discoverPeers()");
 			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
+			if(mGui.getEditText().getText().equals("")){
+				mGui.getButtonSend().setVisibility(View.INVISIBLE);
+			}
 		}
 
 	}
@@ -159,6 +163,7 @@ public class ApplicationLogic {
 	public void onPause(){
 		mData.getActivity().unregisterReceiver(mReceiver);
 		mReceiver = null;
+		mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			Log.d("Communication", "Offline --> call stopPeerDiscovery()");
 			mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
@@ -169,9 +174,11 @@ public class ApplicationLogic {
 
 	public void onPeersAvailable(WifiP2pDeviceList peers){
 		if (peers.getDeviceList().size() == 0) {
+			mGui.getButtonSend().setVisibility(View.INVISIBLE);
 			Log.d("Communication", "No devices found");
 			return;
 		} else {
+			mGui.getButtonSend().setVisibility(View.VISIBLE);
 			Log.d("Communication", "onPeersAvailable() called");
 			for (WifiP2pDevice wd : peers.getDeviceList()) {
 				Log.d("Communication","     " + wd.deviceName);
@@ -207,6 +214,7 @@ public class ApplicationLogic {
 	public void onDiscoverPeersFailure(int reason){
 		Log.d("Communication","onDiscoverPeersFailure() called: reason: " + reason);
 		//may alert user
+		mGui.getButtonSend().setVisibility(View.INVISIBLE);
 	}
 
 	public void onStopDiscoverySuccess(){
@@ -275,6 +283,9 @@ public class ApplicationLogic {
 		//apply the restored data to GUI
 		mGui.getEditText().setText(mData.getCurrentText());
 		mGui.setScrollPanePosition(mData.getCurrentScrollPosition());
+		if(mGui.getEditText().getText().equals("")){
+			mGui.getButtonSend().setVisibility(View.INVISIBLE);
+		}
 	}
 
 	public void SaveDataFromScreen(){

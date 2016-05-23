@@ -93,8 +93,6 @@ public class Init extends AppCompatActivity {
         finish();
     }
 
-
-
     private void initData(Bundle savedInstanceState) {
         mData = new Data(savedInstanceState, this);
     }
@@ -109,9 +107,9 @@ public class Init extends AppCompatActivity {
         mApplicationLogic = new ApplicationLogic(mData, mGui);
     }
 
-    private void initEventToListenerMapping() {
-        new EventToListenerMapping(mGui, mApplicationLogic);
-
-    }
+//    private void initEventToListenerMapping() {
+//        new EventToListenerMapping(mGui, mApplicationLogic);
+//
+//    }
 
 }

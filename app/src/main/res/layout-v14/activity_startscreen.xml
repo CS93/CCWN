@@ -82,7 +82,8 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:text="Senden"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="invisible" />
 
         </LinearLayout>
     </LinearLayout>
