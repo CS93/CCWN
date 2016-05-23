@@ -86,7 +86,6 @@ public class ApplicationLogic {
 					//--------------------------------------------
 
 					//Hier brauchen wir ein Protokoll um richtigen Text beim senden zu übergeben (Adressliste + Text)
-					//Threads starten
 					//SimpleDataExchange.send(a, mGui.getEditText().getText())
 					if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
 						// the group owner acts as server
@@ -97,6 +96,7 @@ public class ApplicationLogic {
 							new ClientAsyncTask(mData.getActivity(), mGui, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
 						}
 					}
+					mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
 				}
 			}
 		}else {

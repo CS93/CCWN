@@ -22,7 +22,8 @@
                 android:id="@+id/startscreen_availability_switch"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:showText="true" />
+                android:showText="true"
+                android:checked="true" />
 
             <TextView
                 android:layout_width="0dp"

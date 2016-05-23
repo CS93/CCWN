@@ -55,6 +55,13 @@ public class Init extends AppCompatActivity {
 
             }
 
+    //Whether this activity is restarted e.g. after finishing profilesettings/deviceoverview, the method onRestart() in ApplicationLogic is called
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mApplicationLogic.onRestart();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -78,12 +85,7 @@ public class Init extends AppCompatActivity {
         mData.saveDataInBundle(outState);
     }
 
-    //Whether this activity (login) is restarted e.g. after finishing profile management, the method onRestart() in ApplicationLogic is called
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        mApplicationLogic.onRestart();
-    }
+
 
     @Override
     public void onBackPressed() {

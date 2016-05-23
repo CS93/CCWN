@@ -23,7 +23,8 @@
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:showText="true"
-                tools:targetApi="ice_cream_sandwich" />
+                tools:targetApi="ice_cream_sandwich"
+                android:checked="true" />
 
             <TextView
                 android:layout_width="0dp"
