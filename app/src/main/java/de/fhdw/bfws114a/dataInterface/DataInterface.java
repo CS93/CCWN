@@ -3,22 +3,16 @@
  */
 package de.fhdw.bfws114a.dataInterface;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
 import android.os.Environment;
 
-import de.fhdw.bfws114a.R;
-import de.fhdw.bfws114a.data.DeviceList;
-import de.fhdw.bfws114a.data.MessageList;
+import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.data.Profile;
 
 public class DataInterface {
@@ -84,9 +78,13 @@ public class DataInterface {
 		}
 	}
 
-	public MessageList getMessagelist() {
+	public ArrayList<ChatMessage> getMessagelist() {
 		//Get List of all Messages
 		return null;
+	}
+
+	public void addMessageToDB(ChatMessage m){
+		//add a message to DB
 	}
 
 	public Profile getOwnProfile() {

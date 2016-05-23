@@ -89,11 +89,11 @@ public class ApplicationLogic {
 					//SimpleDataExchange.send(a, mGui.getEditText().getText())
 					if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
 						// the group owner acts as server
-						new ServerAsyncTask(mData.getActivity(), mGui, mGui.getEditText().getText().toString()).execute();
+						new ServerAsyncTask(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString()).execute();
 					} else {
 						if (mWifiP2pInfo.groupFormed) {
 							// the other device acts as the client
-							new ClientAsyncTask(mData.getActivity(), mGui, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
+							new ClientAsyncTask(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
 						}
 					}
 					mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
@@ -102,12 +102,20 @@ public class ApplicationLogic {
 		}else {
 			Log.d("Communication", "Devicelist is null");
 		}
-		//2do: Nachricht in db schreiben
-		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
-		mGui.getChatArrayAdapter().add(new ChatMessage(true, mGui.getEditText().getText().toString()));
+
+		//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
+		ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
+		addMessage(message);
 		mGui.getEditText().setText("");
 	}
 
+	public void addMessage(ChatMessage message){
+		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
+		mGui.getChatArrayAdapter().add(message);
+		//write message to DB
+		mData.getDataInterface().addMessageToDB(message);
+
+	}
 
 	public void onSettingsButtonClicked(){
 		//go to settings screen

@@ -17,9 +17,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.ChatArrayAdapter;
-import de.fhdw.bfws114a.data.MessageList;
+import de.fhdw.bfws114a.data.ChatMessage;
 
 public class Gui {
 	//components of the GUI
@@ -127,8 +130,16 @@ public class Gui {
 		this.mSwitch = mSwitch;
 	}
 
-	public void setMessages(MessageList list){
+	public void setMessages(ArrayList<ChatMessage> list){
 		//put the MessageList to listview
+		if(list != null){
+			if(list.size() > 0){
+				Iterator<ChatMessage> iterator = list.iterator();
+				while(iterator.hasNext()){
+					getChatArrayAdapter().add(iterator.next());
+				}
+			}
+		}
 	}
 
 	public void setScrollPanePosition(int pos){

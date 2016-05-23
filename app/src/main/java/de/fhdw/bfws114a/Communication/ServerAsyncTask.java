@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.startScreen.ApplicationLogic;
 import de.fhdw.bfws114a.startScreen.Gui;
 
 //                                     doInBackGround, onProgressUpdate, onPostExecute
@@ -23,11 +24,13 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
     private Gui mGui;
     private String mMessage;
     private int mReceived;
+    private ApplicationLogic mAppLogic;
 
-    public ServerAsyncTask(Context context, Gui gui, String message){
+    public ServerAsyncTask(Context context, Gui gui, ApplicationLogic applogic, String message){
         this.mContext = context;
         this.mGui = gui;
         this.mMessage = message;
+        this.mAppLogic = applogic;
     }
 
     @Override
@@ -77,11 +80,10 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
         if (message != null) {
             if(!message.equals("Client: connection failed")){
                 Log.d("Communication", "    Server: onPostExecute(): " + message);
-                //2do: Nachricht in db schreiben
-                //for test reasons
-                mGui.showToast((Activity) mContext, message);
+
                 // add received message to gui (false because received messages should stay on left side)
-                mGui.getChatArrayAdapter().add(new ChatMessage(false, message));
+                ChatMessage chatMessage = new ChatMessage(false, message);
+                mAppLogic.addMessage(chatMessage);
                 mGui.getEditText().setText("");
             } else {
                 Log.d("Communication", message);

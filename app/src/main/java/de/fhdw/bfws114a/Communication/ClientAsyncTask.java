@@ -12,6 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.startScreen.ApplicationLogic;
 import de.fhdw.bfws114a.startScreen.Gui;
 
 //                                     doInBackGround, onProgressUpdate, onPostExecute
@@ -21,14 +22,16 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
     private Gui mGui;
     private String mServerIp;
     private String mMessage;
+    private ApplicationLogic mAppLogic;
 
     private static final int SOCKET_TIMEOUT = 5000;
 
-    public ClientAsyncTask(Context context, Gui gui, String serverIp, String message) {
+    public ClientAsyncTask(Context context, Gui gui, ApplicationLogic applogic, String serverIp, String message) {
         mContext = context;
         mGui = gui;
         mServerIp = serverIp;
         this.mMessage = message;
+        this.mAppLogic = applogic;
     }
 
     @Override
@@ -81,11 +84,9 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
         if (message != null) {
             if(!message.equals("Client: connection failed")){
                 Log.d("Communication", "Client: onPostExecute(): " + message);
-                //for test reasons
-                mGui.showToast((Activity) mContext, message);
-                //2do: Nachricht in db schreiben
-                // add received message to gui (false because received messages should stay on left side)
-                mGui.getChatArrayAdapter().add(new ChatMessage(false, message));
+                // add received message to db and gui (false because received messages should stay on left side)
+                ChatMessage chatMessage = new ChatMessage(false, message);
+                mAppLogic.addMessage(chatMessage);
                 mGui.getEditText().setText("");
             } else {
                 Log.d("Communication", message);
