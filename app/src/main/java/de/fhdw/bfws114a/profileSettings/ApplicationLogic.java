@@ -4,7 +4,12 @@ package de.fhdw.bfws114a.profileSettings;
  * Created by Carsten on 21.04.2016.
  */
 
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
+import java.io.FileNotFoundException;
 
 import de.fhdw.bfws114a.Communication.CommunicationObject;
 import de.fhdw.bfws114a.Navigation.Navigation;
@@ -36,7 +41,7 @@ public class ApplicationLogic {
 	
 	public void onUploadButtonClicked(){
 		//go to galery and be able to upload a picture, a thread is necessary for that
-
+		mData.getActivity().startActivityForResult(mData.getIntent(), mData.getRequestCode());
 
 		// map chosen picture to gui
 		// mGui.getImage().setDrawable(<picture>);
@@ -55,6 +60,21 @@ public class ApplicationLogic {
 
 	public void SaveDataFromScreen(){
 		mData.setOwnProfile(new Profile(mGui.getImage().getDrawable(), String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText())));
+	}
+
+	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+
+		//weitere Abfangen!! RESULT_CANCELD ist bei back, nichts ausgewählt
+			if (requestCode == mData.getRequestCode()){ //bearbeitung des BildRequestes
+				mData.setImageUri(data.getData());
+				try {
+					mData.setInputStream(mData.getActivity().getContentResolver().openInputStream(mData.getImageUri()));
+					mData.setBitmap(BitmapFactory.decodeStream(mData.getInputStream()));
+					mGui.getImage().setImageBitmap(mData.getBitmap());
+				} catch (FileNotFoundException e) { //if File do not load
+					e.printStackTrace();
+				}
+			}
 	}
 }
 

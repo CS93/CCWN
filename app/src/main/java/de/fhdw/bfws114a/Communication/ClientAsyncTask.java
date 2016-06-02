@@ -48,15 +48,15 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
             //String s = new SimpleDateFormat("HHmmss").format(new Date()).toString();
             oStream.write(mMessage.getBytes("UTF-8"));
 
-            InputStream stream = socket.getInputStream();
+            InputStream iStream = socket.getInputStream();
 
             byte data[] = new byte[100];
             publishProgress("Client: reading data");
-            stream.read(data);
+            iStream.read(data);
             result = new String(data);
             publishProgress("Client: data read: " + result);
 
-            Log.d("Communication", "Received from Server: " +  new String(data));
+            Log.d("Communication", "Received from Server: " +  result);
 
             socket.close();
         } catch (IOException e) {
@@ -84,10 +84,14 @@ public class ClientAsyncTask extends AsyncTask<Void, String, String> {
         if (message != null) {
             if(!message.equals("Client: connection failed")){
                 Log.d("Communication", "Client: onPostExecute(): " + message);
+
+                if(message.isEmpty()){
+                    Log.d("Communication", "Empty Message received");
+                }
+
                 // add received message to db and gui (false because received messages should stay on left side)
                 ChatMessage chatMessage = new ChatMessage(false, message);
                 mAppLogic.addMessage(chatMessage);
-                mGui.getEditText().setText("");
             } else {
                 Log.d("Communication", message);
             }

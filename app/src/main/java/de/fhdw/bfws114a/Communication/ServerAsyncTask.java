@@ -81,10 +81,14 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
             if(!message.equals("Client: connection failed")){
                 Log.d("Communication", "    Server: onPostExecute(): " + message);
 
-                // add received message to gui (false because received messages should stay on left side)
-                ChatMessage chatMessage = new ChatMessage(false, message);
-                mAppLogic.addMessage(chatMessage);
-                mGui.getEditText().setText("");
+                if(message.isEmpty()){
+                    Log.d("Communication", "Empty Message received");
+                } else {
+                    // add received message to gui (false because received messages should stay on left side)
+                    ChatMessage chatMessage = new ChatMessage(false, message);
+                    mAppLogic.addMessage(chatMessage);
+                }
+
             } else {
                 Log.d("Communication", message);
             }

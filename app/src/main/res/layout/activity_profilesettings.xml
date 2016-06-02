@@ -50,7 +50,8 @@
         android:minHeight="100dp"
         android:minWidth="100dp"
         android:maxHeight="150dp"
-        android:maxWidth="150dp" />
+        android:maxWidth="150dp"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/profilesettings_ppicture_upload_button"

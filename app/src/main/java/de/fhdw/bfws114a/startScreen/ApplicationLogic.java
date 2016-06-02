@@ -72,6 +72,8 @@ public class ApplicationLogic {
 		//send Data to everyone in your Peerslist
 		//Test whether there are any peers availabe
 		if(mData.getDeviceList() != null) {
+			//erase current connection
+			mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
 			Log.d("Communication", "Number of Device: " + mData.getDeviceList().size());
 			if (mData.getDeviceList().size() > 0) {
 				for (MacAddress currentDevice : mData.getDeviceList()) {
@@ -87,22 +89,29 @@ public class ApplicationLogic {
 
 					//Hier brauchen wir ein Protokoll um richtigen Text beim senden zu übergeben (Adressliste + Text)
 					//SimpleDataExchange.send(a, mGui.getEditText().getText())
-					if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
-						// the group owner acts as server
-						new ServerAsyncTask(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString()).execute();
-					} else {
-						if (mWifiP2pInfo.groupFormed) {
-							// the other device acts as the client
-							new ClientAsyncTask(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
+					/*
+					try {
+						if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
+							// the group owner acts as server
+							new ServerAsyncTask(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString()).execute();
+						} else {
+							if (mWifiP2pInfo.groupFormed) {
+								// the other device acts as the client
+								new ClientAsyncTask(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
+							}
 						}
+					} catch (NullPointerException e){
+						Log.d("Communication", "No Connection Info available up to now");
 					}
 					mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
+					*/
 				}
 			}
 		}else {
 			Log.d("Communication", "Devicelist is null");
 		}
 
+		//toDo: just when message sending was succesful
 		//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
 		ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
 		addMessage(message);
@@ -151,6 +160,7 @@ public class ApplicationLogic {
 				Log.d("Communication", "The Api Level of the current device is to low");
 			}
 		}
+		//Todo: Set Sending Button on not clickable
 	}
 
 
@@ -213,6 +223,15 @@ public class ApplicationLogic {
 		Log.d("Communication","    groupOwnerAddress: " + info.groupOwnerAddress);
 		Log.d("Communication","    IP address of group owner: " + info.groupOwnerAddress.getHostAddress());
 		mWifiP2pInfo = info;
+		if(mWifiP2pInfo.groupFormed && mWifiP2pInfo.groupOwnerAddress != null){
+			if(mWifiP2pInfo.isGroupOwner){
+				// the group owner acts as server
+				new ServerAsyncTask(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString()).execute();
+			} else {
+				new ClientAsyncTask(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
+			}
+
+		}
 	}
 
 	public void onDiscoverPeersSuccess(){
@@ -230,7 +249,16 @@ public class ApplicationLogic {
 	}
 
 	public void onStopDiscoveryFailure(int reason){
-		Log.d("Communication","onStopDiscoveryFailure() called: reason: " + reason);
+		if(reason == 0){
+			//its an Error
+			Log.d("Communication","onStopDiscoveryFailure() called: reason: Error" );
+		} else if(reason == 2){
+				//device is busy
+				Log.d("Communication","onStopDiscoveryFailure() called: reason: Busy" );
+		} else {
+			Log.d("Communication","onStopDiscoveryFailure() called: reason: " + reason);
+		}
+
 	}
 
 	public void onConnectSuccess(){

@@ -4,6 +4,7 @@ package de.fhdw.bfws114a.profileSettings;
  * Created by Carsten on 21.04.2016.
  */
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -25,6 +26,15 @@ public class Init extends AppCompatActivity {
         initGui();
         initApplicationLogic();
         initEventToListenerMapping();
+
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            mApplicationLogic.onActivityResult(requestCode, resultCode, data);
+        }
 
     }
 

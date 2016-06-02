@@ -90,6 +90,7 @@ public class Listener {
         }
         @Override
         public void onFailure(int reason){
+
             mApplicationLogic.onStopDiscoveryFailure(reason);
         }
     }
