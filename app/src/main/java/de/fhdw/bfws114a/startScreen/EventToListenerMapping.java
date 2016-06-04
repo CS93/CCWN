@@ -43,7 +43,11 @@ public class EventToListenerMapping implements OnClickListener, CompoundButton.O
 		switch ( v.getId()){
 		case R.id.startscreen_send_message_button:
 			//sendMessage
-			mApplicationLogic.onSendButtonClicked();
+			try {
+				mApplicationLogic.onSendButtonClicked();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			break;
 		case R.id.startscreen_goto_deviceoverview_button:
 			//go to DeviceOverview

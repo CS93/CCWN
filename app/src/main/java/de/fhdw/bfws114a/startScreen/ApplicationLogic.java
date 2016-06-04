@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.net.NetworkInfo;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.*;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,12 @@ import java.util.Iterator;
 import de.fhdw.bfws114a.Communication.ClientAsyncTask;
 import de.fhdw.bfws114a.Communication.MacAddress;
 import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.Communication.ReceiveMessageClient;
+import de.fhdw.bfws114a.Communication.ReceiveMessageServer;
+import de.fhdw.bfws114a.Communication.SendMessageClient;
+import de.fhdw.bfws114a.Communication.SendMessageServer;
 import de.fhdw.bfws114a.Communication.ServerAsyncTask;
+import de.fhdw.bfws114a.Communication.ServerInit;
 import de.fhdw.bfws114a.Navigation.Navigation;
 import de.fhdw.bfws114a.data.ChatMessage;
 
@@ -36,6 +42,9 @@ public class ApplicationLogic {
 	private Listener mListener;
 	private WifiP2pDeviceList mWifiP2pDeviceList;
 	private WifiP2pInfo mWifiP2pInfo;
+	private ReceiveMessageClient clientReceiver;
+	private ReceiveMessageServer serverReceiver;
+	private ServerInit server;
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
@@ -68,8 +77,12 @@ public class ApplicationLogic {
 		return addressList;
 	}
 
-	public void onSendButtonClicked(){
-		//send Data to everyone in your Peerslist
+	public void onSendButtonClicked() throws InterruptedException {
+		//Todo: divide into connect and send
+
+		//connect to everybode in your peerslist
+		// send Data to everyone in your Peerslist
+
 		//Test whether there are any peers availabe
 		if(mData.getDeviceList() != null) {
 			//erase current connection
@@ -89,33 +102,45 @@ public class ApplicationLogic {
 
 					//Hier brauchen wir ein Protokoll um richtigen Text beim senden zu übergeben (Adressliste + Text)
 					//SimpleDataExchange.send(a, mGui.getEditText().getText())
-					/*
-					try {
-						if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
-							// the group owner acts as server
-							new ServerAsyncTask(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString()).execute();
-						} else {
-							if (mWifiP2pInfo.groupFormed) {
-								// the other device acts as the client
-								new ClientAsyncTask(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
-							}
+					if(mWifiP2pInfo == null){
+						synchronized (mGui){
+							mGui.wait(2000);
 						}
-					} catch (NullPointerException e){
-						Log.d("Communication", "No Connection Info available up to now");
 					}
-					mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
-					*/
-				}
-			}
-		}else {
-			Log.d("Communication", "Devicelist is null");
-		}
 
-		//toDo: just when message sending was succesful
-		//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
-		ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
-		addMessage(message);
-		mGui.getEditText().setText("");
+					if(mWifiP2pInfo != null){
+						//there is a succesful connection
+						try {
+							if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
+								// the group owner acts as server
+								//ToDo: Devicelist needs to have the inetAdress of the clients
+								new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+							} else {
+								if (mWifiP2pInfo.groupFormed) {
+									// the other device acts as the client
+									new SendMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+								}
+							}
+						} catch (NullPointerException e){
+							Log.d("Communication", "No Connection Info available up to now");
+						}
+						//mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
+
+					} else {
+					mGui.showToast(mData.getActivity(), "Error beim Senden, bitte erneut versuchen");
+					}
+				}
+			}else {
+				Log.d("Communication", "Devicelist is null");
+			}
+
+			//toDo: just when message sending was succesful
+			//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
+			ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
+			addMessage(message);
+			mGui.getEditText().setText("");
+					}
+
 	}
 
 	public void addMessage(ChatMessage message){
@@ -224,11 +249,37 @@ public class ApplicationLogic {
 		Log.d("Communication","    IP address of group owner: " + info.groupOwnerAddress.getHostAddress());
 		mWifiP2pInfo = info;
 		if(mWifiP2pInfo.groupFormed && mWifiP2pInfo.groupOwnerAddress != null){
+			//When there is a connection, the receivers tasks should be started
 			if(mWifiP2pInfo.isGroupOwner){
 				// the group owner acts as server
-				new ServerAsyncTask(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString()).execute();
+				if(serverReceiver == null){
+					//no receiver initialized
+					serverReceiver = new ReceiveMessageServer(mData.getActivity(), mGui, this);
+					serverReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else if(!serverReceiver.isCancelled()){
+					//receiver has been cancelled and should be restarted
+					serverReceiver = new ReceiveMessageServer(mData.getActivity(), mGui, this);
+					serverReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				}
+
+				if(server == null){
+					server = new ServerInit();
+					server.start();
+				}
 			} else {
-				new ClientAsyncTask(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress(), mGui.getEditText().getText().toString()).execute();
+				//this device acts like client
+				if(clientReceiver == null){
+					//no receiver initialized
+					clientReceiver = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
+					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else if(!serverReceiver.isCancelled()){
+					//receiver has been cancelled and should be restarted
+					clientReceiver = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
+					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				}
+
+
+
 			}
 
 		}

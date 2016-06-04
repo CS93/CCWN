@@ -5,16 +5,8 @@ package de.fhdw.bfws114a.startScreen;
  * Created by Carsten on 16.04.2016.
  */
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateUtils;
-import android.util.Log;
-
-import de.fhdw.bfws114a.Communication.StartedService;
 
 public class Init extends AppCompatActivity {
     private Data mData;

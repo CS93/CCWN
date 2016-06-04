@@ -46,7 +46,12 @@ public class Listener {
             switch (v.getId()) {
                 case R.id.startscreen_send_message_button:
                     //sendMessage
-                    mApplicationLogic.onSendButtonClicked();
+                    try {
+                        //try is necessary because of an wait statement in this method
+                        mApplicationLogic.onSendButtonClicked();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case R.id.startscreen_goto_deviceoverview_button:
                     //go to DeviceOverview

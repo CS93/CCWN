@@ -48,7 +48,7 @@ public class DataInterface {
 
 	// If there is no XML-File in the external Storage, the default file from the Project-Directory will be copied.
 	public void copyDefaultXMLintoExternalFolder() {
-		String uri = Environment.getExternalStorageDirectory().toString() + FILEPATH;
+		/*String uri = Environment.getExternalStorageDirectory().toString() + FILEPATH;
 		java.io.File xmlFile = new java.io.File(uri, FILENAME);
 
 		if (!xmlFile.getParentFile().exists()) {
@@ -75,7 +75,7 @@ public class DataInterface {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	public ArrayList<ChatMessage> getMessagelist() {

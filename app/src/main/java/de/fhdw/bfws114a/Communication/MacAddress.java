@@ -1,6 +1,8 @@
 package de.fhdw.bfws114a.Communication;
 
-public class MacAddress {
+import java.net.SocketAddress;
+
+public class MacAddress extends SocketAddress {
 
     private String mMacAddress;
 

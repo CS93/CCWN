@@ -7,10 +7,14 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import de.fhdw.bfws114a.data.ChatMessage;
@@ -25,6 +29,7 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
     private String mMessage;
     private int mReceived;
     private ApplicationLogic mAppLogic;
+    private static final int SERVER_PORT = 1234;
 
     public ServerAsyncTask(Context context, Gui gui, ApplicationLogic applogic, String message){
         this.mContext = context;
@@ -34,11 +39,11 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params){
+    protected String doInBackground(Void... params) {
         String result;
         try {
-            publishProgress("Server: opening socket 8988");
-            ServerSocket serverSocket = new ServerSocket(8988);
+            publishProgress("Server: opening socket " + SERVER_PORT);
+            ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
             publishProgress("Server: calling accept");
             Socket client = serverSocket.accept();
             publishProgress("Server: connection accepted");
@@ -51,7 +56,7 @@ public class ServerAsyncTask extends AsyncTask<Void, String, String> {
             InputStream iStream = client.getInputStream();
             iStream.read(data);
             result = new String(data);
-            Log.d("Communication", "Received from Client: " +  result);
+            Log.d("Communication", "Received from Client: " + result);
 
             serverSocket.close();
         } catch (IOException e) {
