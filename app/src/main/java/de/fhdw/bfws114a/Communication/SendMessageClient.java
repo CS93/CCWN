@@ -26,32 +26,30 @@ public class SendMessageClient extends AsyncTask<Void, String, String>{
 
 	private static final int SOCKET_TIMEOUT = 5000;
 	
-	public SendMessageClient(Context context, Gui gui, ApplicationLogic applogic, String serverIp, String message){
+	public SendMessageClient(Context context, Gui gui, ApplicationLogic appLogic, String serverIp, String message){
 		mContext = context;
 		mGui = gui;
 		mServerIp = serverIp;
 		this.mMessage = message;
-		this.mAppLogic = applogic;
+		this.mAppLogic = appLogic;
 	}
 	
 	@Override
 	protected String doInBackground(Void... params) {
 
 		//Display le message on the sender before sending it
-		//publishProgress(msg);
+		publishProgress("I'm as Client sending: "+ mMessage);
 		
 		//Send the message
 		Socket socket = new Socket();
 		try {
 			socket.setReuseAddress(true);
 			socket.bind(null);
-			Log.d("Communication", "doInBackground: " + mServerIp.toString() +"| Trennung |"+ mServerIp.getBytes().toString());
 			socket.connect(new InetSocketAddress(mServerIp, SERVER_PORT));
 			Log.d("Communication", "doInBackground: Socket connect succeeded");
 			
 			OutputStream outputStream = socket.getOutputStream();
-
-			new ObjectOutputStream(outputStream).write(mMessage.getBytes("UTF-8"));
+			outputStream.write(mMessage.getBytes("UTF-8"));
 			
 		    Log.d("Communication", "doInBackground: send message succeeded");
 		} catch (IOException e) {

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.fhdw.bfws114a.Communication.ClientAsyncTask;
+import de.fhdw.bfws114a.Communication.ClientInit;
 import de.fhdw.bfws114a.Communication.MacAddress;
 import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.Communication.ReceiveMessageClient;
@@ -45,6 +46,7 @@ public class ApplicationLogic {
 	private ReceiveMessageClient clientReceiver;
 	private ReceiveMessageServer serverReceiver;
 	private ServerInit server;
+	private ClientInit client;
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
@@ -278,8 +280,10 @@ public class ApplicationLogic {
 					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				}
 
-
-
+				if(client == null){
+					client = new ClientInit(mWifiP2pInfo.groupOwnerAddress);
+					client.start();
+				}
 			}
 
 		}

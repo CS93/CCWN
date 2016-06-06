@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class ServerInit extends Thread{
     private static final String TAG = "Communication";
-    private static final int SERVER_PORT = 8988;
+    private static final int SERVER_PORT = 1234;
     public static ArrayList<InetAddress> clients;
     private ServerSocket serverSocket;
 

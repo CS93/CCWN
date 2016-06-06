@@ -71,7 +71,9 @@ public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
 		for (String msg : message) {
 			Log.d("Communication", "    Server: I received this message from Client " + msg);
 		}
-		
+
+		Log.d("Communication", "    Server 2: I received this message from Client " + message);
+
 		// Here could we send a message back to notify that we received the message
 		// new SendMessageServer(mContext, false).executeOnExecutor(THREAD_POOL_EXECUTOR, values);
 	}

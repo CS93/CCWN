@@ -75,6 +75,7 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 			Log.d("Communication", "    Client: I received this message from Server " + msg);
 		}
 
+		Log.d("Communication", "    Client 2: I received this message from Client " + message);
 		//// TODO: add received Message to chatbubble
 
 		// Here could we send a message back to notify that we received the message

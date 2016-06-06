@@ -40,7 +40,7 @@ public class SendMessageServer extends AsyncTask<Void, String, String> {
 	protected String doInBackground(Void... params) {
 
 		//Display le message on the sender before sending it
-		//publishProgress(msg);
+		publishProgress("I'm as Server sending: "+ mMessage);
 		
 		//Send the message to clients
 		try {
@@ -53,9 +53,8 @@ public class SendMessageServer extends AsyncTask<Void, String, String> {
 				socket.connect((new InetSocketAddress(addr,SERVER_PORT)), 10000);
 				Log.d("Communication", "doInBackground: connect to "+ addr +" succeeded");
 				OutputStream outputStream = socket.getOutputStream();
-				
-				new ObjectOutputStream(outputStream).write(mMessage.getBytes("UTF-8"));
-				
+				outputStream.write(mMessage.getBytes("UTF-8"));
+
 			    Log.d("Communication", "doInBackground: write to "+ addr +" succeeded");
 			    socket.close();
 			}
