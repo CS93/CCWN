@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.startScreen.ApplicationLogic;
 import de.fhdw.bfws114a.startScreen.Gui;
 
@@ -73,10 +74,10 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 		super.onProgressUpdate(message);
 		for (String msg : message) {
 			Log.d("Communication", "    Client: I received this message from Server " + msg);
+			//add to chatbubble
+			ChatMessage receivedMessage = new ChatMessage(false, msg);
+			mAppLogic.addMessage(receivedMessage);
 		}
-
-		Log.d("Communication", "    Client 2: I received this message from Client " + message);
-		//// TODO: add received Message to chatbubble
 
 		// Here could we send a message back to notify that we received the message
 		// new SendMessageServer(mContext, false).executeOnExecutor(THREAD_POOL_EXECUTOR, values);

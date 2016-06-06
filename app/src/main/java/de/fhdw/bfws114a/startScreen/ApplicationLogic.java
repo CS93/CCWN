@@ -80,9 +80,10 @@ public class ApplicationLogic {
 	}
 
 	public void onSendButtonClicked() throws InterruptedException {
-		//Todo: divide into connect and send
+		//ToDo: prove whether there is an connection
 
-		//connect to everybode in your peerslist
+
+
 		// send Data to everyone in your Peerslist
 
 		//Test whether there are any peers availabe
@@ -141,7 +142,7 @@ public class ApplicationLogic {
 			ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
 			addMessage(message);
 			mGui.getEditText().setText("");
-					}
+		}
 
 	}
 
