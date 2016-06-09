@@ -138,6 +138,7 @@ public class ApplicationLogic {
 
 		}
 
+
 	}
 
 	public void showErrorMessage(String text){
