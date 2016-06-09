@@ -83,7 +83,8 @@
                 android:layout_weight="1"
                 android:text="Senden"
                 android:textColor="@color/white"
-                android:visibility="invisible" />
+                android:visibility="visible"
+                android:clickable="false" />
 
         </LinearLayout>
     </LinearLayout>

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Paint;
 import android.net.NetworkInfo;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.*;
@@ -33,6 +34,7 @@ import de.fhdw.bfws114a.Communication.SendMessageServer;
 import de.fhdw.bfws114a.Communication.ServerAsyncTask;
 import de.fhdw.bfws114a.Communication.ServerInit;
 import de.fhdw.bfws114a.Navigation.Navigation;
+import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.ChatMessage;
 
 public class ApplicationLogic {
@@ -80,10 +82,6 @@ public class ApplicationLogic {
 	}
 
 	public void onSendButtonClicked() throws InterruptedException {
-		//ToDo: prove whether there is an connection
-
-
-
 		// send Data to everyone in your Peerslist
 
 		//Test whether there are any peers availabe
@@ -116,7 +114,6 @@ public class ApplicationLogic {
 						try {
 							if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
 								// the group owner acts as server
-								//ToDo: Devicelist needs to have the inetAdress of the clients
 								new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 							} else {
 								if (mWifiP2pInfo.groupFormed) {
@@ -126,26 +123,26 @@ public class ApplicationLogic {
 							}
 						} catch (NullPointerException e){
 							Log.d("Communication", "No Connection Info available up to now");
+							mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 						}
-						//mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
+
 
 					} else {
-					mGui.showToast(mData.getActivity(), "Error beim Senden, bitte erneut versuchen");
+					mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 					}
 				}
 			}else {
 				Log.d("Communication", "Devicelist is null");
+				mGui.showToast(mData.getActivity(), "Keine Geräte in ihrer Nähe, bitte erneut versuchen");
 			}
 
-			//toDo: just when message sending was succesful
-			//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
-			ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
-			addMessage(message);
-			mGui.getEditText().setText("");
 		}
 
 	}
 
+	public void showErrorMessage(String text){
+		mGui.showToast(mData.getActivity(), text);
+	}
 	public void addMessage(ChatMessage message){
 		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
 		mGui.getChatArrayAdapter().add(message);
@@ -175,20 +172,21 @@ public class ApplicationLogic {
 
 			Log.d("Communication", "Online --> call discoverPeers()");
 			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
-		}else{
+			//mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+		}else {
 			//off has been selected --> unregister receiver
 			//SimpleDataExchange.onPause()
 			mData.getActivity().unregisterReceiver(mReceiver);
 			mReceiver = null;
 			mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					Log.d("Communication", "Offline --> call stopPeerDiscovery()");
-					mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
+				Log.d("Communication", "Offline --> call stopPeerDiscovery()");
+				mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 			} else {
 				Log.d("Communication", "The Api Level of the current device is to low");
 			}
+			//mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 		}
-		//Todo: Set Sending Button on not clickable
 	}
 
 
@@ -200,7 +198,9 @@ public class ApplicationLogic {
 			Log.d("Communication", "Online --> call discoverPeers()");
 			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
 			if(mGui.getEditText().getText().equals("")){
-				mGui.getButtonSend().setVisibility(View.INVISIBLE);
+				//set Button to usual status
+				mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+
 			}
 		}
 
@@ -220,11 +220,11 @@ public class ApplicationLogic {
 
 	public void onPeersAvailable(WifiP2pDeviceList peers){
 		if (peers.getDeviceList().size() == 0) {
-			mGui.getButtonSend().setVisibility(View.INVISIBLE);
+			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 			Log.d("Communication", "No devices found");
 			return;
 		} else {
-			mGui.getButtonSend().setVisibility(View.VISIBLE);
+			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 			Log.d("Communication", "onPeersAvailable() called");
 			for (WifiP2pDevice wd : peers.getDeviceList()) {
 				Log.d("Communication","     " + wd.deviceName);
@@ -297,7 +297,7 @@ public class ApplicationLogic {
 	public void onDiscoverPeersFailure(int reason){
 		Log.d("Communication","onDiscoverPeersFailure() called: reason: " + reason);
 		//may alert user
-		mGui.getButtonSend().setVisibility(View.INVISIBLE);
+		mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	}
 
 	public void onStopDiscoverySuccess(){
@@ -375,9 +375,7 @@ public class ApplicationLogic {
 		//apply the restored data to GUI
 		mGui.getEditText().setText(mData.getCurrentText());
 		mGui.setScrollPanePosition(mData.getCurrentScrollPosition());
-		if(mGui.getEditText().getText().equals("")){
-			mGui.getButtonSend().setVisibility(View.INVISIBLE);
-		}
+		mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	}
 
 	public void SaveDataFromScreen(){

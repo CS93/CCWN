@@ -13,6 +13,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.startScreen.ApplicationLogic;
 import de.fhdw.bfws114a.startScreen.Gui;
 
@@ -52,6 +53,7 @@ public class SendMessageClient extends AsyncTask<Void, String, String>{
 			outputStream.write(mMessage.getBytes("UTF-8"));
 			
 		    Log.d("Communication", "doInBackground: send message succeeded");
+			return "success";
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally{
@@ -80,6 +82,14 @@ public class SendMessageClient extends AsyncTask<Void, String, String>{
 	@Override
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
-		//Todo: If succesful-> add to chatbubble
+		if(result == "success"){
+			//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
+			ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
+			mAppLogic.addMessage(message);
+			mGui.getEditText().setText("");
+		} else {
+			//communication was not successful
+			mAppLogic.showErrorMessage("Das Senden war nicht erfolgreich!");
+		}
 	}
 }
