@@ -29,6 +29,7 @@ public class Navigation {
                 devicelist);
     }
 
+
     //This mehtod is called when a new activity is called and a user should be given to the new activity through intent
     private static void startActivityWithMacAddressList(Activity callingActivity,
                                                         Class <?> classOfActivityToStart,

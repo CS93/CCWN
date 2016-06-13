@@ -109,7 +109,6 @@ public class ApplicationLogic {
 						synchronized (mGui){
 							mGui.wait(2000);
 						}
-
 					}
 
 					if(mWifiP2pInfo != null){

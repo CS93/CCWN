@@ -42,7 +42,6 @@ public class Gui {
 		act.setContentView(R.layout.activity_startscreen);
 		mContext = act;
 	//	map the intialized components with gui
-		mContext = act;
 		mListView = (ListView) act.findViewById(R.id.startscreen_chat_overview_listview);
 		//Add bubbles to Listview
 		mChatArrayAdapter = new ChatArrayAdapter(mContext, R.layout.right);

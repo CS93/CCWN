@@ -7,6 +7,9 @@ package de.fhdw.bfws114a.DeviceOverview;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.Constants;
+
 public class Init extends AppCompatActivity {
 
     private Data mData;
@@ -16,7 +19,7 @@ public class Init extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData(savedInstanceState);
+        initData((MacAddressList) getIntent().getSerializableExtra(Constants.KEY_CURRENT_DEVICELIST));
         initGui();
         initApplicationLogic();
         initEventToListenerMapping();
@@ -46,14 +49,15 @@ public class Init extends AppCompatActivity {
         mApplicationLogic.onRestart();
     }
 
-    private void initData(Bundle savedInstanceState) {
-        mData = new Data(savedInstanceState, this);
+    //private void initData(Bundle savedInstanceState) {
+    //    mData = new Data(savedInstanceState, this);
+    //}
+    private void initData(MacAddressList devicelist) {
+        mData = new Data(this,  devicelist);
     }
-
 
     private void initGui() {
         mGui = new Gui(this);
-
     }
 
     private void initApplicationLogic() {

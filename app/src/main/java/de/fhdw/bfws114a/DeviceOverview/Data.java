@@ -7,6 +7,7 @@ package de.fhdw.bfws114a.DeviceOverview;
 import android.app.Activity;
 import android.os.Bundle;
 
+import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.data.Constants;
 import de.fhdw.bfws114a.data.DeviceList;
 import de.fhdw.bfws114a.data.Profile;
@@ -18,15 +19,16 @@ public class Data {
 	private DataInterface mDataInterface;
 	private DeviceList mDevices;
 	private String mSelectedDevice;
-	
-	public Data(Bundle b, Activity activity){	
+	private MacAddressList mDevicelist;
+
+	public Data(Activity activity, MacAddressList devicelist){
 		mActivity = activity;	
 		mDataInterface = new DataInterface(activity);
-
-		if(b != null){
-			//Activity has been restarted e.g. change from Protrait to Landscape mode
-			restoreDataFromBundle(b);
-		}
+		mDevicelist = devicelist;
+		//if(b != null){
+		//Activity has been restarted e.g. change from Protrait to Landscape mode
+		//	restoreDataFromBundle(b);
+		//}
 	}
 
 	//getter and setter
@@ -40,6 +42,14 @@ public class Data {
 
 	public DeviceList getDevices() {
 		return mDevices;
+	}
+
+	public void setDevicelist(MacAddressList mDevicelist) {
+		this.mDevicelist = mDevicelist;
+	}
+
+	public MacAddressList getDevicelist() {
+		return mDevicelist;
 	}
 
 	public void setDevices(DeviceList mDevices) {
