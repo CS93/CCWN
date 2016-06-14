@@ -29,7 +29,6 @@ public class Gui {
 		act.setContentView(R.layout.activity_profilesettings);
 		mContext = act;
 	//	map the intialized components with gui
-		mContext = act;
 		mImage = (ImageView) act.findViewById(R.id.profilesettings_ppicture_imageview);
 		mButtonSave = (Button) act.findViewById(R.id.profilesettings_settings_save_button);
 		mButtonUpload = (Button) act.findViewById(R.id.profilesettings_ppicture_upload_button);

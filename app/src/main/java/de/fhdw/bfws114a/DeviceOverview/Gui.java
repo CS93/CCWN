@@ -27,7 +27,6 @@ public class Gui {
 		act.setContentView(R.layout.activity_deviceoverview);
 		mContext = act;
 	//	map the intialized components with gui
-		mContext = act;
 		//mEditTextStatus = (EditText) act.findViewById(R.id.profilesettings_status_edittext);
 	}
 
