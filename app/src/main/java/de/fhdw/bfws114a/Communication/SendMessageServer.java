@@ -81,10 +81,8 @@ public class SendMessageServer extends AsyncTask<Void, String, String> {
 		super.onPostExecute(result);
 
 		if(result == "success"){
-			//add message to db and gui (true because the standard would be the left side and the messages of the own user used to be on right side)
-			ChatMessage message = new ChatMessage(true, mGui.getEditText().getText().toString());
-			mAppLogic.addMessage(message);
-			mGui.getEditText().setText("");
+			//Tell Applogic about the received message
+			mAppLogic.onMessageSuccesfulSend();
 		} else {
 			//communication was not successful
 			mAppLogic.showErrorMessage("Das Senden war nicht erfolgreich!");

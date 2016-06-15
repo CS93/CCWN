@@ -142,13 +142,6 @@ public class ApplicationLogic {
 	public void showErrorMessage(String text){
 		mGui.showToast(mData.getActivity(), text);
 	}
-	public void addMessage(ChatMessage message){
-		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
-		mGui.getChatArrayAdapter().add(message);
-		//write message to DB
-		mData.getDataInterface().addMessageToDB(message);
-
-	}
 
 	public void onSettingsButtonClicked(){
 		//go to settings screen
@@ -274,7 +267,7 @@ public class ApplicationLogic {
 					//no receiver initialized
 					clientReceiver = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
 					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else if(!serverReceiver.isCancelled()){
+				} else if(!clientReceiver.isCancelled()){
 					//receiver has been cancelled and should be restarted
 					clientReceiver = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
 					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -380,6 +373,26 @@ public class ApplicationLogic {
 	public void SaveDataFromScreen(){
 		mData.setCurrentText(String.valueOf(mGui.getEditText().getText()));
 		mData.setCurrentScrollPosition(mGui.getListView().getScrollY());
+	}
+
+	public void onMessageReceived(String msg) {
+		//add to chatbubble
+		ChatMessage receivedMessage = new ChatMessage(false, msg);
+		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
+		mGui.getChatArrayAdapter().add(receivedMessage);
+		//write message to DB
+		mData.getDataInterface().addMessageToDB(receivedMessage);
+	}
+
+	public void onMessageSuccesfulSend() {
+		//add to chatbubble
+		ChatMessage receivedMessage = new ChatMessage(true, mGui.getEditText().getText().toString());
+		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
+		mGui.getChatArrayAdapter().add(receivedMessage);
+		//write message to DB
+		mData.getDataInterface().addMessageToDB(receivedMessage);
+		//Reset EditTextField
+		mGui.getEditText().setText("");
 	}
 }
 

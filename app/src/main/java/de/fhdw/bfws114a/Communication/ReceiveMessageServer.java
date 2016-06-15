@@ -71,8 +71,8 @@ public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
 		super.onProgressUpdate(message);
 		for (String msg : message) {
 			Log.d("Communication", "    Server: I received this message from Client " + msg);
-			ChatMessage receivedMessage = new ChatMessage(false, msg);
-			mAppLogic.addMessage(receivedMessage);
+			//Tell Applogic about the received message
+			mAppLogic.onMessageReceived(msg);
 		}
 
 		// Here could we send a message back to notify that we received the message

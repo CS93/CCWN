@@ -42,7 +42,7 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 				Socket destinationSocket = socket.accept();
 				
 				InputStream inputStream = destinationSocket.getInputStream();
-				BufferedInputStream buffer = new BufferedInputStream(inputStream);
+				//BufferedInputStream buffer = new BufferedInputStream(inputStream);
 				byte data[] = new byte[100];
 				inputStream.read(data);
 				mMessage = new String(data);
@@ -74,9 +74,8 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 		super.onProgressUpdate(message);
 		for (String msg : message) {
 			Log.d("Communication", "    Client: I received this message from Server " + msg);
-			//add to chatbubble
-			ChatMessage receivedMessage = new ChatMessage(false, msg);
-			mAppLogic.addMessage(receivedMessage);
+			//Tell Applogic about the received message
+			mAppLogic.onMessageReceived(msg);
 		}
 
 		// Here could we send a message back to notify that we received the message
