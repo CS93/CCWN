@@ -8,6 +8,7 @@ package de.fhdw.bfws114a.startScreen;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -48,6 +49,9 @@ public class Gui {
 		mListView.setAdapter(mChatArrayAdapter);
 		mEditText = (EditText) act.findViewById(R.id.startscreen_send_message_edittext);
 		mButtonSend = (Button) act.findViewById(R.id.startscreen_send_message_button);
+		//set strikethrough of the text
+		mButtonSend.setPaintFlags(mButtonSend.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
 		mButtonSettings = (ImageButton) act.findViewById(R.id.startscreen_goto_settings_button);
 		mButtonDevices = (ImageButton) act.findViewById(R.id.startscreen_goto_deviceoverview_button);
 		mSwitch = (Switch) act.findViewById(R.id.startscreen_availability_switch);
