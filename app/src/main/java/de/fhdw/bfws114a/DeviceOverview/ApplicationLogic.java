@@ -21,7 +21,12 @@ public class ApplicationLogic {
 	}
 
 	private void applyDataToGui() {
-		mGui.setListView( (String[]) mData.getDevicelist().getMacAddressList().toArray()); // cast ArrayList to String[]
+		//if ( mData.getDevicelist() )
+		try{
+			mGui.setListView( (String[]) mData.getDevicelist().getMacAddressList().toArray()); // cast ArrayList to String[]
+		} catch (NullPointerException e) {
+			mGui.showToast(mData.getActivity(), "Leider sind keine Geräte in Ihrer Nähe.");
+		}
 		//mGui.setDeviceList(mData.getDevices());
 		//mGui.setMessages(mData.getDevicelist().getMacAddressList());
 	}

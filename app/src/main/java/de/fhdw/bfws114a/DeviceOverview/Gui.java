@@ -7,21 +7,16 @@ package de.fhdw.bfws114a.DeviceOverview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.R;
-import de.fhdw.bfws114a.data.ChatArrayAdapter;
-import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.R;;
 import de.fhdw.bfws114a.data.DeviceList;
-import de.fhdw.bfws114a.data.Profile;
 
 public class Gui {
 	//components of the GUI
@@ -69,6 +64,15 @@ public class Gui {
 	public void setSelectedProfile(String name){
 	 // sets name, status, picture from selected Profile to gui
 
+	}
+
+	public void showToast (Activity act, String text){
+		Toast toast = Toast.makeText(act, text, Toast.LENGTH_LONG);
+		LinearLayout toastLayout = (LinearLayout) toast.getView();
+		TextView toastTV = (TextView) toastLayout.getChildAt(0);
+		toastTV.setTextSize(30);
+		toastTV.setTextColor(Color.RED);
+		toast.show();
 	}
 
 }
