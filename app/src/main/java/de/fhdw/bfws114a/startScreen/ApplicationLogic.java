@@ -23,7 +23,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.fhdw.bfws114a.Communication.ClientAsyncTask;
 import de.fhdw.bfws114a.Communication.ClientInit;
 import de.fhdw.bfws114a.Communication.MacAddress;
 import de.fhdw.bfws114a.Communication.MacAddressList;
@@ -31,7 +30,6 @@ import de.fhdw.bfws114a.Communication.ReceiveMessageClient;
 import de.fhdw.bfws114a.Communication.ReceiveMessageServer;
 import de.fhdw.bfws114a.Communication.SendMessageClient;
 import de.fhdw.bfws114a.Communication.SendMessageServer;
-import de.fhdw.bfws114a.Communication.ServerAsyncTask;
 import de.fhdw.bfws114a.Communication.ServerInit;
 import de.fhdw.bfws114a.Navigation.Navigation;
 import de.fhdw.bfws114a.R;

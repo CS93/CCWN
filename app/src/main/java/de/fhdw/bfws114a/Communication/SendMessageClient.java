@@ -90,6 +90,7 @@ public class SendMessageClient extends AsyncTask<Void, String, String>{
 		} else {
 			//communication was not successful
 			mAppLogic.showErrorMessage("Das Senden war nicht erfolgreich!");
+
 		}
 	}
 }
