@@ -44,9 +44,6 @@ public class ApplicationLogic {
 			mGui.showToast(mData.getActivity(), "Leider sind keine Geräte in Ihrer Nähe.");
 		}
 	}
-		//mGui.setDeviceList(mData.getDevices());
-		//mGui.setMessages(mData.getDevicelist().getMacAddressList());
-	}
 
 
 	public void onDeviceSelected(String name){
