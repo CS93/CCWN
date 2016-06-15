@@ -1,9 +1,10 @@
 package de.fhdw.bfws114a.Communication;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MacAddressList implements Iterable<MacAddress> {
+public class MacAddressList implements Iterable<MacAddress>, Serializable {
 
     private ArrayList<MacAddress> mMacAddressList;
 

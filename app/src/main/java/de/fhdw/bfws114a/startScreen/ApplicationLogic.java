@@ -159,7 +159,7 @@ public class ApplicationLogic {
 
 	public void onDeviceButtonClicked(){
 		//go to member overview screen
-		Navigation.startActivity(mData.getActivity(), Navigation.ACTIVITY_DeviceOverview_CLASS);
+		Navigation.startActivityDeviceOverview(mData.getActivity(), mData.getDeviceList());
 	}
 
 	public void onOnlineStatusChanged(boolean isChecked){
