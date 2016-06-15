@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +23,7 @@ public class Gui {
 	//components of the GUI
 	private EditText mEditTextStatus;
 	private ListView mListView;
-	private ArrayAdapter <String> mListViewAdapter;
+	private ListAdapter mListViewAdapter;
 	private Data mData;
 
 	//To initialize some Objects the context is necessary
@@ -48,7 +49,7 @@ public class Gui {
 		mListView.setAdapter(mListViewAdapter);
 	}
 
-	public ArrayAdapter getListViewAdapter() {
+	public ListAdapter getListViewAdapter() {
 		return mListViewAdapter;
 	}
 
