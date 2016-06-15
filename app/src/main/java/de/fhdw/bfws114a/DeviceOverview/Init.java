@@ -19,7 +19,7 @@ public class Init extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initData((MacAddressList) getIntent().getSerializableExtra(Constants.KEY_CURRENT_DEVICELIST));
+        initData(savedInstanceState, (MacAddressList) getIntent().getSerializableExtra(Constants.KEY_CURRENT_DEVICELIST));
         initGui();
         initApplicationLogic();
         initEventToListenerMapping();
@@ -52,8 +52,8 @@ public class Init extends AppCompatActivity {
     //private void initData(Bundle savedInstanceState) {
     //    mData = new Data(savedInstanceState, this);
     //}
-    private void initData(MacAddressList devicelist) {
-        mData = new Data(this,  devicelist);
+    private void initData(Bundle savedInstanceState, MacAddressList devicelist) {
+        mData = new Data(savedInstanceState, this,  devicelist);
     }
 
     private void initGui() {

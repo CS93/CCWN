@@ -26,6 +26,8 @@ public class MacAddressList implements Iterable<MacAddress>, Serializable {
         mMacAddressList.add(macAdress);
     }
 
+    public ArrayList<MacAddress> getMacAddressList() { return mMacAddressList; }
+
     @Override
     public Iterator<MacAddress> iterator(){
         return mMacAddressList.iterator();
