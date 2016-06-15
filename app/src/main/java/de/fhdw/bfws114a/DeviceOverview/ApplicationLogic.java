@@ -21,7 +21,9 @@ public class ApplicationLogic {
 	}
 
 	private void applyDataToGui() {
-		mGui.setDeviceList(mData.getDevices());
+		mGui.setListView( (String[]) mData.getDevicelist().getMacAddressList().toArray()); // cast ArrayList to String[]
+		//mGui.setDeviceList(mData.getDevices());
+		//mGui.setMessages(mData.getDevicelist().getMacAddressList());
 	}
 
 

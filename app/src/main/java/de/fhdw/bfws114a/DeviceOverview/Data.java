@@ -21,14 +21,14 @@ public class Data {
 	private String mSelectedDevice;
 	private MacAddressList mDevicelist;
 
-	public Data(Activity activity, MacAddressList devicelist){
+	public Data(Bundle b, Activity activity, MacAddressList devicelist){
 		mActivity = activity;	
 		mDataInterface = new DataInterface(activity);
 		mDevicelist = devicelist;
-		//if(b != null){
+		if(b != null){
 		//Activity has been restarted e.g. change from Protrait to Landscape mode
-		//	restoreDataFromBundle(b);
-		//}
+			restoreDataFromBundle(b);
+		}
 	}
 
 	//getter and setter
