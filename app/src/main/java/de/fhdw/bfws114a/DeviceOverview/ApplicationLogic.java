@@ -40,7 +40,10 @@ public class ApplicationLogic {
 			mGui.setListView(stringListView); // cast ArrayList to String[]
 		} catch (ClassCastException e) {
 			Log.d(TAG, "applyDataToGui: Fehler beim ClassCasting");
+		} catch (NullPointerException e) {
+			mGui.showToast(mData.getActivity(), "Leider sind keine Geräte in Ihrer Nähe.");
 		}
+	}
 		//mGui.setDeviceList(mData.getDevices());
 		//mGui.setMessages(mData.getDevicelist().getMacAddressList());
 	}
