@@ -4,9 +4,7 @@ package de.fhdw.bfws114a.startScreen;
  * Created by Carsten on 21.04.2016.
  */
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Paint;
 import android.net.NetworkInfo;
@@ -15,10 +13,6 @@ import android.net.wifi.p2p.*;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +26,6 @@ import de.fhdw.bfws114a.Communication.SendMessageClient;
 import de.fhdw.bfws114a.Communication.SendMessageServer;
 import de.fhdw.bfws114a.Communication.ServerInit;
 import de.fhdw.bfws114a.Navigation.Navigation;
-import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.ChatMessage;
 
 public class ApplicationLogic {
@@ -43,10 +36,10 @@ public class ApplicationLogic {
 	private Listener mListener;
 	private WifiP2pDeviceList mWifiP2pDeviceList;
 	private WifiP2pInfo mWifiP2pInfo;
-	private ReceiveMessageClient clientReceiver;
-	private ReceiveMessageServer serverReceiver;
-	private ServerInit server;
-	private ClientInit client;
+	private ReceiveMessageClient clientReceiverThread;
+	private ReceiveMessageServer serverReceiverThread;
+	private ServerInit serverInitThread;
+	private ClientInit clientInitThread;
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
@@ -80,12 +73,33 @@ public class ApplicationLogic {
 	}
 
 	public void onSendButtonClicked() throws InterruptedException {
+		if(mWifiP2pInfo != null){
+			//there is a succesful connection
+				try {
+					if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
+						// the group owner acts as serverInitThread
+						new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+					} else {
+						if (mWifiP2pInfo.groupFormed) {
+							// the other device acts as the clientInitThread
+							new SendMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+						}
+					}
+				} catch (NullPointerException e){
+					Log.d("Communication", "No Connection Info available up to now");
+					mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
+				}
+		} else {
+			mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
+		}
+
+		/*
 		// send Data to everyone in your Peerslist
 
 		//Test whether there are any peers availabe
 		if(mData.getDeviceList() != null) {
 			//erase current connection
-			mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
+			//mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
 			Log.d("Communication", "Number of Device: " + mData.getDeviceList().size());
 			if (mData.getDeviceList().size() > 0) {
 				for (MacAddress currentDevice : mData.getDeviceList()) {
@@ -99,8 +113,6 @@ public class ApplicationLogic {
 					mData.getManager().connect(mData.getChannel(), wifiP2pConfig, mListener.getConnectActionListener());
 					//--------------------------------------------
 
-					//Hier brauchen wir ein Protokoll um richtigen Text beim senden zu übergeben (Adressliste + Text)
-					//SimpleDataExchange.send(a, mGui.getEditText().getText())
 					if(mWifiP2pInfo == null){
 						synchronized (mGui){
 							mGui.wait(2000);
@@ -111,11 +123,11 @@ public class ApplicationLogic {
 						//there is a succesful connection
 						try {
 							if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
-								// the group owner acts as server
+								// the group owner acts as serverInitThread
 								new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 							} else {
 								if (mWifiP2pInfo.groupFormed) {
-									// the other device acts as the client
+									// the other device acts as the clientInitThread
 									new SendMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 								}
 							}
@@ -134,9 +146,9 @@ public class ApplicationLogic {
 				mGui.showToast(mData.getActivity(), "Keine Geräte in ihrer Nähe, bitte erneut versuchen");
 			}
 
-		}
-
-
+		} else {
+			mGui.showToast(mData.getActivity(), "Keine Geräte in ihrer Nähe, bitte WLAN überprüfen");
+		}*/
 	}
 
 	public void showErrorMessage(String text){
@@ -166,8 +178,10 @@ public class ApplicationLogic {
 			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
 			//mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 		}else {
-			//off has been selected --> unregister receiver
-			//SimpleDataExchange.onPause()
+			//off has been selected
+
+			mData.getManager().removeGroup(mData.getChannel(), null);
+			mData.getManager().cancelConnect(mData.getChannel(), null);
 			mData.getActivity().unregisterReceiver(mReceiver);
 			mReceiver = null;
 			mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
@@ -177,7 +191,20 @@ public class ApplicationLogic {
 			} else {
 				Log.d("Communication", "The Api Level of the current device is to low");
 			}
-			//mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			//Visualize beeing offline at button
+			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+			//killing the threads
+			if(serverInitThread != null){
+				serverInitThread.stop();
+				if(serverReceiverThread != null){
+					serverReceiverThread.cancel(false);
+				}
+			} else if(clientInitThread != null){
+				clientInitThread.stop();
+				if(clientReceiverThread != null){
+					clientReceiverThread.cancel(false);
+				}
+			}
 		}
 	}
 
@@ -231,6 +258,14 @@ public class ApplicationLogic {
 				MacAddress newDevice = new MacAddress(device.deviceAddress);
 				newDeviceList.add(newDevice);
 				Log.d("Communication","     This device has been added to DevicList: " + newDevice.getMacAddress());
+				//connect immediately to new device
+				//Connect -------------------------------
+							Log.d("Communication", "try to connect() to " + newDevice.getMacAddress());
+							WifiP2pConfig wifiP2pConfig = new WifiP2pConfig();
+							wifiP2pConfig.deviceAddress = newDevice.getMacAddress();
+							wifiP2pConfig.wps.setup = WpsInfo.PBC;
+							mData.getManager().connect(mData.getChannel(), wifiP2pConfig, mListener.getConnectActionListener());
+
 			}
 			mData.setDeviceList(newDeviceList);
 		}
@@ -246,36 +281,36 @@ public class ApplicationLogic {
 		if(mWifiP2pInfo.groupFormed && mWifiP2pInfo.groupOwnerAddress != null){
 			//When there is a connection, the receivers tasks should be started
 			if(mWifiP2pInfo.isGroupOwner){
-				// the group owner acts as server
-				if(serverReceiver == null){
+				// the group owner acts as serverInitThread
+				if(serverReceiverThread == null){
 					//no receiver initialized
-					serverReceiver = new ReceiveMessageServer(mData.getActivity(), mGui, this);
-					serverReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else if(!serverReceiver.isCancelled()){
+					serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
+					serverReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else if(!serverReceiverThread.isCancelled()){
 					//receiver has been cancelled and should be restarted
-					serverReceiver = new ReceiveMessageServer(mData.getActivity(), mGui, this);
-					serverReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
+					serverReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				}
 
-				if(server == null){
-					server = new ServerInit();
-					server.start();
+				if(serverInitThread == null){
+					serverInitThread = new ServerInit();
+					serverInitThread.start();
 				}
 			} else {
-				//this device acts like client
-				if(clientReceiver == null){
+				//this device acts like clientInitThread
+				if(clientReceiverThread == null){
 					//no receiver initialized
-					clientReceiver = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
-					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else if(!clientReceiver.isCancelled()){
+					clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
+					clientReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else if(!clientReceiverThread.isCancelled()){
 					//receiver has been cancelled and should be restarted
-					clientReceiver = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
-					clientReceiver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
+					clientReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 				}
 
-				if(client == null){
-					client = new ClientInit(mWifiP2pInfo.groupOwnerAddress);
-					client.start();
+				if(clientInitThread == null){
+					clientInitThread = new ClientInit(mWifiP2pInfo.groupOwnerAddress);
+					clientInitThread.start();
 				}
 			}
 
@@ -294,6 +329,7 @@ public class ApplicationLogic {
 
 	public void onStopDiscoverySuccess(){
 		Log.d("Communication","onStopDiscoverySuccess() called");
+		mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	}
 
 	public void onStopDiscoveryFailure(int reason){
