@@ -8,8 +8,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.sql.Blob;
+import java.util.ArrayList;
+
+import de.fhdw.bfws114a.data.ChatMessage;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -27,7 +31,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Table Users
 	private static final String KEY_MESSAGES_TIMESTAMP = "timestamp";
 	private static final String KEY_MESSAGES_DATA = "data";
-	private static final String KEY_MESSAGES_RECIPIENTLIST = "recipients";
 	private static final String KEY_MESSAGES_SENDER = "sender";
 
     // Table System
@@ -50,7 +53,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "CREATE TABLE " + TABLE_MESSAGES + "("
                         + KEY_MESSAGES_TIMESTAMP + " TEXT PRIMARY KEY,"
                         + KEY_MESSAGES_DATA + " TEXT,"
-                        + KEY_MESSAGES_RECIPIENTLIST + " BLOB,"
                         + KEY_MESSAGES_SENDER + " TEXT"
                         + ")";
         db.execSQL(create_users_table);
@@ -105,17 +107,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 ***********************
 */
 	// Adding new Message
-	void addMessage(String sender, String data, String recipientlist) {
+	void addMessage(String sender, String data) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_MESSAGES_TIMESTAMP, System.currentTimeMillis()); // Timestamp of the Message
 		values.put(KEY_MESSAGES_SENDER, sender); // Sender of the Message
 		values.put(KEY_MESSAGES_DATA, data); // Data of the Message
-		values.put(KEY_MESSAGES_RECIPIENTLIST, recipientlist); // Recipientlist
 
 		// Inserting Row
 		db.insert(TABLE_MESSAGES, null, values);
+		Log.d("Database", "    DB: The following Message was added to the DB " + data);
 		db.close(); // Closing database connection
 	}
 
@@ -137,6 +139,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// return count
 		return cursor.getCount();
+	}
+
+	public ArrayList<ChatMessage> getAllMessages(){
+		ArrayList<ChatMessage> result = new ArrayList<ChatMessage>();
+
+		String selectQuery = "SELECT * FROM " + TABLE_MESSAGES;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+
+		if (cursor.moveToFirst()) {
+			for(int i=0;i<cursor.getCount();i++){
+				boolean left;
+				if(cursor.getString(2).equalsIgnoreCase("true")) left=true;
+				else left=false;
+
+				ChatMessage m=new ChatMessage(left,cursor.getString(1));
+
+				result.add(m);
+
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		db.close();
+		return result;
+
 	}
 
     /***********************
