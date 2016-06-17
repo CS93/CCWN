@@ -1,4 +1,4 @@
-package de.fhdw.bfws114a.startScreen;
+package de.fhdw.bfws114a.Communication;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
+
+import de.fhdw.bfws114a.startScreen.ApplicationLogic;
 
 public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 

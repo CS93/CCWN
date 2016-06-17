@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.fhdw.bfws114a.Communication.ClientInit;
@@ -25,9 +24,9 @@ import de.fhdw.bfws114a.Communication.ReceiveMessageServer;
 import de.fhdw.bfws114a.Communication.SendMessageClient;
 import de.fhdw.bfws114a.Communication.SendMessageServer;
 import de.fhdw.bfws114a.Communication.ServerInit;
+import de.fhdw.bfws114a.Communication.WifiDirectBroadcastReceiver;
 import de.fhdw.bfws114a.Navigation.Navigation;
 import de.fhdw.bfws114a.data.ChatMessage;
-import de.fhdw.bfws114a.data.ChatMessageList;
 
 public class ApplicationLogic {
 	private Data mData;
@@ -45,7 +44,6 @@ public class ApplicationLogic {
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
 		mGui=gui;
-
 		mIntentFilter = new IntentFilter();
 		mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 		mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -54,8 +52,6 @@ public class ApplicationLogic {
 		mWifiP2pDeviceList = null;
 		mWifiP2pInfo = null;
 		mListener = new Listener(this, mGui); // init listener
-
-
 		applyDataToGui();
 	}
 
@@ -63,6 +59,7 @@ public class ApplicationLogic {
 		mGui.setMessages(mData.getMessageList());
 	}
 
+	//Reactions on Acitivity-Life-Cycle--------------------------
 	public void onResume(){
 		// register the BroadcastReceiver with the intent values to be matched
 		if(mGui.getSwitch().isChecked()){
@@ -76,14 +73,12 @@ public class ApplicationLogic {
 
 			}
 		}
-
 	}
 
 	public void onPause(){
-		if(mReceiver != null){
-			mData.getActivity().unregisterReceiver(mReceiver);
-			mReceiver = null;
-		}
+		//mData.getActivity().unregisterReceiver(mReceiver);
+		mReceiver = null;
+		mData.getManager().removeGroup(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 		mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 			Log.d("Communication", "Offline --> call stopPeerDiscovery()");
@@ -93,16 +88,20 @@ public class ApplicationLogic {
 		}
 	}
 
-	private ArrayList<String> getAddressList(WifiP2pDeviceList wifiP2pDeviceList){
-		ArrayList<String> addressList;
-
-		addressList = new ArrayList<String>();
-		for (WifiP2pDevice wifiP2pDevice : wifiP2pDeviceList.getDeviceList()) {
-			addressList.add(wifiP2pDevice.deviceAddress);
-		}
-		return addressList;
+	// The acitivty should present the screen like he left it (started messages/position of the scrollpane
+	public void onRestart() {
+		//apply the restored data to GUI
+		mGui.getEditText().setText(mData.getCurrentText());
+		mGui.setScrollPanePosition(mData.getCurrentScrollPosition());
+		mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 	}
 
+	public void SaveDataFromScreen(){
+		mData.setCurrentText(String.valueOf(mGui.getEditText().getText()));
+		mData.setCurrentScrollPosition(mGui.getListView().getScrollY());
+	}
+
+	//Reactions on GUI-Events-------------------------------------------
 	public void onSendButtonClicked() throws InterruptedException {
 		/*if(mWifiP2pInfo != null){
 			//there is a succesful connection
@@ -124,6 +123,12 @@ public class ApplicationLogic {
 			mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 		}*/
 
+		//test whether there is no empty message
+		if(mGui.getEditText().getText().equals("")){
+			mGui.showToast(mData.getActivity(), "Der Versand leerer Nachrichten ist nicht möglich");
+			return;
+		}
+
 		// send Data to everyone in your Peerslist
 		//Test whether there are any peers availabe
 		if(mData.getDeviceList() != null) {
@@ -141,9 +146,10 @@ public class ApplicationLogic {
 					wifiP2pConfig.wps.setup = WpsInfo.PBC;
 					mData.getManager().connect(mData.getChannel(), wifiP2pConfig, mListener.getConnectActionListener());
 					//--------------------------------------------
+
 					if(mWifiP2pInfo == null){
-						synchronized (mGui){
-							mGui.wait(2000);
+						synchronized(mData.getActivity()){
+							mData.getActivity().wait(6000);
 						}
 					}
 					if(mWifiP2pInfo != null){
@@ -151,11 +157,11 @@ public class ApplicationLogic {
 						try {
 							if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
 								// the group owner acts as serverInitThread
-								new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+								new SendMessageServer(this, mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 							} else {
 								if (mWifiP2pInfo.groupFormed) {
 									// the other device acts as the clientInitThread
-									new SendMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+									new SendMessageClient(this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 								}
 							}
 						} catch (NullPointerException e){
@@ -165,6 +171,7 @@ public class ApplicationLogic {
 					} else {
 					mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 					}
+					mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
 				}
 			}else {
 				Log.d("Communication", "Devicelist is null");
@@ -173,10 +180,6 @@ public class ApplicationLogic {
 		} else {
 			mGui.showToast(mData.getActivity(), "Keine Geräte in ihrer Nähe, bitte WLAN überprüfen");
 		}
-	}
-
-	public void showErrorMessage(String text){
-		mGui.showToast(mData.getActivity(), text);
 	}
 
 	public void onSettingsButtonClicked(){
@@ -193,8 +196,6 @@ public class ApplicationLogic {
 		//start/stop background process or delete/initialize listeners
 		if(isChecked) {
 			//on has been selected --> register receiver
-			//SimpleDataExchange.onRestart()
-
 			mReceiver = new WifiDirectBroadcastReceiver(this);
 			//mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
 
@@ -207,10 +208,9 @@ public class ApplicationLogic {
 		}else {
 			//off has been selected
 			mData.getManager().removeGroup(mData.getChannel(), null);
-			if(mReceiver != null){
-				mData.getActivity().unregisterReceiver(mReceiver);
-				mReceiver = null;
-			}
+			//mData.getActivity().unregisterReceiver(mReceiver);
+			mReceiver = null;
+
 			mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				Log.d("Communication", "Offline --> call stopPeerDiscovery()");
@@ -236,6 +236,7 @@ public class ApplicationLogic {
 		}
 	}
 
+	//Reactions on WiFi-Direct actions
 	public void onPeersAvailable(WifiP2pDeviceList peers){
 		if (peers.getDeviceList().size() == 0) {
 			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -389,17 +390,9 @@ public class ApplicationLogic {
 	}
 
 
-	// The acitivty should present the screen like he left it (started messages/position of the scrollpane
-	public void onRestart() {
-		//apply the restored data to GUI
-		mGui.getEditText().setText(mData.getCurrentText());
-		mGui.setScrollPanePosition(mData.getCurrentScrollPosition());
-		mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-	}
-
-	public void SaveDataFromScreen(){
-		mData.setCurrentText(String.valueOf(mGui.getEditText().getText()));
-		mData.setCurrentScrollPosition(mGui.getListView().getScrollY());
+	//Reaction on Threads/Asynctasks---------------------------------------------------------------
+	public void showErrorMessage(String text){
+		mGui.showToast(mData.getActivity(), text);
 	}
 
 	public void onMessageReceived(String msg) {
@@ -413,6 +406,10 @@ public class ApplicationLogic {
 
 	public void onMessageSuccesfulSend() {
 		//add to chatbubble
+		if(mGui.getEditText().getText().equals("")){
+			//this is an empty message which results from sending several messages
+			return;
+		}
 		ChatMessage receivedMessage = new ChatMessage(true, mGui.getEditText().getText().toString());
 		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
 		mGui.getChatArrayAdapter().add(receivedMessage);
@@ -422,4 +419,3 @@ public class ApplicationLogic {
 		mGui.getEditText().setText("");
 	}
 }
-

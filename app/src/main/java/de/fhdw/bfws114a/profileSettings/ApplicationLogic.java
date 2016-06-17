@@ -6,25 +6,20 @@ package de.fhdw.bfws114a.profileSettings;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 
-import de.fhdw.bfws114a.Communication.CommunicationObject;
-import de.fhdw.bfws114a.Navigation.Navigation;
 import de.fhdw.bfws114a.data.Profile;
 
 
 public class ApplicationLogic {
 	private Data mData;
 	private Gui mGui;
-	private CommunicationObject mCO;
+
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
 		mGui=gui;
-		mCO = new CommunicationObject();
 		applyDataToGui();
 	}
 
@@ -36,6 +31,7 @@ public class ApplicationLogic {
 	public void onSaveButtonClicked(){
 		mData.setOwnProfile(new Profile(0, String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()), mGui.getImage().getDrawable()));
 		mData.saveProfile(mData.getOwnProfile());
+		mData.getActivity().finish();
 	}
 		
 	

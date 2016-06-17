@@ -9,15 +9,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import de.fhdw.bfws114a.R;;
-import de.fhdw.bfws114a.data.DeviceList;
 
 public class Gui {
 	//components of the GUI
