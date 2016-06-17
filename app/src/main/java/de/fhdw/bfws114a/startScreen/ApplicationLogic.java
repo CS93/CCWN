@@ -67,11 +67,6 @@ public class ApplicationLogic {
 			mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
 			Log.d("Communication", "Online --> call discoverPeers()");
 			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
-			if(mGui.getEditText().getText().equals("")){
-				//set Button to usual status
-				mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-
-			}
 		}
 	}
 
@@ -124,7 +119,7 @@ public class ApplicationLogic {
 		}*/
 
 		//test whether there is no empty message
-		if(mGui.getEditText().getText().equals("")){
+		if((mGui.getEditText().getText().toString().equals("")) || (mGui.getEditText().getText().toString().equals(null))){
 			mGui.showToast(mData.getActivity(), "Der Versand leerer Nachrichten ist nicht möglich");
 			return;
 		}
@@ -149,7 +144,7 @@ public class ApplicationLogic {
 
 					if(mWifiP2pInfo == null){
 						synchronized(mData.getActivity()){
-							mData.getActivity().wait(6000);
+							mData.getActivity().wait(2000);
 						}
 					}
 					if(mWifiP2pInfo != null){
@@ -206,12 +201,14 @@ public class ApplicationLogic {
 
 			//mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 		}else {
+			//Visualize being offline at button
+			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
 			//off has been selected
 			mData.getManager().removeGroup(mData.getChannel(), null);
 			//mData.getActivity().unregisterReceiver(mReceiver);
 			mReceiver = null;
-
-			mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
+			//mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				Log.d("Communication", "Offline --> call stopPeerDiscovery()");
 				mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
@@ -219,8 +216,7 @@ public class ApplicationLogic {
 				Log.d("Communication", "The Api Level of the current device is to low");
 			}
 
-			//Visualize being offline at button
-			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
 			//killing the 0threads
 			if(serverInitThread != null){
 				serverInitThread.interrupt();
