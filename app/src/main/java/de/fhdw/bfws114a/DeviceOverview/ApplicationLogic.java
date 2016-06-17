@@ -5,26 +5,19 @@ package de.fhdw.bfws114a.DeviceOverview;
  */
 
 import android.util.Log;
-import android.widget.TextView;
-
 import java.util.Iterator;
-
-import de.fhdw.bfws114a.Communication.CommunicationObject;
 import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.data.Profile;
 
 
 public class ApplicationLogic {
 	private Data mData;
 	private Gui mGui;
-	private CommunicationObject mCO;
 	private static final String TAG = "DeviceOverview";
 
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
 		mGui=gui;
-		mCO = new CommunicationObject();
 		applyDataToGui();
 	}
 
@@ -61,4 +54,3 @@ public class ApplicationLogic {
 		mGui.setTextViewStatus(mData.getDevicelist().getMacAddressByIndex(shortStatusId).toString());
 	}
 }
-

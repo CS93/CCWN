@@ -21,20 +21,13 @@ import de.fhdw.bfws114a.startScreen.Gui;
 
 
 public class SendMessageServer extends AsyncTask<Void, String, String> {
-	private Context mContext;
-	private Gui mGui;
 	private String mMessage;
-	private int mReceived;
 	private ApplicationLogic mAppLogic;
 	private static final int SERVER_PORT = 8988;
-	private MacAddressList mReceivers;
 
-	public SendMessageServer(Context context, Gui gui, ApplicationLogic applogic, String message,  MacAddressList receivers){
-		this.mContext = context;
-		this.mGui = gui;
+	public SendMessageServer(ApplicationLogic applogic, String message){
 		this.mMessage = message;
 		this.mAppLogic = applogic;
-		this.mReceivers = receivers;
 	}
 
 	@Override
@@ -88,20 +81,4 @@ public class SendMessageServer extends AsyncTask<Void, String, String> {
 			mAppLogic.showErrorMessage("Das Senden war nicht erfolgreich!");
 		}
 	}
-
-	/*
-	@SuppressWarnings("rawtypes")
-	public Boolean isActivityRunning(Class activityClass)
-	{
-        ActivityManager activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(Integer.MAX_VALUE);
-
-        for (ActivityManager.RunningTaskInfo task : tasks) {
-            if (activityClass.getCanonicalName().equalsIgnoreCase(task.baseActivity.getClassName()))
-                return true;
-        }
-
-        return false;
-	}
-	*/
 }

@@ -19,17 +19,13 @@ import de.fhdw.bfws114a.startScreen.Gui;
 
 public class SendMessageClient extends AsyncTask<Void, String, String>{
 	private static final int SERVER_PORT = 8988;
-	private Context mContext;
-	private Gui mGui;
 	private String mServerIp;
 	private String mMessage;
 	private ApplicationLogic mAppLogic;
 
 	private static final int SOCKET_TIMEOUT = 5000;
 	
-	public SendMessageClient(Context context, Gui gui, ApplicationLogic appLogic, String serverIp, String message){
-		mContext = context;
-		mGui = gui;
+	public SendMessageClient(ApplicationLogic appLogic, String serverIp, String message){
 		mServerIp = serverIp;
 		this.mMessage = message;
 		this.mAppLogic = appLogic;
@@ -46,7 +42,7 @@ public class SendMessageClient extends AsyncTask<Void, String, String>{
 		try {
 			socket.setReuseAddress(true);
 			socket.bind(null);
-			socket.connect(new InetSocketAddress(mServerIp, SERVER_PORT));
+			socket.connect(new InetSocketAddress(mServerIp, SERVER_PORT), SOCKET_TIMEOUT);
 			Log.d("Communication", "doInBackground: Socket connect succeeded");
 			
 			OutputStream outputStream = socket.getOutputStream();

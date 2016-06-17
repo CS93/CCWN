@@ -9,21 +9,14 @@ import android.os.Bundle;
 
 import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.data.Constants;
-import de.fhdw.bfws114a.data.DeviceList;
-import de.fhdw.bfws114a.data.Profile;
-import de.fhdw.bfws114a.dataInterface.DataInterface;
 
 public class Data {
 	
 	private Activity mActivity;
-	private DataInterface mDataInterface;
-	private DeviceList mDevices;
-	private String mSelectedDevice;
 	private MacAddressList mDevicelist;
 
 	public Data(Bundle b, Activity activity, MacAddressList devicelist){
-		mActivity = activity;	
-		mDataInterface = new DataInterface(activity);
+		mActivity = activity;
 		mDevicelist = devicelist;
 		if(b != null){
 		//Activity has been restarted e.g. change from Protrait to Landscape mode
@@ -40,9 +33,7 @@ public class Data {
 		this.mActivity = mActivity;
 	}
 
-	public DeviceList getDevices() {
-		return mDevices;
-	}
+
 
 	public void setDevicelist(MacAddressList mDevicelist) {
 		this.mDevicelist = mDevicelist;
@@ -52,22 +43,16 @@ public class Data {
 		return mDevicelist;
 	}
 
-	public void setDevices(DeviceList mDevices) {
-		this.mDevices = mDevices;
-	}
 
-	public void setSelectedDevice(String device){
-		mSelectedDevice = device;
-	}
+
 	private void restoreDataFromBundle(Bundle b) {
 		//restore profile
-		mDevices = (DeviceList) b.getSerializable(Constants.KEY_CURRENT_DEVICELIST);
+		mDevicelist = (MacAddressList) b.getSerializable(Constants.KEY_CURRENT_DEVICELIST);
 	}
 
 
 	public void saveDataInBundle(Bundle b){
 		//put the Current Profile in Bundle
-		b.putSerializable(Constants.KEY_CURRENT_DEVICELIST, mDevices);
+		b.putSerializable(Constants.KEY_CURRENT_DEVICELIST, mDevicelist);
 	}
-	
 }
