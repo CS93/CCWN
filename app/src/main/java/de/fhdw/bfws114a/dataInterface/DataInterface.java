@@ -22,26 +22,28 @@ public class DataInterface {
 
 	public DataInterface(Activity activity) {
 		db = new DatabaseHandler(activity);
+		db.initialize();
 		this.activity = activity;
 	}
 
 
 	public ArrayList<ChatMessage> getMessagelist() {
-
+		//DONE - CHECKED
 		//Get List of all Messages
 		return db.getAllMessages();
 	}
 
 	public void addMessageToDB(ChatMessage m){
+		//DONE - CHECKED
 		db.addMessage(Boolean.toString(m.left), m.message);//add a message to DB
 	}
 
 	public Profile getOwnProfile() {
 		//get own Profile from DB (name, status, picture)
-		return new Profile(null, "Otto", "Im Kino");
+		return db.getProfile(1);
 	}
 
 	public void saveOwnProfile(Profile newProfile) {
-		//save the own Profile in DB
+		db.writeProfile(1,newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
 	}
 }

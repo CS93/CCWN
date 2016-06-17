@@ -34,7 +34,7 @@ public class ApplicationLogic {
 
 
 	public void onSaveButtonClicked(){
-		mData.setOwnProfile(new Profile(mGui.getImage().getDrawable(), String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText())));
+		mData.setOwnProfile(new Profile(0, String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()), mGui.getImage().getDrawable()));
 		mData.saveProfile(mData.getOwnProfile());
 	}
 		
@@ -59,7 +59,7 @@ public class ApplicationLogic {
 	}
 
 	public void SaveDataFromScreen(){
-		mData.setOwnProfile(new Profile(mGui.getImage().getDrawable(), String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText())));
+		mData.setOwnProfile(new Profile(0, String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()),mGui.getImage().getDrawable()));
 	}
 
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {

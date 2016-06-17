@@ -8,12 +8,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.util.ArrayList;
 
 import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.data.Profile;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -26,9 +31,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Table names
 	private static final String TABLE_MESSAGES= "messages";
 	private static final String TABLE_SYSTEMDATA= "system";
+	private static final String TABLE_PROFILES= "profiles";
+
 
 	//// Table Columns names
-	// Table Users
+	// Table Messages
 	private static final String KEY_MESSAGES_TIMESTAMP = "timestamp";
 	private static final String KEY_MESSAGES_DATA = "data";
 	private static final String KEY_MESSAGES_SENDER = "sender";
@@ -36,7 +43,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Table System
     private static final String KEY_SYSTEMDATA_KEY = "key";
     private static final String KEY_SYSTEMDATA_VALUE = "value";
-	
+
+	// Table Profiles
+	private static final String KEY_PROFILES_ID = "id";
+	private static final String KEY_PROFILES_NAME = "name";
+	private static final String KEY_PROFILES_STATUS = "status";
+	private static final String KEY_PROFILES_PICTURE = "picture";
+
+
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -46,7 +60,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		createTableMessages(db);
         createTableSystemdata(db);
+		createTableProfiles(db);
 	}
+
+    public void initialize(){
+        if(getProfile(0)==null){
+            writeProfile(0,"Max Mustermann", "Zuhause", null);
+        }
+    }
 	
 	private void createTableMessages(SQLiteDatabase db) {
         String create_users_table =
@@ -59,13 +80,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 	
 	private void createTableSystemdata(SQLiteDatabase db) {
-        String create_userscores_table =
+        String create_systemdata_table =
                 "CREATE TABLE " + TABLE_SYSTEMDATA + "("
                         + KEY_SYSTEMDATA_KEY + " TEXT PRIMARY KEY,"
                         + KEY_SYSTEMDATA_VALUE + " TEXT"
                         + ")";
-        db.execSQL(create_userscores_table);
+        db.execSQL(create_systemdata_table);
     }
+
+	private void createTableProfiles(SQLiteDatabase db) {
+		String create_profiles_table =
+				"CREATE TABLE " + TABLE_PROFILES + "("
+						+ KEY_PROFILES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+						+ KEY_PROFILES_NAME + " TEXT,"
+						+ KEY_PROFILES_STATUS + " TEXT,"
+						+ KEY_PROFILES_PICTURE + " BLOB"
+						+ ")";
+		db.execSQL(create_profiles_table);
+	}
 
 	private void dropTableMessages() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -79,6 +111,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	private void dropTableProfiles(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS "+TABLE_PROFILES);
+		db.close();
+	}
+
 	public void clearTableMessages(){
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("delete from "+ TABLE_MESSAGES);
@@ -88,6 +126,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void clearTableSystem(){
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL("delete from "+ TABLE_SYSTEMDATA);
+		db.close();
+	}
+
+	public void clearTableProfiles(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL("delete from "+ TABLE_PROFILES);
 		db.close();
 	}
 
@@ -117,7 +161,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		// Inserting Row
 		db.insert(TABLE_MESSAGES, null, values);
-		Log.d("Database", "    DB: The following Message was added to the DB " + data);
+		Log.d("Database", "DB: The following Message was added to the DB " + data);
 		db.close(); // Closing database connection
 	}
 
@@ -183,7 +227,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_SYSTEMDATA_VALUE, value);
 
         // Inserting Row
-        db.insert(TABLE_MESSAGES, null, values);
+        db.insert(TABLE_SYSTEMDATA, null, values);
         db.close(); // Closing database connection
     }
 
@@ -222,4 +266,110 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return result;
     }
 
+
+	/***********************
+	 * All Profile Operations *
+	 ***********************
+	 */
+
+	// Adding new Profile Pair
+	void addProfile(String name, String status, Drawable picture) {
+
+		Log.d("Database", "DB: The following Profile was added to the DB: " + name);
+
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_PROFILES_NAME, name);
+		values.put(KEY_PROFILES_STATUS, status);
+
+		if(picture!=null){
+			values.put(KEY_PROFILES_PICTURE, convertDrawableToByteArray(picture));
+		}
+
+		// Inserting Row
+		db.insert(TABLE_PROFILES, null, values);
+		db.close(); // Closing database connection
+	}
+
+
+    void updateProfileByID(int id ,String newName, String newStatus, Drawable newPicture){
+
+        Log.d("Database", "DB: The following Profile was updated to the DB: " + id);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_PROFILES_NAME, newName);
+        values.put(KEY_PROFILES_STATUS, newStatus);
+
+        if(newPicture!=null){
+            values.put(KEY_PROFILES_PICTURE, convertDrawableToByteArray(newPicture));
+        }
+
+        // Inserting Row
+        db.update(TABLE_PROFILES, values, "id = ?", new String[] {String.valueOf(id)});
+        db.close(); // Closing database connection
+    }
+
+    void writeProfile(int mId, String mName, String mStatus, Drawable mPicture){
+        if(getProfile(mId)==null) addProfile(mName,mStatus,mPicture);
+        else updateProfileByID(mId, mName, mStatus, mPicture);
+    }
+
+	Profile getProfile(int id) {
+
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.query(TABLE_PROFILES, new String[]{
+						KEY_PROFILES_ID,
+						KEY_PROFILES_NAME,
+						KEY_PROFILES_STATUS,
+						KEY_PROFILES_PICTURE
+				},
+				KEY_PROFILES_ID + "=?",
+				new String[]{String.valueOf(id)}, null, null, null, null);
+		if (cursor.moveToFirst()) {
+            return new Profile(cursor.getInt(0), cursor.getString(1), cursor.getString(2), null);
+        }
+        else return null;
+
+	}
+
+    public int getProfilCount() {
+        // Returns the number of users in the DB.
+        String countQuery = "SELECT * FROM " + TABLE_PROFILES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+
+        // return count
+        return cursor.getCount();
+    }
+
+
+	/************************************
+	 * IMAGE CONVERSION AND COMPRESSION *
+	 ************************************
+	 */
+
+	byte[] convertDrawableToByteArray(Drawable picture){
+		if(picture!=null){
+            Bitmap bitmap = ((BitmapDrawable)picture).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] bitmapdata = stream.toByteArray();
+            return bitmapdata;
+        }
+        else {
+            byte[] result = new byte[1];
+            return result;
+        }
+
+	}
+
+	/*Drawable convertByteArrayToDrawable(byte[] picture){
+
+	}
+	*/
 }
