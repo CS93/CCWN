@@ -129,9 +129,13 @@ public class ApplicationLogic {
 		if(mData.getDeviceList() != null) {
 			//erase current connection
 			//mData.getManager().cancelConnect(mData.getChannel(), mListener.getConnectActionListener());
-			Log.d("Communication", "Number of Device: " + mData.getDeviceList().size());
+			Log.d("Communication", "Number of Devices in WiFi-Direct-Area: " + mData.getDeviceList().size());
 			if (mData.getDeviceList().size() > 0) {
-				for (MacAddress currentDevice : mData.getDeviceList()) {
+				//for test reasons
+				MacAddressList weWant = filtereMacAdressen();
+				Log.d("Communication", "Number of allowed Devices in WiFi-Direct-Area: " + weWant.size());
+				//in test its weWant else mData.getDeviceList()
+				for (MacAddress currentDevice : weWant) {
 					//Connect -------------------------------
 					//String address;
 					//address = getAddressList(mWifiP2pDeviceList).get(0);
@@ -144,7 +148,7 @@ public class ApplicationLogic {
 
 					if(mWifiP2pInfo == null){
 						synchronized(mData.getActivity()){
-							mData.getActivity().wait(2000);
+							mData.getActivity().wait(6000);
 						}
 					}
 					if(mWifiP2pInfo != null){
@@ -413,5 +417,21 @@ public class ApplicationLogic {
 		mData.getMessageList().add(receivedMessage);
 		//Reset EditTextField
 		mGui.getEditText().setText("");
+	}
+
+
+	//Test/hilfsmethode------------
+	private MacAddressList filtereMacAdressen(){
+		MacAddressList toReturn = new MacAddressList();
+		for (MacAddress m: mData.getDeviceList()
+			 ) {
+		//für jedes Device in der DeviceListe wird geprüft, ob es zu den erlaubten MacAdressen gehört
+			for (MacAddress mDB : mData.getDataInterface().getKnownMacAdresses() ) {
+				if(m.getMacAddress().equals(mDB.getMacAddress())){
+					toReturn.add(m);
+				}
+			}
+		}
+		return toReturn;
 	}
 }
