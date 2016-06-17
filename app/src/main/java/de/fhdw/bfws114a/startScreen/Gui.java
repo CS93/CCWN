@@ -24,6 +24,7 @@ import java.util.Iterator;
 import de.fhdw.bfws114a.R;
 import de.fhdw.bfws114a.data.ChatArrayAdapter;
 import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.data.ChatMessageList;
 
 public class Gui {
 	//components of the GUI
@@ -133,11 +134,12 @@ public class Gui {
 		this.mSwitch = mSwitch;
 	}
 
-	public void setMessages(ArrayList<ChatMessage> list){
+	public void setMessages(ChatMessageList list){
 		//put the MessageList to listview
-		if(list != null){
-			if(list.size() > 0){
-				Iterator<ChatMessage> iterator = list.iterator();
+
+		if(list.getMessageList() != null){
+			if(list.getMessageList().size() > 0){
+				Iterator<ChatMessage> iterator = list.getMessageList().iterator();
 				while(iterator.hasNext()){
 					getChatArrayAdapter().add(iterator.next());
 				}

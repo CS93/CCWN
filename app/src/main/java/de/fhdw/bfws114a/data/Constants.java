@@ -9,4 +9,5 @@ public class Constants{
         public static final String KEY_CURRENT_OWN_PROFILE = "de.fhdw.bfws114a.data.K3";
         public static final String KEY_CURRENT_DEVICELIST = "de.fhdw.bfws114a.data.K4";
         public static final String KEY_CURRENT_SWITCH_ONLINE = "de.fhdw.bfws114a.data.K5";
+        public static final String KEY_CURRENT_MESSAGELIST = "de.fhdw.bfws114a.data.K6";
 }

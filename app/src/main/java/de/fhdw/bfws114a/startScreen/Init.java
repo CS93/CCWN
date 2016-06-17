@@ -23,29 +23,7 @@ public class Init extends AppCompatActivity {
         initApplicationLogic();
         // nicht mehr nötig wg des Listeners/Listener-Klasse
         // initEventToListenerMapping();
-
-/*
-        Intent service = new Intent(this, StartedService.class);
-        PendingIntent servicePendingIntent =
-                PendingIntent.getService(this, 0, service, 0);
-
-        //Wie gross soll der Intervall sein?
-        long interval = DateUtils.MINUTE_IN_MILLIS * 2; // Alle 2 Minuten
-
-        //Wann soll der Service das erste Mal gestartet werden?
-        long firstStart = System.currentTimeMillis() + interval;
-
-        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        //am.set(AlarmManager.RTC, firstStart, servicePendingIntent);
-        //am.setRepeating(AlarmManager.RTC_WAKEUP, firstStart, interval,
-        //											servicePendingIntent);
-        am.setInexactRepeating(AlarmManager.RTC, firstStart, interval,
-                servicePendingIntent);
-
-        Log.v("Backgroundservice", "AlarmManager gesetzt");
-*/
-
-            }
+    }
 
     //Whether this activity is restarted e.g. after finishing profilesettings/deviceoverview, the method onRestart() in ApplicationLogic is called
     @Override

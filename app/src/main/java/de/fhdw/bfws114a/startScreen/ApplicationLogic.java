@@ -27,6 +27,7 @@ import de.fhdw.bfws114a.Communication.SendMessageServer;
 import de.fhdw.bfws114a.Communication.ServerInit;
 import de.fhdw.bfws114a.Navigation.Navigation;
 import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.data.ChatMessageList;
 
 public class ApplicationLogic {
 	private Data mData;
@@ -62,6 +63,36 @@ public class ApplicationLogic {
 		mGui.setMessages(mData.getMessageList());
 	}
 
+	public void onResume(){
+		// register the BroadcastReceiver with the intent values to be matched
+		if(mGui.getSwitch().isChecked()){
+			mReceiver = new WifiDirectBroadcastReceiver(this);
+			mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
+			Log.d("Communication", "Online --> call discoverPeers()");
+			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
+			if(mGui.getEditText().getText().equals("")){
+				//set Button to usual status
+				mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+
+			}
+		}
+
+	}
+
+	public void onPause(){
+		if(mReceiver != null){
+			mData.getActivity().unregisterReceiver(mReceiver);
+			mReceiver = null;
+		}
+		mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			Log.d("Communication", "Offline --> call stopPeerDiscovery()");
+			mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
+		} else {
+			Log.d("Communication", "The Api Level of the current device is to low");
+		}
+	}
+
 	private ArrayList<String> getAddressList(WifiP2pDeviceList wifiP2pDeviceList){
 		ArrayList<String> addressList;
 
@@ -73,29 +104,27 @@ public class ApplicationLogic {
 	}
 
 	public void onSendButtonClicked() throws InterruptedException {
-		if(mWifiP2pInfo != null){
+		/*if(mWifiP2pInfo != null){
 			//there is a succesful connection
-				try {
-					if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
-						// the group owner acts as serverInitThread
-						new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
-					} else {
-						if (mWifiP2pInfo.groupFormed) {
-							// the other device acts as the clientInitThread
-							new SendMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
-						}
+			try {
+				if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
+					// the group owner acts as serverInitThread
+					new SendMessageServer(mData.getActivity(), mGui, this, mGui.getEditText().getText().toString(), mData.getDeviceList()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+				} else {
+					if (mWifiP2pInfo.groupFormed) {
+						// the other device acts as the clientInitThread
+						new SendMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
 					}
-				} catch (NullPointerException e){
-					Log.d("Communication", "No Connection Info available up to now");
-					mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 				}
+			} catch (NullPointerException e){
+				Log.d("Communication", "No Connection Info available up to now");
+				mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
+			}
 		} else {
 			mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
-		}
+		}*/
 
-		/*
 		// send Data to everyone in your Peerslist
-
 		//Test whether there are any peers availabe
 		if(mData.getDeviceList() != null) {
 			//erase current connection
@@ -112,13 +141,11 @@ public class ApplicationLogic {
 					wifiP2pConfig.wps.setup = WpsInfo.PBC;
 					mData.getManager().connect(mData.getChannel(), wifiP2pConfig, mListener.getConnectActionListener());
 					//--------------------------------------------
-
 					if(mWifiP2pInfo == null){
 						synchronized (mGui){
 							mGui.wait(2000);
 						}
 					}
-
 					if(mWifiP2pInfo != null){
 						//there is a succesful connection
 						try {
@@ -135,8 +162,6 @@ public class ApplicationLogic {
 							Log.d("Communication", "No Connection Info available up to now");
 							mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 						}
-
-
 					} else {
 					mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
 					}
@@ -145,10 +170,9 @@ public class ApplicationLogic {
 				Log.d("Communication", "Devicelist is null");
 				mGui.showToast(mData.getActivity(), "Keine Geräte in ihrer Nähe, bitte erneut versuchen");
 			}
-
 		} else {
 			mGui.showToast(mData.getActivity(), "Keine Geräte in ihrer Nähe, bitte WLAN überprüfen");
-		}*/
+		}
 	}
 
 	public void showErrorMessage(String text){
@@ -172,18 +196,21 @@ public class ApplicationLogic {
 			//SimpleDataExchange.onRestart()
 
 			mReceiver = new WifiDirectBroadcastReceiver(this);
-			mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
+			//mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
 
 			Log.d("Communication", "Online --> call discoverPeers()");
 			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
+
+			//may connect at this point
+
 			//mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
 		}else {
 			//off has been selected
-
 			mData.getManager().removeGroup(mData.getChannel(), null);
-			mData.getManager().cancelConnect(mData.getChannel(), null);
-			mData.getActivity().unregisterReceiver(mReceiver);
-			mReceiver = null;
+			if(mReceiver != null){
+				mData.getActivity().unregisterReceiver(mReceiver);
+				mReceiver = null;
+			}
 			mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				Log.d("Communication", "Offline --> call stopPeerDiscovery()");
@@ -191,49 +218,21 @@ public class ApplicationLogic {
 			} else {
 				Log.d("Communication", "The Api Level of the current device is to low");
 			}
-			//Visualize beeing offline at button
+
+			//Visualize being offline at button
 			mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-			//killing the threads
+			//killing the 0threads
 			if(serverInitThread != null){
-				serverInitThread.stop();
+				serverInitThread.interrupt();
 				if(serverReceiverThread != null){
 					serverReceiverThread.cancel(false);
 				}
 			} else if(clientInitThread != null){
-				clientInitThread.stop();
+				clientInitThread.interrupt();
 				if(clientReceiverThread != null){
 					clientReceiverThread.cancel(false);
 				}
 			}
-		}
-	}
-
-
-	public void onResume(){
-		// register the BroadcastReceiver with the intent values to be matched
-		if(mGui.getSwitch().isChecked()){
-			mReceiver = new WifiDirectBroadcastReceiver(this);
-			mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
-			Log.d("Communication", "Online --> call discoverPeers()");
-			mData.getManager().discoverPeers(mData.getChannel(), mListener.getDiscoverPeersActionListener());
-			if(mGui.getEditText().getText().equals("")){
-				//set Button to usual status
-				mGui.getButtonSend().setPaintFlags(mGui.getButtonSend().getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-
-			}
-		}
-
-	}
-
-	public void onPause(){
-		mData.getActivity().unregisterReceiver(mReceiver);
-		mReceiver = null;
-		mData.getManager().cancelConnect(mData.getChannel(), mListener.getStopDiscoveryActionListener());
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			Log.d("Communication", "Offline --> call stopPeerDiscovery()");
-			mData.getManager().stopPeerDiscovery(mData.getChannel(), mListener.getStopDiscoveryActionListener());
-		} else {
-			Log.d("Communication", "The Api Level of the current device is to low");
 		}
 	}
 
@@ -258,14 +257,6 @@ public class ApplicationLogic {
 				MacAddress newDevice = new MacAddress(device.deviceAddress);
 				newDeviceList.add(newDevice);
 				Log.d("Communication","     This device has been added to DevicList: " + newDevice.getMacAddress());
-				//connect immediately to new device
-				//Connect -------------------------------
-							Log.d("Communication", "try to connect() to " + newDevice.getMacAddress());
-							WifiP2pConfig wifiP2pConfig = new WifiP2pConfig();
-							wifiP2pConfig.deviceAddress = newDevice.getMacAddress();
-							wifiP2pConfig.wps.setup = WpsInfo.PBC;
-							mData.getManager().connect(mData.getChannel(), wifiP2pConfig, mListener.getConnectActionListener());
-
 			}
 			mData.setDeviceList(newDeviceList);
 		}
@@ -416,8 +407,8 @@ public class ApplicationLogic {
 		ChatMessage receivedMessage = new ChatMessage(false, msg);
 		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
 		mGui.getChatArrayAdapter().add(receivedMessage);
-		//write message to DB
-		mData.getDataInterface().addMessageToDB(receivedMessage);
+		// save message not-persistent in data
+		mData.getMessageList().add(receivedMessage);
 	}
 
 	public void onMessageSuccesfulSend() {
@@ -425,8 +416,8 @@ public class ApplicationLogic {
 		ChatMessage receivedMessage = new ChatMessage(true, mGui.getEditText().getText().toString());
 		//add message to gui (true because the standard would be the left side and the messages of the own user used to be on right side)
 		mGui.getChatArrayAdapter().add(receivedMessage);
-		//write message to DB
-		mData.getDataInterface().addMessageToDB(receivedMessage);
+		// save message not-persistent in data
+		mData.getMessageList().add(receivedMessage);
 		//Reset EditTextField
 		mGui.getEditText().setText("");
 	}

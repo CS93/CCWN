@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.data.ChatMessageList;
 import de.fhdw.bfws114a.data.Constants;
 import de.fhdw.bfws114a.dataInterface.DataInterface;
 
@@ -21,7 +22,7 @@ public class Data {
 	
 	private Activity mActivity;
 	private DataInterface mDataInterface;
-	private ArrayList<ChatMessage> mMessageList;
+	private ChatMessageList mMessageList;
 	private String mCurrentText;
 	private boolean mSwitch_online;
 	private int mCurrentScrollPosition;
@@ -36,6 +37,7 @@ public class Data {
 		mManager = (WifiP2pManager) mActivity.getSystemService(Context.WIFI_P2P_SERVICE);
 		mChannel = mManager.initialize(mActivity, mActivity.getMainLooper(), null);
 
+		mMessageList = new ChatMessageList();
 
 		loadMessages();
 		if(b != null){
@@ -49,11 +51,11 @@ public class Data {
 		return mActivity;
 	}
 
-	public ArrayList<ChatMessage> getMessageList(){
+	public ChatMessageList getMessageList(){
 		return mMessageList;
 	}
 
-	private void setMessageList(ArrayList<ChatMessage> messageList){
+	private void setMessageList(ChatMessageList messageList){
 		mMessageList = messageList;
 	}
 
@@ -79,7 +81,7 @@ public class Data {
 
 	private void loadMessages(){
 		//load messages from Database
-		setMessageList(mDataInterface.getMessagelist());
+		setMessageList(new ChatMessageList(mDataInterface.getMessagelist()));
 	}
 
 	public WifiP2pManager.Channel getChannel() {
@@ -108,6 +110,7 @@ public class Data {
 
 	private void restoreDataFromBundle(Bundle b) {
 		//restore scrollposition and mCurrentText
+		mMessageList = (ChatMessageList) b.getSerializable(Constants.KEY_CURRENT_MESSAGELIST);
 		mCurrentText = b.getString(Constants.KEY_CURRENT_TEXT);
 		mCurrentScrollPosition = b.getInt(Constants.KEY_CURRENT_SCROLL_POSITION);
 		mSwitch_online = b.getBoolean(Constants.KEY_CURRENT_SWITCH_ONLINE);
@@ -116,6 +119,7 @@ public class Data {
 
 	public void saveDataInBundle(Bundle b){
 		//put the Current String drawable_startscreen_chat_edittext in Bundle
+		b.putSerializable(Constants.KEY_CURRENT_MESSAGELIST, mMessageList);
 		b.putString(Constants.KEY_CURRENT_TEXT, mCurrentText);
 		b.putInt(Constants.KEY_CURRENT_SCROLL_POSITION, mCurrentScrollPosition);
 		b.putBoolean(Constants.KEY_CURRENT_SWITCH_ONLINE, mSwitch_online);
