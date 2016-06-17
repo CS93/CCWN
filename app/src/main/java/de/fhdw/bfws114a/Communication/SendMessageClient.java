@@ -75,7 +75,7 @@ public class SendMessageClient extends AsyncTask<Void, String, String>{
 	protected void onProgressUpdate(String... message) {
 		super.onProgressUpdate(message);
 		for (String msg : message) {
-			Log.d("Communication", "    Server: onProgressUpdate(): " + msg);
+			Log.d("Communication", "    Client: onProgressUpdate(): " + msg);
 		}
 	}
 

@@ -3,10 +3,6 @@
  */
 package de.fhdw.bfws114a.dataInterface;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -26,73 +22,28 @@ public class DataInterface {
 
 	public DataInterface(Activity activity) {
 		db = new DatabaseHandler(activity);
+		db.initialize();
 		this.activity = activity;
-		copyDefaultXMLintoExternalFolder();
 	}
 
-
-	// load the default Time in minutes of Classes
-	public int[] getDefaultClassDurations() {
-		// Returns an Integer Array with Default Class Durations.
-		int[] timeToClasses = new int[6];
-		// The durations are in the time unit minute (1h = 60mins)
-		timeToClasses[0] = 5; // 5mins
-		timeToClasses[1] = 60; // 1h
-		timeToClasses[2] = 1440; // 1d
-		timeToClasses[3] = 10080; // 7d
-		timeToClasses[4] = 43200; // 30d
-		timeToClasses[5] = 259200; // 180d
-		return timeToClasses;
-	}
-
-
-	// If there is no XML-File in the external Storage, the default file from the Project-Directory will be copied.
-	public void copyDefaultXMLintoExternalFolder() {
-		/*String uri = Environment.getExternalStorageDirectory().toString() + FILEPATH;
-		java.io.File xmlFile = new java.io.File(uri, FILENAME);
-
-		if (!xmlFile.getParentFile().exists()) {
-			try {
-				xmlFile.getParentFile().mkdirs();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (!xmlFile.exists()) {
-			try {
-				if (xmlFile.createNewFile()) {
-					InputStream is = activity.getAssets().open("karteien.xml");
-					OutputStream out = new FileOutputStream(xmlFile);
-					byte[] buf = new byte[1024];
-					int len;
-					while ((len = is.read(buf)) > 0) {
-						out.write(buf, 0, len);
-					}
-					out.close();
-					is.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}*/
-	}
 
 	public ArrayList<ChatMessage> getMessagelist() {
+		//DONE - CHECKED
 		//Get List of all Messages
-		return null;
+		return db.getAllMessages();
 	}
 
 	public void addMessageToDB(ChatMessage m){
-		//add a message to DB
+		//DONE - CHECKED
+		db.addMessage(Boolean.toString(m.left), m.message);//add a message to DB
 	}
 
 	public Profile getOwnProfile() {
 		//get own Profile from DB (name, status, picture)
-		return new Profile(null, "Otto", "Im Kino");
+		return db.getProfile(1);
 	}
 
 	public void saveOwnProfile(Profile newProfile) {
-		//save the own Profile in DB
+		db.writeProfile(1,newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
 	}
 }
