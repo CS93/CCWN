@@ -45,13 +45,17 @@ public class Gui {
 
 	public void setListView(String[] mDevicelist) {
 		//Add bubbles to Listview
-		mListViewAdapter = new ArrayAdapter<String>(mContext, R.layout.right, mDevicelist );
+		mListViewAdapter = new ArrayAdapter<String>(mContext,
+													R.layout.right,
+													R.id.startscreen_chat_bubble,
+													mDevicelist );
 		mListView.setAdapter(mListViewAdapter);
 	}
 
 	public ListAdapter getListViewAdapter() {
 		return mListViewAdapter;
 	}
+
 
 	public void setListViewAdapter(ArrayAdapter mListViewAdapter) {
 		this.mListViewAdapter = mListViewAdapter;
