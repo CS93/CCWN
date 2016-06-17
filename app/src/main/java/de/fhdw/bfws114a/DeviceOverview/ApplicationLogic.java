@@ -5,6 +5,7 @@ package de.fhdw.bfws114a.DeviceOverview;
  */
 
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.Iterator;
 
@@ -45,16 +46,19 @@ public class ApplicationLogic {
 		}
 	}
 
-
-	public void onDeviceSelected(String name){
-		mData.setSelectedDevice(name);
-		mGui.setSelectedProfile(name);
-	}
-
 	// The acitivty should present the screen like he left it (typed in nickname, status and image)
 	public void onRestart() {
 		//apply the restored data to GUI
 		applyDataToGui();
+	}
+
+	public void applyProfileToGui(long statusId) {
+		applyStatusToGui(statusId);
+	}
+
+	private void applyStatusToGui(long statusId){
+		int shortStatusId = (int) statusId;
+		mGui.setTextViewStatus(mData.getDevicelist().getMacAddressByIndex(shortStatusId).toString());
 	}
 }
 

@@ -21,10 +21,9 @@ import de.fhdw.bfws114a.data.DeviceList;
 
 public class Gui {
 	//components of the GUI
-	private EditText mEditTextStatus;
+	private TextView mTextViewStatus;
 	private ListView mListView;
 	private ListAdapter mListViewAdapter;
-	private Data mData;
 
 	//To initialize some Objects the context is necessary
 	private Context mContext;
@@ -33,7 +32,7 @@ public class Gui {
 		act.setContentView(R.layout.activity_deviceoverview);
 		mContext = act;
 	//	map the intialized components with gui
-		//mEditTextStatus = (EditText) act.findViewById(R.id.profilesettings_status_edittext);
+		mTextViewStatus = (TextView) act.findViewById(R.id.deviceoverview_profile_name_textview);
 		mListView = (ListView) act.findViewById(R.id.deviceoverview_device_overview_listview);
 
 	}
@@ -46,7 +45,7 @@ public class Gui {
 	public void setListView(String[] mDevicelist) {
 		//Add bubbles to Listview
 		mListViewAdapter = new ArrayAdapter<String>(mContext,
-													R.layout.right,
+													R.layout.left,
 													R.id.startscreen_chat_bubble,
 													mDevicelist );
 		mListView.setAdapter(mListViewAdapter);
@@ -61,14 +60,13 @@ public class Gui {
 		this.mListViewAdapter = mListViewAdapter;
 	}
 
-	public void setDeviceList(DeviceList devices){
-		// sets names of devices in list
-
+	public TextView getTextViewStatus() {
+		return mTextViewStatus;
 	}
 
-	public void setSelectedProfile(String name){
-	 // sets name, status, picture from selected Profile to gui
 
+	public void setTextViewStatus(String TextViewStatus) {
+		this.mTextViewStatus.setText(TextViewStatus);
 	}
 
 	public void showToast (Activity act, String text){

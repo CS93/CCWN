@@ -7,6 +7,8 @@ package de.fhdw.bfws114a.DeviceOverview;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import de.fhdw.bfws114a.R;
@@ -20,6 +22,7 @@ public class EventToListenerMapping implements OnClickListener {
 		gui.getListView().setOnItemClickListener( new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+				mApplicationLogic.applyProfileToGui(id);//textView.getText().toString());
 			//TODO
 				//TextView textView = (TextView) viewClicked;
 				//String message = "You clicked # " + position + ", which is string: " + textView.getText().toSring();
@@ -27,18 +30,16 @@ public class EventToListenerMapping implements OnClickListener {
 			}
 		} );
 	}
-
-
+//}
 
 	@Override
 	public void onClick(View v) {
-		switch ( v.getId()){
-		case R.id.profilesettings_settings_save_button:
-			//sendMessage
-			mApplicationLogic.onDeviceSelected("test");
-			break;
-	}
+		//switch ( v.getId()){
+		//	case R.id.profilesettings_settings_save_button:
+		//		//sendMessage
+		//		mApplicationLogic.onDeviceSelected("test");
+		//		break;
+		//}
 
-}
-	
+	}
 }
