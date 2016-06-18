@@ -105,7 +105,11 @@ public class DataInterface {
 		return result;
 	}
 
-	public void addKnownMacAdress(String adress){
-		db.addProfile(adress,"","",null);
+	public void addKnownMacAdress(String macAdress){
+		db.writeProfile(macAdress,"","",null);
+	}
+
+	public void removeKnownMacAdress(String macAdress){
+		db.deleteProfile(macAdress);
 	}
 }
