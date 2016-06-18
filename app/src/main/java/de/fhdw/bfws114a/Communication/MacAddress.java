@@ -1,5 +1,7 @@
 package de.fhdw.bfws114a.Communication;
 
+import android.util.Log;
+
 import java.net.SocketAddress;
 
 public class MacAddress extends SocketAddress {
@@ -18,6 +20,7 @@ public class MacAddress extends SocketAddress {
     public void setMacAddress(String macAddress){
         checkMacAddress(macAddress);
         mMacAddress = macAddress;
+        Log.d("RICARDO", "MacAdressFormat: " + macAddress);
     }
 
     @Override

@@ -14,7 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.Blob;
 import java.util.ArrayList;
 
 import de.fhdw.bfws114a.data.ChatMessage;
@@ -45,7 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_SYSTEMDATA_VALUE = "value";
 
 	// Table Profiles
-	private static final String KEY_PROFILES_ID = "id";
+	private static final String KEY_PROFILES_MAC = "mac";
 	private static final String KEY_PROFILES_NAME = "name";
 	private static final String KEY_PROFILES_STATUS = "status";
 	private static final String KEY_PROFILES_PICTURE = "picture";
@@ -63,12 +62,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		createTableProfiles(db);
 	}
 
-    public void initialize(){
-        if(getProfile(0)==null){
-            writeProfile(0,"Max Mustermann", "Zuhause", null);
-        }
-    }
-	
 	private void createTableMessages(SQLiteDatabase db) {
         String create_users_table =
                 "CREATE TABLE " + TABLE_MESSAGES + "("
@@ -91,7 +84,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private void createTableProfiles(SQLiteDatabase db) {
 		String create_profiles_table =
 				"CREATE TABLE " + TABLE_PROFILES + "("
-						+ KEY_PROFILES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+						+ KEY_PROFILES_MAC + " TEXT PRIMARY KEY,"
 						+ KEY_PROFILES_NAME + " TEXT,"
 						+ KEY_PROFILES_STATUS + " TEXT,"
 						+ KEY_PROFILES_PICTURE + " BLOB"
@@ -273,13 +266,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 */
 
 	// Adding new Profile Pair
-	void addProfile(String name, String status, Drawable picture) {
+	void addProfile(String mac, String name, String status, Drawable picture) {
 
 		Log.d("Database", "DB: The following Profile was added to the DB: " + name);
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
+		values.put(KEY_PROFILES_MAC, mac);
 		values.put(KEY_PROFILES_NAME, name);
 		values.put(KEY_PROFILES_STATUS, status);
 
@@ -293,9 +287,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 
-    void updateProfileByID(int id ,String newName, String newStatus, Drawable newPicture){
+    void updateProfileByMac(String mac , String newName, String newStatus, Drawable newPicture){
 
-        Log.d("Database", "DB: The following Profile was updated to the DB: " + id);
+        Log.d("Database", "DB: The following Profile was updated to the DB: " + mac);
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -308,29 +302,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         // Inserting Row
-        db.update(TABLE_PROFILES, values, "id = ?", new String[] {String.valueOf(id)});
+        db.update(TABLE_PROFILES, values, "mac = ?", new String[] {mac});
         db.close(); // Closing database connection
     }
 
-    void writeProfile(int mId, String mName, String mStatus, Drawable mPicture){
-        if(getProfile(mId)==null) addProfile(mName,mStatus,mPicture);
-        else updateProfileByID(mId, mName, mStatus, mPicture);
+    void writeProfile(String mMac, String mName, String mStatus, Drawable mPicture){
+        if(getProfile(mMac)==null) addProfile(mMac, mName,mStatus,mPicture);
+        else updateProfileByMac(mMac, mName, mStatus, mPicture);
     }
 
-	Profile getProfile(int id) {
+	Profile getProfile(String mac) {
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.query(TABLE_PROFILES, new String[]{
-						KEY_PROFILES_ID,
+                        KEY_PROFILES_MAC,
 						KEY_PROFILES_NAME,
 						KEY_PROFILES_STATUS,
 						KEY_PROFILES_PICTURE
 				},
-				KEY_PROFILES_ID + "=?",
-				new String[]{String.valueOf(id)}, null, null, null, null);
+				KEY_PROFILES_MAC + "=?",
+				new String[]{mac}, null, null, null, null);
 		if (cursor.moveToFirst()) {
-            return new Profile(cursor.getInt(0), cursor.getString(1), cursor.getString(2), null);
+            return new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), null);
         }
         else return null;
 
@@ -347,6 +341,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    public ArrayList<Profile> getAllProfiles(){
+        ArrayList<Profile> result = new ArrayList<>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_PROFILES;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+
+        if (cursor.moveToFirst()) {
+            for(int i=0;i<cursor.getCount();i++){
+                boolean left;
+                if(cursor.getString(2).equalsIgnoreCase("true")) left=true;
+                else left=false;
+
+                Profile p=new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), null);
+                result.add(p);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
+
+        return result;
+    }
 
 	/************************************
 	 * IMAGE CONVERSION AND COMPRESSION *

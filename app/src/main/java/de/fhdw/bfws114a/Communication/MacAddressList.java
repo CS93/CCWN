@@ -33,4 +33,12 @@ public class MacAddressList implements Iterable<MacAddress>, Serializable {
         return mMacAddressList.iterator();
     }
 
+    public String[] getStringArray(){
+        String[] result = new String[mMacAddressList.size()];
+        for(int i=0;i<mMacAddressList.size();i++){
+            result[i] = mMacAddressList.get(i).getMacAddress();
+        }
+        return result;
+    }
+
 }

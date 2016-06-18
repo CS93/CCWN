@@ -9,11 +9,13 @@ import android.os.Bundle;
 
 import de.fhdw.bfws114a.Communication.MacAddressList;
 import de.fhdw.bfws114a.data.Constants;
+import de.fhdw.bfws114a.dataInterface.DataInterface;
 
 public class Data {
 	
 	private Activity mActivity;
 	private MacAddressList mDevicelist;
+	private DataInterface mDataInterface;
 
 	public Data(Bundle b, Activity activity, MacAddressList devicelist){
 		mActivity = activity;
@@ -22,6 +24,7 @@ public class Data {
 		//Activity has been restarted e.g. change from Protrait to Landscape mode
 			restoreDataFromBundle(b);
 		}
+		mDataInterface = new DataInterface(activity);
 	}
 
 	//getter and setter
@@ -33,8 +36,6 @@ public class Data {
 		this.mActivity = mActivity;
 	}
 
-
-
 	public void setDevicelist(MacAddressList mDevicelist) {
 		this.mDevicelist = mDevicelist;
 	}
@@ -43,16 +44,17 @@ public class Data {
 		return mDevicelist;
 	}
 
-
-
 	private void restoreDataFromBundle(Bundle b) {
 		//restore profile
 		mDevicelist = (MacAddressList) b.getSerializable(Constants.KEY_CURRENT_DEVICELIST);
 	}
 
-
 	public void saveDataInBundle(Bundle b){
 		//put the Current Profile in Bundle
 		b.putSerializable(Constants.KEY_CURRENT_DEVICELIST, mDevicelist);
+	}
+
+	public DataInterface getDataInterface(){
+		return mDataInterface;
 	}
 }

@@ -19,6 +19,7 @@ public class EventToListenerMapping implements OnClickListener {
 
 	public EventToListenerMapping(Gui gui, ApplicationLogic applicationLogic){
 		mApplicationLogic = applicationLogic;
+		gui.getButtonAddDevice().setOnClickListener(this);
 		gui.getListView().setOnItemClickListener( new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
@@ -34,12 +35,16 @@ public class EventToListenerMapping implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		//switch ( v.getId()){
-		//	case R.id.profilesettings_settings_save_button:
-		//		//sendMessage
-		//		mApplicationLogic.onDeviceSelected("test");
-		//		break;
-		//}
+		switch ( v.getId()) {
+			case R.id.deviceoverview_addKnownMacAdress_Button:
+				mApplicationLogic.onAddDeviceButtonClicked();
+				break;
+
+//			case R.id.profilesettings_settings_save_button:
+//				//sendMessage
+//				mApplicationLogic.onDeviceSelected("test");
+//				break;
+		}
 
 	}
 }

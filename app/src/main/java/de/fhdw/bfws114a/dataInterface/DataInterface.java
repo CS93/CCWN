@@ -3,10 +3,17 @@
  */
 package de.fhdw.bfws114a.dataInterface;
 
+import java.net.NetworkInterface;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Environment;
+import android.util.Log;
 
 import de.fhdw.bfws114a.Communication.MacAddress;
 import de.fhdw.bfws114a.Communication.MacAddressList;
@@ -24,10 +31,16 @@ public class DataInterface {
 
 	public DataInterface(Activity activity) {
 		db = new DatabaseHandler(activity);
-		db.initialize();
 		this.activity = activity;
+		initialize();
+
 	}
 
+	public void initialize(){
+		if(db.getProfile(getOwnMacAdress())==null){
+			db.writeProfile(getOwnMacAdress(),"Max Mustermann", "Zuhause", null);
+		}
+	}
 
 	public ArrayList<ChatMessage> getMessagelist() {
 		//DONE - CHECKED
@@ -42,26 +55,57 @@ public class DataInterface {
 
 	public Profile getOwnProfile() {
 		//get own Profile from DB (name, status, picture)
-		return db.getProfile(1);
+		return db.getProfile(getOwnMacAdress());
 	}
 
 	public void saveOwnProfile(Profile newProfile) {
-		db.writeProfile(1,newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
+		db.writeProfile(getOwnMacAdress(),newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
+	}
+
+	public String getOwnMacAdress(){
+		//http://stackoverflow.com/questions/10650337/how-do-you-retrieve-the-wifi-direct-mac-address
+		try {
+			List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+			for (NetworkInterface ntwInterface : interfaces) {
+
+				if (ntwInterface.getName().equalsIgnoreCase("p2p0")) {
+					byte[] byteMac = ntwInterface.getHardwareAddress();
+					if (byteMac==null){
+						return null;
+					}
+					StringBuilder strBuilder = new StringBuilder();
+					for (int i=0; i<byteMac.length; i++) {
+						strBuilder.append(String.format("%02X:", byteMac[i]));
+					}
+
+					if (strBuilder.length()>0){
+						strBuilder.deleteCharAt(strBuilder.length()-1);
+					}
+
+					return strBuilder.toString().toLowerCase();
+				}
+
+			}
+		} catch (Exception e) {
+			Log.d("RICARDO", e.getMessage());
+		}
+		return null;
 	}
 
 	public MacAddressList getKnownMacAdresses(){
 		MacAddressList result = new MacAddressList();
 
-		ArrayList<String> macadresses = new ArrayList<>();
-		macadresses.add("5c:0a:5b_da_83_d3");//s3 Ricardo
-		macadresses.add("10:d5:42:96:fc:43");//s3 mini Ricardo
-		macadresses.add("be:72:b1:70:67:62");//Carsten 1
-		macadresses.add("e6:92:fb:ce:ba:46");//Carsten 2
+		ArrayList<Profile> dbProfiles = db.getAllProfiles();
 
-		for(int i=0; i< macadresses.size(); i++){
-			result.add(new MacAddress(macadresses.get(i)));
+		for(int i=0; i< dbProfiles.size(); i++){
+			result.add(new MacAddress(dbProfiles.get(i).getMac()));
+			Log.d("RICARDO", "Known MacAdress " + i + " - "+ dbProfiles.get(i).getMac());
 		}
 
 		return result;
+	}
+
+	public void addKnownMacAdress(String adress){
+		db.addProfile(adress,"","",null);
 	}
 }

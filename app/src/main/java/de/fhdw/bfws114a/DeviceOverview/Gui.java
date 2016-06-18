@@ -4,23 +4,28 @@ package de.fhdw.bfws114a.DeviceOverview;
  * Created by Carsten on 21.04.2016.
  */
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import de.fhdw.bfws114a.R;;
 
 public class Gui {
 	//components of the GUI
 	private TextView mTextViewStatus;
+	private TextView mTextViewMacAdress;
 	private ListView mListView;
 	private ListAdapter mListViewAdapter;
+    private Button mButtonAddDevice;
 
 	//To initialize some Objects the context is necessary
 	private Context mContext;
@@ -31,7 +36,8 @@ public class Gui {
 	//	map the intialized components with gui
 		mTextViewStatus = (TextView) act.findViewById(R.id.deviceoverview_profile_name_textview);
 		mListView = (ListView) act.findViewById(R.id.deviceoverview_device_overview_listview);
-
+		mTextViewMacAdress = (TextView) act.findViewById(R.id.deviceoverview_macadress_textview);
+		mButtonAddDevice = (Button) act.findViewById(R.id.deviceoverview_addKnownMacAdress_Button);
 	}
 
 	//getter and setter for components
@@ -47,6 +53,11 @@ public class Gui {
 													mDevicelist );
 		mListView.setAdapter(mListViewAdapter);
 	}
+
+
+    public Button getButtonAddDevice() {
+        return mButtonAddDevice;
+    }
 
 	public ListAdapter getListViewAdapter() {
 		return mListViewAdapter;
@@ -64,6 +75,10 @@ public class Gui {
 
 	public void setTextViewStatus(String TextViewStatus) {
 		this.mTextViewStatus.setText(TextViewStatus);
+	}
+
+	public void setTextViewMacAdress(String MacAdress) {
+		this.mTextViewMacAdress.setText(MacAdress);
 	}
 
 	public void showToast (Activity act, String text){

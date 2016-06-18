@@ -11,16 +11,25 @@ import java.io.Serializable;
  */
 public class Profile implements Serializable {
     //attributes: id, name, status, image
-    private int mID;
+    private String mMac;
     private String mName;
     private String mStatus;
     private Drawable mImage;
 
 
-    public Profile(int mID, String mName, String mStatus, Drawable mImage) {
+    public Profile(String mMac, String mName, String mStatus, Drawable mImage) {
+        this.mMac = mMac;
         this.mImage = mImage;
         this.mName = mName;
         this.mStatus = mStatus;
+    }
+
+    public String getMac() {
+        return mMac;
+    }
+
+    public void setMac(String mMac) {
+        this.mMac = mMac;
     }
 
     public Drawable getImage() {

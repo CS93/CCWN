@@ -10,16 +10,19 @@ import android.graphics.BitmapFactory;
 import java.io.FileNotFoundException;
 
 import de.fhdw.bfws114a.data.Profile;
+import de.fhdw.bfws114a.dataInterface.DataInterface;
 
 
 public class ApplicationLogic {
 	private Data mData;
 	private Gui mGui;
+	private DataInterface mDataInterface;
 
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;
 		mGui=gui;
+		mDataInterface = new DataInterface(mData.getActivity());
 		applyDataToGui();
 	}
 
@@ -29,7 +32,7 @@ public class ApplicationLogic {
 
 
 	public void onSaveButtonClicked(){
-		mData.setOwnProfile(new Profile(0, String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()), mGui.getImage().getDrawable()));
+		mData.setOwnProfile(new Profile(mDataInterface.getOwnMacAdress(), String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()), mGui.getImage().getDrawable()));
 		mData.saveProfile(mData.getOwnProfile());
 		mData.getActivity().finish();
 	}
@@ -55,7 +58,7 @@ public class ApplicationLogic {
 	}
 
 	public void SaveDataFromScreen(){
-		mData.setOwnProfile(new Profile(0, String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()),mGui.getImage().getDrawable()));
+		mData.setOwnProfile(new Profile(mDataInterface.getOwnMacAdress(), String.valueOf(mGui.getEditTextNickname().getText()), String.valueOf(mGui.getEditTextStatus().getText()),mGui.getImage().getDrawable()));
 	}
 
 	protected void onActivityResult (int requestCode, int resultCode, Intent data) {
