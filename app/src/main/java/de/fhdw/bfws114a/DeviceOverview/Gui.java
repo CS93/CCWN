@@ -33,8 +33,8 @@ public class Gui {
 		act.setContentView(R.layout.activity_deviceoverview);
 		mContext = act;
 	//	map the intialized components with gui
-        mTextViewName = (TextView) act.findViewById(R.id.deviceoverview_profile_status_textview);
-        mTextViewStatus = (TextView) act.findViewById(R.id.deviceoverview_profile_name_textview);
+        mTextViewName = (TextView) act.findViewById(R.id.deviceoverview_profile_name_textview);
+        mTextViewStatus = (TextView) act.findViewById(R.id.deviceoverview_profile_status_textview);
 		mListView = (ListView) act.findViewById(R.id.deviceoverview_device_overview_listview);
 		mTextViewOwnMacAdress = (TextView) act.findViewById(R.id.deviceoverview_macadress_textview);
 		mButtonAddDevice = (Button) act.findViewById(R.id.deviceoverview_addKnownMacAdress_Button);

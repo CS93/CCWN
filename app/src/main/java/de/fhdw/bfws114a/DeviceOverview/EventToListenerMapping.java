@@ -55,11 +55,6 @@ public class EventToListenerMapping implements OnClickListener {
 			case R.id.deviceoverview_addKnownMacAdress_Button:
 				mApplicationLogic.onAddDeviceButtonClicked();
 				break;
-
-//			case R.id.profilesettings_settings_save_button:
-//				//sendMessage
-//				mApplicationLogic.onDeviceSelected("test");
-//				break;
 		}
 
 	}

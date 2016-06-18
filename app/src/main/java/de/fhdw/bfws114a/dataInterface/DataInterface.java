@@ -20,7 +20,6 @@ import de.fhdw.bfws114a.data.Profile;
 public class DataInterface {
 
 	private DatabaseHandler db;
-	private int[] timeToClasses;
 	private Activity activity;
 
 	public DataInterface(Activity activity) {
@@ -53,7 +52,7 @@ public class DataInterface {
 	}
 
 	public void saveOwnProfile(Profile newProfile) {
-		if(!newProfile.getMac().equalsIgnoreCase("00:00:00:00:00:00")) db.writeProfile(getOwnMacAdress(),newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
+		if(!newProfile.getMac().equals("00:00:00:00:00:00")) db.writeProfile(getOwnMacAdress(),newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
 	}
 
 	public Profile getProfile(String macAdress){
