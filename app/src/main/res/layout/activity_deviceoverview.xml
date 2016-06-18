@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="test"
+
             android:textColor="@color/black"
             android:textSize="50sp"/>
 
@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="testest"
+
             android:textColor="@color/black"
             android:layout_below="@id/deviceoverview_profile_name_textview"
             />
