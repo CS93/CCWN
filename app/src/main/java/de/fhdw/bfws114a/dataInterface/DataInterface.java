@@ -9,10 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.Environment;
+
 import android.util.Log;
 
 import de.fhdw.bfws114a.Communication.MacAddress;
@@ -21,9 +18,6 @@ import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.data.Profile;
 
 public class DataInterface {
-
-	private final static String FILEPATH = "/android/data/de.fhdw.LernKartei/";
-	private final static String FILENAME = "karteien.xml";
 
 	private DatabaseHandler db;
 	private int[] timeToClasses;
@@ -59,7 +53,11 @@ public class DataInterface {
 	}
 
 	public void saveOwnProfile(Profile newProfile) {
-		db.writeProfile(getOwnMacAdress(),newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
+		if(!newProfile.getMac().equalsIgnoreCase("00:00:00:00:00:00")) db.writeProfile(getOwnMacAdress(),newProfile.getName(), newProfile.getStatus(), newProfile.getImage());
+	}
+
+	public Profile getProfile(String macAdress){
+		return db.getProfile(macAdress);
 	}
 
 	public String getOwnMacAdress(){
@@ -71,7 +69,7 @@ public class DataInterface {
 				if (ntwInterface.getName().equalsIgnoreCase("p2p0")) {
 					byte[] byteMac = ntwInterface.getHardwareAddress();
 					if (byteMac==null){
-						return null;
+						return "00:00:00:00:00:00";
 					}
 					StringBuilder strBuilder = new StringBuilder();
 					for (int i=0; i<byteMac.length; i++) {
@@ -89,7 +87,7 @@ public class DataInterface {
 		} catch (Exception e) {
 			Log.d("RICARDO", e.getMessage());
 		}
-		return null;
+		return "00:00:00:00:00:00";
 	}
 
 	public MacAddressList getKnownMacAdresses(){
@@ -106,7 +104,7 @@ public class DataInterface {
 	}
 
 	public void addKnownMacAdress(String macAdress){
-		db.writeProfile(macAdress,"","",null);
+		if(!macAdress.equalsIgnoreCase("00:00:00:00:00:00"))db.writeProfile(macAdress,"No Name","No Status",null);
 	}
 
 	public void removeKnownMacAdress(String macAdress){

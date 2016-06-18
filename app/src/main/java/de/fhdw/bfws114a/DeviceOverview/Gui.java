@@ -15,14 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import de.fhdw.bfws114a.R;;
 
 public class Gui {
 	//components of the GUI
+	private TextView mTextViewName;
 	private TextView mTextViewStatus;
-	private TextView mTextViewMacAdress;
+	private TextView mTextViewOwnMacAdress;
 	private ListView mListView;
 	private ListAdapter mListViewAdapter;
     private Button mButtonAddDevice;
@@ -34,9 +33,10 @@ public class Gui {
 		act.setContentView(R.layout.activity_deviceoverview);
 		mContext = act;
 	//	map the intialized components with gui
-		mTextViewStatus = (TextView) act.findViewById(R.id.deviceoverview_profile_name_textview);
+        mTextViewName = (TextView) act.findViewById(R.id.deviceoverview_profile_status_textview);
+        mTextViewStatus = (TextView) act.findViewById(R.id.deviceoverview_profile_name_textview);
 		mListView = (ListView) act.findViewById(R.id.deviceoverview_device_overview_listview);
-		mTextViewMacAdress = (TextView) act.findViewById(R.id.deviceoverview_macadress_textview);
+		mTextViewOwnMacAdress = (TextView) act.findViewById(R.id.deviceoverview_macadress_textview);
 		mButtonAddDevice = (Button) act.findViewById(R.id.deviceoverview_addKnownMacAdress_Button);
 	}
 
@@ -73,12 +73,16 @@ public class Gui {
 	}
 
 
-	public void setTextViewStatus(String TextViewStatus) {
-		this.mTextViewStatus.setText(TextViewStatus);
+	public void setTextViewName(String name) {
+		this.mTextViewName.setText(name);
 	}
 
-	public void setTextViewMacAdress(String MacAdress) {
-		this.mTextViewMacAdress.setText(MacAdress);
+    public void setTextViewStatus(String status) {
+        this.mTextViewStatus.setText(status);
+    }
+
+	public void setTextViewOwnMacAdress(String MacAdress) {
+		this.mTextViewOwnMacAdress.setText(MacAdress);
 	}
 
 	public void showToast (Activity act, String text){

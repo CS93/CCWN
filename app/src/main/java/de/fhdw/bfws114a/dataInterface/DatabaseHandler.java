@@ -212,7 +212,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
 	
 	// Adding new Key/Value Pair
-    void addSystemdata(String key, String value) {
+    public void addSystemdata(String key, String value) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -266,7 +266,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 */
 
 	// Adding new Profile Pair
-	void addProfile(String mac, String name, String status, Drawable picture) {
+	private void addProfile(String mac, String name, String status, Drawable picture) {
 
 		Log.d("Database", "DB: The following Profile was added to the DB: " + name);
 
@@ -287,7 +287,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 
-    void updateProfileByMac(String mac , String newName, String newStatus, Drawable newPicture){
+    private void updateProfileByMac(String mac , String newName, String newStatus, Drawable newPicture){
 
         Log.d("Database", "DB: The following Profile was updated to the DB: " + mac);
 
@@ -306,12 +306,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    void writeProfile(String mMac, String mName, String mStatus, Drawable mPicture){
+    public void writeProfile(String mMac, String mName, String mStatus, Drawable mPicture){
         if(getProfile(mMac)==null) addProfile(mMac, mName,mStatus,mPicture);
         else updateProfileByMac(mMac, mName, mStatus, mPicture);
     }
 
-	Profile getProfile(String mac) {
+    public Profile getProfile(String mac) {
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
@@ -322,13 +322,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 						KEY_PROFILES_PICTURE
 				},
 				KEY_PROFILES_MAC + "=?",
-				new String[]{mac}, null, null, null, null);
-		if (cursor.moveToFirst()) {
+				new String[]{mac}, null, null, null);
+        if (cursor.moveToFirst()) {
             return new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), null);
         }
         else return null;
 
 	}
+
+    public void deleteProfile(String mac) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PROFILES, KEY_PROFILES_MAC + " = ?",
+                new String[] { mac });
+        db.close();
+    }
 
     public int getProfilCount() {
         // Returns the number of users in the DB.
@@ -372,7 +379,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 ************************************
 	 */
 
-	byte[] convertDrawableToByteArray(Drawable picture){
+    private byte[] convertDrawableToByteArray(Drawable picture){
 		if(picture!=null){
             Bitmap bitmap = ((BitmapDrawable)picture).getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();

@@ -9,11 +9,11 @@ import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.Communication.MacAddressList;
+
+import de.fhdw.bfws114a.data.Profile;
 
 
 public class ApplicationLogic {
@@ -31,7 +31,7 @@ public class ApplicationLogic {
 	private void applyDataToGui() {
 		//if ( mData.getDevicelist() )
 
-		mGui.setTextViewMacAdress(mData.getDataInterface().getOwnMacAdress());
+		mGui.setTextViewOwnMacAdress(mData.getDataInterface().getOwnMacAdress());
 
         Log.d("RICARDO", "DeviceOverview/ApplyDataToGui aufgerufen");
 
@@ -79,14 +79,23 @@ public class ApplicationLogic {
 		applyDataToGui();
 	}
 
-	public void applyProfileToGui(long statusId) {
-		applyStatusToGui(statusId);
-	}
 
-	private void applyStatusToGui(long statusId){
-		int shortStatusId = (int) statusId;
-		mGui.setTextViewStatus(mData.getDevicelist().getMacAddressByIndex(shortStatusId).toString());
-	}
+    public void applyProfileToGui(String macAdress) {
+
+        Profile p = mData.getDataInterface().getProfile(macAdress);
+
+        applyStatusToGui(p.getStatus());
+        applyNameToGui(p.getName());
+    }
+
+
+    private void applyNameToGui(String name){
+        mGui.setTextViewName(name);
+    }
+
+    private void applyStatusToGui(String status){
+        mGui.setTextViewStatus(status);
+    }
 
 	public void onAddDeviceButtonClicked(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(mData.getActivity());
@@ -122,5 +131,36 @@ public class ApplicationLogic {
 
 		builder.show();
 	}
+
+    public void removeKnownDeviceClicked(final String macAdress){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mData.getActivity());
+        builder.setTitle("Bekanntes Gerät löschen");
+
+        // Set up the input
+        final TextView text = new TextView(mData.getActivity());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        text.setText("Sind Sie sicher dass Sie das Gerät \"" + macAdress + "\" von der Liste der bekannten Geräte entfernen möchten?");
+        builder.setView(text);
+
+        // Set up the buttons
+        builder.setPositiveButton("Entfernen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mData.getDataInterface().removeKnownMacAdress(macAdress);
+                onRestart();
+
+            }
+        });
+        builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+
+        builder.show();
+    }
 
 }
