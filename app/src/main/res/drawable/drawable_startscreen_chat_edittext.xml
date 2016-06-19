@@ -11,7 +11,7 @@
                     android:shape="rectangle">
                     <stroke
                         android:width="2dp"
-                        android:color="@color/colorPrimaryDark"/>
+                        android:color="@color/gray"/>
                 </shape>
             </item>
             <item android:state_enabled="true">
