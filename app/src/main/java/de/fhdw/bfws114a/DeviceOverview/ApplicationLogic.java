@@ -50,18 +50,30 @@ public class ApplicationLogic {
 
         ArrayList<String> resultList = new ArrayList<>();
 
-        for (int i = 1; i < knownDevices.length; i++) {
-            Log.d("RICARDO", "KnownDevice: "+ knownDevices[i]);
+        for (int i = 0; i < knownDevices.length; i++) {
+            Log.d("RICARDO", "KnownDevice " + i + " :" +knownDevices[i]);
 
-            if(foundDevices.length!=0) {
+            if(foundDevices.length!=0 ) {
                 for (int j = 0; j < foundDevices.length; j++) {
                     Log.d("RICARDO", "  Compare with Found Device: " + foundDevices[j]);
                     if (knownDevices[i].equalsIgnoreCase(foundDevices[j])) {
+                        Log.d("RICARDO", "    --> MATCH --> Device ist Online!");
+
                         resultList.add(knownDevices[i] + " - ONLINE");
-                    } else resultList.add(knownDevices[i]);
+                        Log.d("RICARDO", "Zu result list hinzugefügt: \""+ knownDevices[i] + " - ONLINE\"");
+
+                    }
+                    else{
+                        resultList.add(knownDevices[i]);
+                        Log.d("RICARDO", "Zu result list hinzugefügt: \""+ knownDevices[i] + "\"");
+
+                    }
                 }
             }
-            else resultList.add(knownDevices[i]);
+            else{
+                resultList.add(knownDevices[i]);
+                Log.d("RICARDO", "Zu result list hinzugefügt: \""+ knownDevices[i] + "\"");
+            }
         }
 
         String[] result = new String[resultList.size()];
@@ -107,6 +119,7 @@ public class ApplicationLogic {
 		input.setInputType(InputType.TYPE_CLASS_TEXT);
 		builder.setView(input);
 
+
 		// Set up the buttons
 		builder.setPositiveButton("Hinzufügen", new DialogInterface.OnClickListener() {
 			@Override
@@ -122,12 +135,19 @@ public class ApplicationLogic {
                 }
 			}
 		});
-		builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+//		builder.setNeutralButton("QR-Code", new DialogInterface.OnClickListener(){
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+        builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
 		});
+
 
 		builder.show();
 	}
