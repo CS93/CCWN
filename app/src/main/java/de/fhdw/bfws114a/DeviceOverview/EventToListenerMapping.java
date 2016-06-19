@@ -26,12 +26,15 @@ public class EventToListenerMapping implements OnClickListener {
 			public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 
 				String selectedMacAdress = (String) parent.getItemAtPosition(position);
+				if(selectedMacAdress.endsWith(" - ONLINE")){
+					selectedMacAdress = selectedMacAdress.substring(0,selectedMacAdress.length()-(" - ONLINE").length());
+				}
 
 				mApplicationLogic.applyProfileToGui(selectedMacAdress);//textView.getText().toString());
 			//TODO
 				//TextView textView = (TextView) viewClicked;
 				//String message = "You clicked # " + position + ", which is string: " + textView.getText().toSring();
-				//Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show;
+				//Toast.makeText(MainActivity.thi, message, Toast.LENGTH_LONG).show;
 			}
 
 		});
@@ -39,6 +42,10 @@ public class EventToListenerMapping implements OnClickListener {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View viewClicked, int position, long id) {
 				String selectedMacAdress = (String) parent.getItemAtPosition(position);
+
+				if(selectedMacAdress.endsWith(" - ONLINE")){
+					selectedMacAdress = selectedMacAdress.substring(0,selectedMacAdress.length()-(" - ONLINE").length());
+				}
 
 				mApplicationLogic.removeKnownDeviceClicked(selectedMacAdress);
 				return true;
