@@ -16,8 +16,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.MacAddress;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.data.Profile;
 
@@ -47,7 +47,7 @@ public class DataInterface {
 
 	public void addMessageToDB(ChatMessage m){
 		//DONE - CHECKED
-		db.addMessage(Boolean.toString(m.left), m.message);//add a message to DB
+		db.addMessage(Boolean.toString(m.isLeft()), m.getMessage());//add a message to DB
 	}
 
 	public Profile getOwnProfile() {

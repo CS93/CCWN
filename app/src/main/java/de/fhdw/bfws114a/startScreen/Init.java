@@ -2,7 +2,7 @@ package de.fhdw.bfws114a.startScreen;
 
 
 /**
- * Created by Carsten on 16.04.2016.
+ * Created by Carsten Schlender.
  */
 
 import android.support.v7.app.AppCompatActivity;

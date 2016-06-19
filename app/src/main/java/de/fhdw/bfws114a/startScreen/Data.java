@@ -1,19 +1,14 @@
 package de.fhdw.bfws114a.startScreen;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender.
  */
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
-import de.fhdw.bfws114a.Communication.MacAddressList;
-import de.fhdw.bfws114a.data.ChatMessage;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.data.ChatMessageList;
 import de.fhdw.bfws114a.data.Constants;
 import de.fhdw.bfws114a.dataInterface.DataInterface;

@@ -1,5 +1,7 @@
 package de.fhdw.bfws114a.Communication;
-
+/**
+ * Created by Carsten Schlender.
+ */
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

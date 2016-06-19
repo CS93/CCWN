@@ -1,7 +1,7 @@
 package de.fhdw.bfws114a.startScreen;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender.
  */
 
 import android.content.BroadcastReceiver;
@@ -17,8 +17,8 @@ import android.util.Log;
 import java.util.Iterator;
 
 import de.fhdw.bfws114a.Communication.ClientInit;
-import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.MacAddress;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.Communication.ReceiveMessageClient;
 import de.fhdw.bfws114a.Communication.ReceiveMessageServer;
 import de.fhdw.bfws114a.Communication.SendMessageClient;
@@ -37,8 +37,8 @@ public class ApplicationLogic {
 	private Listener mListener;
 	private WifiP2pDeviceList mWifiP2pDeviceList;
 	private WifiP2pInfo mWifiP2pInfo;
-	private ReceiveMessageClient clientReceiverThread;
-	private ReceiveMessageServer serverReceiverThread;
+	private ReceiveMessageClient clientReceiverThread = null;
+	private ReceiveMessageServer serverReceiverThread = null;
 	private ServerInit serverInitThread;
 	private ClientInit clientInitThread;
 
@@ -237,14 +237,14 @@ public class ApplicationLogic {
 				serverInitThread.interrupt();
 				serverInitThread = null;
 				if(serverReceiverThread != null){
-					serverReceiverThread.cancel(false);
+					serverReceiverThread.cancel(true);
 					serverReceiverThread = null;
 				}
 			} else if(clientInitThread != null){
 				clientInitThread.interrupt();
 				clientInitThread = null;
 				if(clientReceiverThread != null){
-					clientReceiverThread.cancel(false);
+					clientReceiverThread.cancel(true);
 					clientReceiverThread = null;
 				}
 			}

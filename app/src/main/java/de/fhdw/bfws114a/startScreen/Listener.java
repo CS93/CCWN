@@ -1,5 +1,7 @@
 package de.fhdw.bfws114a.startScreen;
-
+/**
+ * Created by Carsten Schlender.
+ */
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;

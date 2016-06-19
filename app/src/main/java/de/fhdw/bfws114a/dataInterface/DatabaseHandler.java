@@ -2,7 +2,9 @@
  * @author Ricardo La Valle
  */
 package de.fhdw.bfws114a.dataInterface;
-
+/**
+ * Created by Ricardo La Valle.
+ */
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

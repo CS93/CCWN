@@ -1,9 +1,8 @@
 package de.fhdw.bfws114a.startScreen;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender.
  */
-
 
 import android.app.Activity;
 import android.content.Context;

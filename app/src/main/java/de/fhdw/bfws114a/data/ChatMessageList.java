@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import de.fhdw.bfws114a.Communication.MacAddress;
-
 /**
- * Created by Carsten on 16.06.2016.
+ * Created by Carsten Schlender.
  */
+
 public class ChatMessageList implements Iterable<ChatMessage>,Serializable{
     private ArrayList<ChatMessage> mMessageList;
 
