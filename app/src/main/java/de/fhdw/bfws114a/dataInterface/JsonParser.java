@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Techcom on 28.04.16.
+ * Created by Ricardo La Valle.
  */
 
 

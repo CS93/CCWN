@@ -1,11 +1,15 @@
 package de.fhdw.bfws114a.Communication;
-
+/**
+ * Created by Carsten Schlender.
+ */
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,6 +21,7 @@ import de.fhdw.bfws114a.startScreen.Gui;
 
 
 public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
+	private static final int PORT = 8988;
 	private Context mContext;
 	private Gui mGui;
 	private String mMessage;
@@ -33,7 +38,9 @@ public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
 	@Override
 	protected String doInBackground(Void... params) {
 		try {
-			serverSocket = new ServerSocket(8988);
+			serverSocket = new ServerSocket();
+			serverSocket.setReuseAddress(true);
+			serverSocket.bind(new InetSocketAddress(PORT));
 			while (true) {
 				Socket clientSocket = serverSocket.accept();
 

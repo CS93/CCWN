@@ -1,7 +1,7 @@
 package de.fhdw.bfws114a.data;
 
 /**
- * Created by Carsten on 19.05.2016.
+ * Created by Carsten Schlender.
  */
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -42,13 +42,13 @@ public class ChatArrayAdapter extends ArrayAdapter<ChatMessage> {
         ChatMessage chatMessageObj = getItem(position);
         View row;
         LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (chatMessageObj.left) {
+        if (chatMessageObj.isLeft()) {
             row = inflater.inflate(R.layout.right, parent, false);
         }else{
             row = inflater.inflate(R.layout.left, parent, false);
         }
         chatText = (TextView) row.findViewById(R.id.startscreen_chat_bubble);
-        chatText.setText(chatMessageObj.message);
+        chatText.setText(chatMessageObj.getMessage());
         return row;
     }
 }

@@ -1,5 +1,7 @@
-package de.fhdw.bfws114a.Communication;
-
+package de.fhdw.bfws114a.data;
+/**
+ * Created by Carsten Schlender.
+ */
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;

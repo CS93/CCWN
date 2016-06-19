@@ -1,5 +1,7 @@
 package de.fhdw.bfws114a.Communication;
-
+/**
+ * Created by Carsten Schlender.
+ */
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;

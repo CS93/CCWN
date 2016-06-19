@@ -1,19 +1,14 @@
 package de.fhdw.bfws114a.Communication;
-
-import java.io.BufferedInputStream;
+/**
+ * Created by Carsten Schlender.
+ */
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-
-import android.app.ActivityManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.startScreen.ApplicationLogic;
 import de.fhdw.bfws114a.startScreen.Gui;
 

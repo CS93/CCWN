@@ -7,8 +7,9 @@ import android.text.Editable;
 import java.io.Serializable;
 
 /**
- * Created by Carsten on 28.04.2016.
+ * Created by Carsten Schlender.
  */
+
 public class Profile implements Serializable {
     //attributes: id, name, status, image
     private String mMac;
