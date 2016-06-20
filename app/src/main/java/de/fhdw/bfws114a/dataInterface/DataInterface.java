@@ -1,6 +1,3 @@
-/**
- * @author Ricardo La Valle
- */
 package de.fhdw.bfws114a.dataInterface;
 
 import java.io.ByteArrayOutputStream;
@@ -8,9 +5,7 @@ import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import android.app.Activity;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,6 +15,10 @@ import de.fhdw.bfws114a.data.MacAddress;
 import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.data.Profile;
+
+/**
+ * Created by Ricardo La Valle.
+ */
 
 public class DataInterface {
 

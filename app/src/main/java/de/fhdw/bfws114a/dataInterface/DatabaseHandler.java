@@ -1,26 +1,18 @@
-/**
- * @author Ricardo La Valle
- */
 package de.fhdw.bfws114a.dataInterface;
-/**
- * Created by Ricardo La Valle.
- */
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
-
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.data.Profile;
 
+/**
+ * Created by Ricardo La Valle.
+ */
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 

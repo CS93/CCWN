@@ -10,7 +10,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import de.fhdw.bfws114a.data.Profile;
@@ -20,7 +19,6 @@ public class ApplicationLogic {
 	private Data mData;
 	private Gui mGui;
 	private static final String TAG = "DeviceOverview";
-
 
 	ApplicationLogic(Data data, Gui gui){
 		mData=data;

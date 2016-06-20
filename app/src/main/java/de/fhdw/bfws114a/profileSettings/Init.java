@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import de.fhdw.bfws114a.R;
-
 public class Init extends AppCompatActivity {
 
     private Data mData;

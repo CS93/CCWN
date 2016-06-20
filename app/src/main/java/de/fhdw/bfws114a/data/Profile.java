@@ -1,9 +1,5 @@
 package de.fhdw.bfws114a.data;
 
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.text.Editable;
-
 import java.io.Serializable;
 
 /**

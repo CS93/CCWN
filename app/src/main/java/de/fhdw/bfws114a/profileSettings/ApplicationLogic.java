@@ -5,12 +5,9 @@ package de.fhdw.bfws114a.profileSettings;
  */
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-
 import java.io.FileNotFoundException;
-
 import de.fhdw.bfws114a.data.Profile;
 import de.fhdw.bfws114a.dataInterface.DataInterface;
 

@@ -54,7 +54,6 @@ public class Gui {
 		mListView.setAdapter(mListViewAdapter);
 	}
 
-
     public Button getButtonAddDevice() {
         return mButtonAddDevice;
     }

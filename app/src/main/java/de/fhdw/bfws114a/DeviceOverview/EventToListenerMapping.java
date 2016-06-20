@@ -4,13 +4,9 @@ package de.fhdw.bfws114a.DeviceOverview;
  * Created by Samira Schorre/ Ricardo La Valle.
  */
 
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import de.fhdw.bfws114a.R;
 
@@ -48,8 +44,6 @@ public class EventToListenerMapping implements OnClickListener {
 		});
 
 	}
-
-
 
 	@Override
 	public void onClick(View v) {
