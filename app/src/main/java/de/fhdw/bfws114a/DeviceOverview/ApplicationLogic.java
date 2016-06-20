@@ -46,7 +46,7 @@ public class ApplicationLogic {
 
         ArrayList<String> resultList = new ArrayList<>();
 
-        for (int i = 0; i < knownDevices.length; i++) {
+        for (int i = 1; i < knownDevices.length; i++) {
             Log.d("RICARDO", "KnownDevice " + i + " :" +knownDevices[i]);
 
             if(foundDevices.length!=0 ) {
@@ -83,7 +83,7 @@ public class ApplicationLogic {
 	public void onRestart() {
 		//apply the restored data to GUI
 		applyDataToGui();
-        applyProfileToGui(mData.getmSelectedMacAdress());
+        //applyProfileToGui(mData.getmSelectedMacAdress());
 	}
 
 
