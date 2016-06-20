@@ -84,15 +84,15 @@
 
         <ImageView
             android:id="@+id/deviceoverview_profile_picture_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
             android:maxHeight="150dp"
             android:maxWidth="100dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/dscn8598" />
+            android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/deviceoverview_profile_status_textview"
