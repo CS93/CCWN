@@ -136,6 +136,9 @@ public class ApplicationLogic {
 		if((mGui.getEditText().getText().toString().equals("")) || (mGui.getEditText().getText().toString().equals(null))){
 			mGui.showToast(mData.getActivity(), "Der Versand leerer Nachrichten ist nicht möglich");
 			return;
+		}  else if(mGui.getEditText().getText().toString().length() > 100){
+			mGui.showToast(mData.getActivity(), "Es können nur maximal 100 Zeichen lange Nachrichten versendet werden");
+			return;
 		}
 
 		// send Data to everyone in your Peerslist
