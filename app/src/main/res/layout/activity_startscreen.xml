@@ -76,7 +76,8 @@
                 android:hint="Nachricht"
                 android:textColorHint="@color/colorPrimary"
                 android:textCursorDrawable="@null"
-                android:maxLength="140"/>
+                android:maxLength="140"
+                android:inputType="textMultiLine"/>
                 android:background="@drawable/drawable_startscreen_chat_edittext"/>
 
             <Button
