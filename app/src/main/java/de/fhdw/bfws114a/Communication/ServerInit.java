@@ -25,6 +25,7 @@ public class ServerInit extends Thread{
     @Override
     public void run() {
         clients.clear();
+        Log.d(TAG, "Server Init started");
 
         try {
             serverSocket = new ServerSocket(SERVER_PORT);

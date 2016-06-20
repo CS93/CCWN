@@ -21,6 +21,7 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 	private ApplicationLogic mAppLogic;
 	private ServerSocket socket;
 	private static final int SOCKET_TIMEOUT = 5000;
+	private boolean isNotCancelled = true;
 
 	public ReceiveMessageClient(Context context, Gui gui, ApplicationLogic applogic, String serverIp){
 		mContext = context;
@@ -33,7 +34,7 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 	protected String doInBackground(Void... params) {
 		try {
 			socket = new ServerSocket(SERVER_PORT);
-			while(true){
+			while(isNotCancelled){
 				Socket destinationSocket = socket.accept();
 				
 				InputStream inputStream = destinationSocket.getInputStream();
@@ -61,6 +62,8 @@ public class ReceiveMessageClient extends AsyncTask<Void, String, String> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//it is cancelled now
+		isNotCancelled = false;
 		super.onCancelled();
 	}
 

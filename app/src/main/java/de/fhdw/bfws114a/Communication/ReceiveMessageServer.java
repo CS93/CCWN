@@ -25,9 +25,9 @@ public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
 	private Context mContext;
 	private Gui mGui;
 	private String mMessage;
-	private int mReceived;
 	private ApplicationLogic mAppLogic;
 	private ServerSocket serverSocket;
+	private boolean isNotCancelled = true;
 
 	public ReceiveMessageServer(Context context, Gui gui, ApplicationLogic applogic) {
 		this.mContext = context;
@@ -37,11 +37,12 @@ public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
 
 	@Override
 	protected String doInBackground(Void... params) {
+		Log.d("Communication", "doInBackground: ReceiveMessageServer started");
 		try {
-			serverSocket = new ServerSocket();
-			serverSocket.setReuseAddress(true);
-			serverSocket.bind(new InetSocketAddress(PORT));
-			while (true) {
+				serverSocket = new ServerSocket(8988);
+				serverSocket.setReuseAddress(true);
+
+			while (isNotCancelled) {
 				Socket clientSocket = serverSocket.accept();
 
 				InputStream inputStream = clientSocket.getInputStream();
@@ -70,6 +71,8 @@ public class ReceiveMessageServer extends AsyncTask<Void, String, String> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//it is cancelled now
+		isNotCancelled = false;
 		super.onCancelled();
 	}
 

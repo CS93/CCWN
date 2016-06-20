@@ -41,6 +41,7 @@ public class SendMessageServer extends AsyncTask<Void, String, String> {
 		//Send the message to clients
 		try {
 			ArrayList<InetAddress> listClients = ServerInit.clients;
+			publishProgress("I'm as Server sending: to"+ ServerInit.clients.size() + " Clients");
 			for(InetAddress addr : listClients){
 				Socket socket = new Socket();
 				socket.setReuseAddress(true);
