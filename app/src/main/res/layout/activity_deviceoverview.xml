@@ -92,7 +92,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/logowithoutbackgound" />
+            android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/deviceoverview_profile_status_textview"
