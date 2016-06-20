@@ -1,7 +1,7 @@
 package de.fhdw.bfws114a.startScreen;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender.
  */
 
 import android.content.BroadcastReceiver;
@@ -17,8 +17,8 @@ import android.util.Log;
 import java.util.Iterator;
 
 import de.fhdw.bfws114a.Communication.ClientInit;
-import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.MacAddress;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.Communication.ReceiveMessageClient;
 import de.fhdw.bfws114a.Communication.ReceiveMessageServer;
 import de.fhdw.bfws114a.Communication.SendMessageClient;
@@ -37,8 +37,8 @@ public class ApplicationLogic {
 	private Listener mListener;
 	private WifiP2pDeviceList mWifiP2pDeviceList;
 	private WifiP2pInfo mWifiP2pInfo;
-	private ReceiveMessageClient clientReceiverThread;
-	private ReceiveMessageServer serverReceiverThread;
+	private ReceiveMessageClient clientReceiverThread = null;
+	private ReceiveMessageServer serverReceiverThread = null;
 	private ServerInit serverInitThread;
 	private ClientInit clientInitThread;
 
@@ -68,6 +68,7 @@ public class ApplicationLogic {
 			//make sure that the receiver isnt active
 			if(mReceiverRegistered == false){
 				mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
+				mReceiverRegistered = true;
 			}
 
 			Log.d("Communication", "Online --> call discoverPeers()");
@@ -79,6 +80,7 @@ public class ApplicationLogic {
 		//make sure that the receiver is active
 		if(mReceiverRegistered){
 			mData.getActivity().unregisterReceiver(mReceiver);
+			mReceiverRegistered = false;
 		}
 		mData.getManager().removeGroup(mData.getChannel(), mListener.getStopDiscoveryActionListener());
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -134,6 +136,9 @@ public class ApplicationLogic {
 		if((mGui.getEditText().getText().toString().equals("")) || (mGui.getEditText().getText().toString().equals(null))){
 			mGui.showToast(mData.getActivity(), "Der Versand leerer Nachrichten ist nicht möglich");
 			return;
+		}  else if(mGui.getEditText().getText().toString().length() > 100){
+			mGui.showToast(mData.getActivity(), "Es können nur maximal 100 Zeichen lange Nachrichten versendet werden");
+			return;
 		}
 
 		// send Data to everyone in your Peerslist
@@ -167,16 +172,16 @@ public class ApplicationLogic {
 						try {
 							if (mWifiP2pInfo.groupFormed && mWifiP2pInfo.isGroupOwner) {
 								// the group owner acts as serverInitThread
-								new SendMessageServer(this, mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+								new SendMessageServer(this, mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 							} else {
 								if (mWifiP2pInfo.groupFormed) {
 									// the other device acts as the clientInitThread
-									new SendMessageClient(this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);;
+									new SendMessageClient(this, mWifiP2pInfo.groupOwnerAddress.getHostAddress() , mGui.getEditText().getText().toString()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 								}
 							}
 						} catch (NullPointerException e){
 							Log.d("Communication", "No Connection Info available up to now");
-							mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
+							mGui.showToast(mData.getActivity(), "Das Senden ist leider fehlgeschlagen, bitte erneut versuchen");
 						}
 					} else {
 					mGui.showToast(mData.getActivity(), "Keine Verbindung, bitte erneut versuchen");
@@ -209,6 +214,7 @@ public class ApplicationLogic {
 			//make sure that receiver isnt online
 			if(mReceiverRegistered == false){
 				mData.getActivity().registerReceiver(mReceiver, mIntentFilter);
+				mReceiverRegistered = true;
 			}
 
 			Log.d("Communication", "Online --> call discoverPeers()");
@@ -221,8 +227,9 @@ public class ApplicationLogic {
 
 			//off has been selected
 			mData.getManager().removeGroup(mData.getChannel(), null);
-			if(mReceiverRegistered == false){
+			if(mReceiverRegistered == true){
 				mData.getActivity().unregisterReceiver(mReceiver);
+				mReceiverRegistered = false;
 			}
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				Log.d("Communication", "Offline --> call stopPeerDiscovery()");
@@ -232,21 +239,21 @@ public class ApplicationLogic {
 			}
 
 
-			//killing the 0threads
+			//killing the threads
 			if(serverInitThread != null){
 				serverInitThread.interrupt();
 				serverInitThread = null;
-				if(serverReceiverThread != null){
-					serverReceiverThread.cancel(false);
-					serverReceiverThread = null;
-				}
+				//cancellng is not necessary
+				//if(serverReceiverThread != null){
+				//	serverReceiverThread.cancel(true);
+				//}
 			} else if(clientInitThread != null){
 				clientInitThread.interrupt();
 				clientInitThread = null;
-				if(clientReceiverThread != null){
-					clientReceiverThread.cancel(false);
-					clientReceiverThread = null;
-				}
+				//cancellng is not necessary
+				//if(clientReceiverThread != null){
+				//	clientReceiverThread.cancel(true);
+				//}
 			}
 		}
 	}
@@ -285,9 +292,9 @@ public class ApplicationLogic {
 						//no receiver initialized
 						serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
 						serverReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-					} else if (!serverReceiverThread.isCancelled()) {
+					} else if (serverReceiverThread.isCancelled()) {
 						//receiver has been cancelled and should be restarted
-						serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
+						//serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
 						serverReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 					}
 
@@ -301,9 +308,9 @@ public class ApplicationLogic {
 						//no receiver initialized
 						clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
 						clientReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-					} else if (!clientReceiverThread.isCancelled()) {
+					} else if (clientReceiverThread.isCancelled()) {
 						//receiver has been cancelled and should be restarted
-						clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
+						//clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
 						clientReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 					}
 
@@ -332,9 +339,9 @@ public class ApplicationLogic {
 						//no receiver initialized
 						serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
 						serverReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-					} else if (!serverReceiverThread.isCancelled()) {
+					} else if (serverReceiverThread.isCancelled()) {
 						//receiver has been cancelled and should be restarted
-						serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
+						//serverReceiverThread = new ReceiveMessageServer(mData.getActivity(), mGui, this);
 						serverReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 					}
 
@@ -348,9 +355,9 @@ public class ApplicationLogic {
 						//no receiver initialized
 						clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
 						clientReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-					} else if (!clientReceiverThread.isCancelled()) {
+					} else if (clientReceiverThread.isCancelled()) {
 						//receiver has been cancelled and should be restarted
-						clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
+						//clientReceiverThread = new ReceiveMessageClient(mData.getActivity(), mGui, this, mWifiP2pInfo.groupOwnerAddress.getHostAddress());
 						clientReceiverThread.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 					}
 

@@ -2,7 +2,9 @@
  * @author Ricardo La Valle
  */
 package de.fhdw.bfws114a.dataInterface;
-
+/**
+ * Created by Ricardo La Valle.
+ */
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -29,14 +31,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// Table names
 	private static final String TABLE_MESSAGES= "messages";
-	private static final String TABLE_SYSTEMDATA= "system";
+	private static final String TABLE_SYSTEMDATA= "systemdata";
 	private static final String TABLE_PROFILES= "profiles";
 
 
 	//// Table Columns names
 	// Table Messages
 	private static final String KEY_MESSAGES_TIMESTAMP = "timestamp";
-	private static final String KEY_MESSAGES_DATA = "data";
+	private static final String KEY_MESSAGES_TEXT = "text";
 	private static final String KEY_MESSAGES_SENDER = "sender";
 
     // Table System
@@ -44,7 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_SYSTEMDATA_VALUE = "value";
 
 	// Table Profiles
-	private static final String KEY_PROFILES_MAC = "mac";
+	private static final String KEY_PROFILES_MACADRESS = "macadress";
 	private static final String KEY_PROFILES_NAME = "name";
 	private static final String KEY_PROFILES_STATUS = "status";
 	private static final String KEY_PROFILES_PICTURE = "picture";
@@ -66,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String create_users_table =
                 "CREATE TABLE " + TABLE_MESSAGES + "("
                         + KEY_MESSAGES_TIMESTAMP + " TEXT PRIMARY KEY,"
-                        + KEY_MESSAGES_DATA + " TEXT,"
+                        + KEY_MESSAGES_TEXT + " TEXT,"
                         + KEY_MESSAGES_SENDER + " TEXT"
                         + ")";
         db.execSQL(create_users_table);
@@ -84,7 +86,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private void createTableProfiles(SQLiteDatabase db) {
 		String create_profiles_table =
 				"CREATE TABLE " + TABLE_PROFILES + "("
-						+ KEY_PROFILES_MAC + " TEXT PRIMARY KEY,"
+						+ KEY_PROFILES_MACADRESS + " TEXT PRIMARY KEY,"
 						+ KEY_PROFILES_NAME + " TEXT,"
 						+ KEY_PROFILES_STATUS + " TEXT,"
 						+ KEY_PROFILES_PICTURE + " BLOB"
@@ -150,11 +152,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(KEY_MESSAGES_TIMESTAMP, System.currentTimeMillis()); // Timestamp of the Message
 		values.put(KEY_MESSAGES_SENDER, sender); // Sender of the Message
-		values.put(KEY_MESSAGES_DATA, data); // Data of the Message
+		values.put(KEY_MESSAGES_TEXT, data); // Data of the Message
 
 		// Inserting Row
 		db.insert(TABLE_MESSAGES, null, values);
-		Log.d("Database", "DB: The following Message was added to the DB " + data);
 		db.close(); // Closing database connection
 	}
 
@@ -265,29 +266,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	 ***********************
 	 */
 
-	// Adding new Profile Pair
-	private void addProfile(String mac, String name, String status, Drawable picture) {
+	// Adding new Profile
+    // Private Use only!
+    private void addProfile(String mac, String name, String status, byte[] picture) {
 
 		Log.d("Database", "DB: The following Profile was added to the DB: " + name);
 
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_PROFILES_MAC, mac);
+		values.put(KEY_PROFILES_MACADRESS, mac);
 		values.put(KEY_PROFILES_NAME, name);
 		values.put(KEY_PROFILES_STATUS, status);
-
-		if(picture!=null){
-			values.put(KEY_PROFILES_PICTURE, convertDrawableToByteArray(picture));
-		}
+        values.put(KEY_PROFILES_PICTURE, picture);
 
 		// Inserting Row
 		db.insert(TABLE_PROFILES, null, values);
 		db.close(); // Closing database connection
 	}
 
-
-    private void updateProfileByMac(String mac , String newName, String newStatus, Drawable newPicture){
+    // Update a Profile identified by the MacAdress
+    // Private Use only!
+    private void updateProfileByMac(String mac , String newName, String newStatus, byte[] newPicture){
 
         Log.d("Database", "DB: The following Profile was updated to the DB: " + mac);
 
@@ -296,35 +296,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_PROFILES_NAME, newName);
         values.put(KEY_PROFILES_STATUS, newStatus);
-
-        if(newPicture!=null){
-            values.put(KEY_PROFILES_PICTURE, convertDrawableToByteArray(newPicture));
-        }
+        values.put(KEY_PROFILES_PICTURE, newPicture);
 
         // Inserting Row
-        db.update(TABLE_PROFILES, values, "mac = ?", new String[] {mac});
+        db.update(TABLE_PROFILES, values, KEY_PROFILES_MACADRESS+" = ?", new String[] {mac});
         db.close(); // Closing database connection
     }
 
-    public void writeProfile(String mMac, String mName, String mStatus, Drawable mPicture){
+    // Combines AddProfile and UpdateProfile
+    // --> Add Profile if no Profile with the given Mac exists
+    // --> Update Profile if there is already a Profile with the MacAdress
+    // ONLY USE THIS METHOD IN OTHER CLASSES!
+    public void writeProfile(String mMac, String mName, String mStatus, byte[] mPicture){
         if(getProfile(mMac)==null) addProfile(mMac, mName,mStatus,mPicture);
         else updateProfileByMac(mMac, mName, mStatus, mPicture);
     }
 
+    // Return a Profile found by the MacAdress
     public Profile getProfile(String mac) {
 
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.query(TABLE_PROFILES, new String[]{
-                        KEY_PROFILES_MAC,
+                        KEY_PROFILES_MACADRESS,
 						KEY_PROFILES_NAME,
 						KEY_PROFILES_STATUS,
 						KEY_PROFILES_PICTURE
 				},
-				KEY_PROFILES_MAC + "=?",
+				KEY_PROFILES_MACADRESS + "=?",
 				new String[]{mac}, null, null, null);
         if (cursor.moveToFirst()) {
-            return new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), null);
+            return new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getBlob(3));
         }
         else return null;
 
@@ -332,13 +334,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void deleteProfile(String mac) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PROFILES, KEY_PROFILES_MAC + " = ?",
+        db.delete(TABLE_PROFILES, KEY_PROFILES_MACADRESS + " = ?",
                 new String[] { mac });
         db.close();
     }
 
     public int getProfilCount() {
-        // Returns the number of users in the DB.
+        // Returns the number of Profiles in the DB.
         String countQuery = "SELECT * FROM " + TABLE_PROFILES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
@@ -348,6 +350,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    //Returns an ArrayList of Profiles with all Profiles stored in the DB
     public ArrayList<Profile> getAllProfiles(){
         ArrayList<Profile> result = new ArrayList<>();
 
@@ -363,7 +366,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 if(cursor.getString(2).equalsIgnoreCase("true")) left=true;
                 else left=false;
 
-                Profile p=new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), null);
+                Profile p=new Profile(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getBlob(3));
                 result.add(p);
                 cursor.moveToNext();
             }
@@ -374,28 +377,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return result;
     }
 
-	/************************************
-	 * IMAGE CONVERSION AND COMPRESSION *
-	 ************************************
-	 */
 
-    private byte[] convertDrawableToByteArray(Drawable picture){
-		if(picture!=null){
-            Bitmap bitmap = ((BitmapDrawable)picture).getBitmap();
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] bitmapdata = stream.toByteArray();
-            return bitmapdata;
-        }
-        else {
-            byte[] result = new byte[1];
-            return result;
-        }
-
-	}
-
-	/*Drawable convertByteArrayToDrawable(byte[] picture){
-
-	}
-	*/
 }

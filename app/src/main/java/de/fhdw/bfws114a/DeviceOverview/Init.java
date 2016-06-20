@@ -1,13 +1,12 @@
 package de.fhdw.bfws114a.DeviceOverview;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Samira Schorre/ Ricardo La Valle.
  */
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.data.Constants;
 
 public class Init extends AppCompatActivity {

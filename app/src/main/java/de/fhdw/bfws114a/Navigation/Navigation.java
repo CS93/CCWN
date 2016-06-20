@@ -2,14 +2,14 @@ package de.fhdw.bfws114a.Navigation;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 
-import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.data.Constants;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender / Samira Schorre.
  */
+
 public class Navigation {
     public static final Class<?> ACTIVITY_StartScreen_CLASS = de.fhdw.bfws114a.startScreen.Init.class,
             ACTIVITY_DeviceOverview_CLASS = de.fhdw.bfws114a.DeviceOverview.Init.class,

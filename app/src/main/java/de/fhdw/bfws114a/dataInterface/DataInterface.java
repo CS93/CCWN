@@ -3,6 +3,7 @@
  */
 package de.fhdw.bfws114a.dataInterface;
 
+import java.io.ByteArrayOutputStream;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,10 +11,13 @@ import java.util.List;
 
 import android.app.Activity;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import de.fhdw.bfws114a.Communication.MacAddress;
-import de.fhdw.bfws114a.Communication.MacAddressList;
+import de.fhdw.bfws114a.data.MacAddress;
+import de.fhdw.bfws114a.data.MacAddressList;
 import de.fhdw.bfws114a.data.ChatMessage;
 import de.fhdw.bfws114a.data.Profile;
 
@@ -43,7 +47,7 @@ public class DataInterface {
 
 	public void addMessageToDB(ChatMessage m){
 		//DONE - CHECKED
-		db.addMessage(Boolean.toString(m.left), m.message);//add a message to DB
+		db.addMessage(Boolean.toString(m.isLeft()), m.getMessage());//add a message to DB
 	}
 
 	public Profile getOwnProfile() {
@@ -84,7 +88,6 @@ public class DataInterface {
 
 			}
 		} catch (Exception e) {
-			Log.d("RICARDO", e.getMessage());
 		}
 		return "00:00:00:00:00:00";
 	}
@@ -108,5 +111,23 @@ public class DataInterface {
 
 	public void removeKnownMacAdress(String macAdress){
 		db.deleteProfile(macAdress);
+	}
+
+	/************************************
+	 * IMAGE CONVERSION AND COMPRESSION *
+	 ************************************
+	 */
+
+	public byte[] convertDrawableToByteArray(Drawable picture){
+		if(picture!=null) {
+			Bitmap bitmap = ((BitmapDrawable) picture).getBitmap();
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+			byte[] bitmapdata = stream.toByteArray();
+			return bitmapdata;
+		}
+		else {
+			return null;
+		}
 	}
 }

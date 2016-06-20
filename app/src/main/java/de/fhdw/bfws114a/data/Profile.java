@@ -7,17 +7,18 @@ import android.text.Editable;
 import java.io.Serializable;
 
 /**
- * Created by Carsten on 28.04.2016.
+ * Created by Carsten Schlender.
  */
+
 public class Profile implements Serializable {
     //attributes: id, name, status, image
     private String mMac;
     private String mName;
     private String mStatus;
-    private Drawable mImage;
+    private byte[] mImage;
 
 
-    public Profile(String mMac, String mName, String mStatus, Drawable mImage) {
+    public Profile(String mMac, String mName, String mStatus, byte[] mImage) {
         this.mMac = mMac;
         this.mImage = mImage;
         this.mName = mName;
@@ -32,11 +33,11 @@ public class Profile implements Serializable {
         this.mMac = mMac;
     }
 
-    public Drawable getImage() {
+    public byte[] getImage() {
         return mImage;
     }
 
-    public void setImage(Drawable mImage) {
+    public void setImage(byte[] mImage) {
         this.mImage = mImage;
     }
 

@@ -1,9 +1,8 @@
 package de.fhdw.bfws114a.profileSettings;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender.
  */
-
 import android.view.View;
 import android.view.View.OnClickListener;
 

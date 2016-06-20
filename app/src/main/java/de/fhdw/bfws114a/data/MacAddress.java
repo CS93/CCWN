@@ -1,5 +1,7 @@
-package de.fhdw.bfws114a.Communication;
-
+package de.fhdw.bfws114a.data;
+/**
+ * Created by Carsten Schlender/Ricardo La Valle.
+ */
 import android.util.Log;
 
 import java.net.SocketAddress;

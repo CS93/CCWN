@@ -1,7 +1,7 @@
 package de.fhdw.bfws114a.data;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender.
  */
 public class Constants{
         public static final String KEY_CURRENT_TEXT = "de.fhdw.bfws114a.data.K1";

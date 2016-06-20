@@ -2,11 +2,12 @@ package de.fhdw.bfws114a.startScreen;
 
 
 /**
- * Created by Carsten on 16.04.2016.
+ * Created by Carsten Schlender.
  */
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 public class Init extends AppCompatActivity {
     private Data mData;
@@ -24,6 +25,7 @@ public class Init extends AppCompatActivity {
         // nicht mehr nötig wg des Listeners/Listener-Klasse
         // initEventToListenerMapping();
     }
+
 
     //Whether this activity is restarted e.g. after finishing profilesettings/deviceoverview, the method onRestart() in ApplicationLogic is called
     @Override
@@ -56,6 +58,13 @@ public class Init extends AppCompatActivity {
     }
 
 
+    //overriding physical buttons
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        //prevent the key from bein handled by system
+        return true;
+    }
 
     @Override
     public void onBackPressed() {

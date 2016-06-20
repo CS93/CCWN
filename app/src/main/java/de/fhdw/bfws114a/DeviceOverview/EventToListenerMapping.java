@@ -1,7 +1,7 @@
 package de.fhdw.bfws114a.DeviceOverview;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Samira Schorre/ Ricardo La Valle.
  */
 
 import android.util.Log;
@@ -29,12 +29,7 @@ public class EventToListenerMapping implements OnClickListener {
 				if(selectedMacAdress.endsWith(" - ONLINE")){
 					selectedMacAdress = selectedMacAdress.substring(0,selectedMacAdress.length()-(" - ONLINE").length());
 				}
-
-				mApplicationLogic.applyProfileToGui(selectedMacAdress);//textView.getText().toString());
-			//TODO
-				//TextView textView = (TextView) viewClicked;
-				//String message = "You clicked # " + position + ", which is string: " + textView.getText().toSring();
-				//Toast.makeText(MainActivity.thi, message, Toast.LENGTH_LONG).show;
+				mApplicationLogic.applyProfileToGui(selectedMacAdress);
 			}
 
 		});

@@ -1,12 +1,14 @@
 package de.fhdw.bfws114a.profileSettings;
 
 /**
- * Created by Carsten on 21.04.2016.
+ * Created by Carsten Schlender / Samira Schorre.
  */
 
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -107,7 +109,11 @@ public class Gui {
 
 	public void setProfile(Profile prof){
 	 // sets whole profile
-		mImage.setImageDrawable(prof.getImage());
+		//mImage.setImageDrawable(prof.getImage());
+		BitmapFactory.Options options=new BitmapFactory.Options();
+		options.inPurgeable = true;
+
+		if(prof.getImage()!=null)mImage.setImageBitmap(BitmapFactory.decodeByteArray(prof.getImage() , 0, prof.getImage().length, options));
 		mEditTextNickname.setText(prof.getName());
 		mEditTextStatus.setText(prof.getStatus());
 	}

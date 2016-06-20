@@ -1,5 +1,7 @@
 package de.fhdw.bfws114a.Communication;
-
+/**
+ * Created by Carsten Schlender.
+ */
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -39,6 +41,7 @@ public class SendMessageServer extends AsyncTask<Void, String, String> {
 		//Send the message to clients
 		try {
 			ArrayList<InetAddress> listClients = ServerInit.clients;
+			publishProgress("I'm as Server sending: to"+ ServerInit.clients.size() + " Clients");
 			for(InetAddress addr : listClients){
 				Socket socket = new Socket();
 				socket.setReuseAddress(true);
