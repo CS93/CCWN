@@ -29,8 +29,6 @@ public class ApplicationLogic {
 	}
 
 	private void applyDataToGui() {
-		//if ( mData.getDevicelist() )
-
 		mGui.setTextViewOwnMacAdress(mData.getDataInterface().getOwnMacAdress());
 
         Log.d("RICARDO", "DeviceOverview/ApplyDataToGui aufgerufen");
@@ -83,17 +81,16 @@ public class ApplicationLogic {
         mGui.setListView(result);
     }
 
-
-
 	// The acitivty should present the screen like he left it (typed in nickname, status and image)
 	public void onRestart() {
 		//apply the restored data to GUI
 		applyDataToGui();
+        applyProfileToGui(mData.getmSelectedMacAdress());
 	}
 
 
     public void applyProfileToGui(String macAdress) {
-
+        mData.setSelectedMacAdress(macAdress);
         Profile p = mData.getDataInterface().getProfile(macAdress);
 
         applyStatusToGui(p.getStatus());
