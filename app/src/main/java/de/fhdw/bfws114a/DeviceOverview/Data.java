@@ -16,6 +16,7 @@ public class Data {
 	private Activity mActivity;
 	private MacAddressList mDevicelist;
 	private DataInterface mDataInterface;
+	private String mSelectedMacAdress;
 
 	public Data(Bundle b, Activity activity, MacAddressList devicelist){
 		mActivity = activity;
@@ -40,9 +41,13 @@ public class Data {
 		this.mDevicelist = mDevicelist;
 	}
 
+	public void setSelectedMacAdress(String mSelectedMacAdress) {this.mSelectedMacAdress = mSelectedMacAdress; }
+
 	public MacAddressList getDevicelist() {
 		return mDevicelist;
 	}
+
+	public String getmSelectedMacAdress() { return mSelectedMacAdress; }
 
 	private void restoreDataFromBundle(Bundle b) {
 		//restore profile
